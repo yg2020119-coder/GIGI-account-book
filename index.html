@@ -278,6 +278,20 @@ body {
   transition: all 0.2s;
 }
 .bill-del:hover { background: #ffcdd2; color: var(--danger); }
+.bill-edit {
+  width: 24px; height: 24px;
+  border-radius: 12px;
+  background: var(--border);
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  transition: all 0.2s;
+}
+.bill-edit:hover { background: #E3F2FD; color: #1976D2; }
 
 .bill-month-header {
   font-size: 13px;
@@ -702,7 +716,7 @@ const CAT_COLORS = { '餐饮':'#FFF3E0', '交通':'#E3F2FD', '购物':'#FCE4EC',
 
 let records = JSON.parse(localStorage.getItem('gg_records') || '[]');
 let budget = JSON.parse(localStorage.getItem('gg_budget') || '{"total":5000}');
-let modalType = 'expense';
+let modalType = 'expense', editingId = null;
 let modalCat = '餐饮';
 
 function save() {
@@ -722,18 +736,20 @@ function switchPage(page, btn) {
 }
 
 /* ==================== 弹窗 ==================== */
-function openModal(type) {
-  modalType = type;
-  document.getElementById('modal-title').textContent = type === 'expense' ? '记支出' : '记收入';
-  document.getElementById('modal-type-expense').className = 'modal-type expense' + (type==='expense'?' active':'');
-  document.getElementById('modal-type-income').className = 'modal-type income' + (type==='income'?' active':'');
-  document.getElementById('modal-amount').value = '';
-  document.getElementById('modal-amount').focus();
-  document.getElementById('modal-name').value = '';
+function openModal(type, record) {
+  editingId = record ? record.id : null;
+  modalType = record ? record.type : type;
+  document.getElementById('modal-title').textContent = record ? '编辑记录' : (type === 'expense' ? '记支出' : '记收入');
+  document.getElementById('modal-type-expense').className = 'modal-type expense' + (modalType==='expense'?' active':'');
+  document.getElementById('modal-type-income').className = 'modal-type income' + (modalType==='income'?' active':'');
+  document.getElementById('modal-amount').value = record ? record.amount : '';
+  document.getElementById('modal-name').value = record ? record.name : '';
+  modalCat = record ? record.category : (modalCat || '餐饮');
   document.getElementById('modal-overlay').classList.add('show');
+  if (!record) document.getElementById('modal-amount').focus();
   renderModalCats();
 }
-function closeModal() { document.getElementById('modal-overlay').classList.remove('show'); }
+function closeModal() { editingId = null; document.getElementById('modal-overlay').classList.remove('show'); }
 function setModalType(t) { modalType = t; openModal(t); }
 
 function renderModalCats() {
@@ -748,18 +764,31 @@ function submitRecord() {
   const amount = parseFloat(document.getElementById('modal-amount').value);
   const name = document.getElementById('modal-name').value.trim() || modalCat;
   if (!amount || amount <= 0) { showToast('请输入金额'); return; }
-  records.unshift({
-    id: Date.now(),
-    type: modalType,
-    category: modalCat,
-    name: name,
-    amount: amount,
-    date: new Date().toISOString().split('T')[0],
-    time: Date.now()
-  });
+
+  const isEdit = !!editingId;
+  if (editingId) {
+    const idx = records.findIndex(r => r.id === editingId);
+    if (idx !== -1) {
+      records[idx].type = modalType;
+      records[idx].category = modalCat;
+      records[idx].name = name;
+      records[idx].amount = amount;
+    }
+    editingId = null;
+  } else {
+    records.unshift({
+      id: Date.now(),
+      type: modalType,
+      category: modalCat,
+      name: name,
+      amount: amount,
+      date: new Date().toISOString().split('T')[0],
+      time: Date.now()
+    });
+  }
   save();
   closeModal();
-  showToast(modalType==='expense' ? '支出已记录 ✓' : '收入已记录 ✓');
+  showToast(isEdit ? '已更新 ✓' : (modalType==='expense' ? '支出已记录 ✓' : '收入已记录 ✓'));
   renderAll();
 }
 
@@ -866,7 +895,8 @@ function renderBills(filter) {
         </div>
         <div class="bill-right">
           <span class="bill-amount ${r.type}">${r.type==='expense'?'-':'+'} ¥${r.amount.toFixed(2)}</span>
-          <button class="bill-del" onclick="deleteRecord(${r.id})">×</button>
+          <button class="bill-edit" onclick="event.stopPropagation();openModal('expense',records.find(x=>x.id===${r.id}))">✎</button>
+          <button class="bill-del" onclick="event.stopPropagation();deleteRecord(${r.id})">×</button>
         </div>
       </div>`;
     });
