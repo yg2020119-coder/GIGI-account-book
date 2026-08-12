@@ -56,30 +56,16 @@ body {
   height: 44px;
   padding: 0 16px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   flex-shrink: 0;
 }
-.status-time { font-size: 14px; font-weight: 600; color: var(--text); }
-.status-battery {
-  width: 24px; height: 12px;
-  border: 1.5px solid var(--text);
-  border-radius: 3px;
-  position: relative;
-}
-.status-battery::after {
-  content: '';
-  position: absolute;
-  right: -3px; top: 3px;
-  width: 2px; height: 6px;
-  background: var(--text);
-  border-radius: 0 1px 1px 0;
-}
-.status-battery-fill {
-  height: 100%;
-  background: var(--text);
-  margin: 1px;
-  border-radius: 1px;
+.status-slogan {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: 3px;
+  text-align: center;
 }
 
 /* ==================== Pages ==================== */
@@ -1058,8 +1044,7 @@ body {
 <div class="app">
   <!-- Status Bar -->
   <div class="status-bar">
-    <span class="status-time">9:41</span>
-    <div class="status-battery"><div class="status-battery-fill" style="width:70%"></div></div>
+    <span class="status-slogan">💪 挣钱省钱还钱</span>
   </div>
 
   <!-- Pages -->
