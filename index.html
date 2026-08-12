@@ -757,6 +757,161 @@ body {
 .gen-modal-btn.confirm { background: var(--primary); color: #fff; }
 .gen-modal-btn.confirm.income { background: var(--income); }
 .gen-modal-btn.confirm.repay { background: var(--repay); }
+
+/* ==================== 子页面导航 ==================== */
+.sub-header { display:flex; align-items:center; gap:10px; padding-top:12px; }
+.sub-back {
+  width:32px; height:32px; border-radius:10px;
+  border:1px solid var(--border); background:var(--card);
+  font-size:18px; color:var(--text); cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  font-family:inherit; transition:all .2s; flex-shrink:0;
+}
+.sub-back:active { background:var(--bg); }
+
+/* ==================== AI 分析入口横幅 ==================== */
+.ai-entry {
+  display:flex; align-items:center; gap:10px;
+  background:linear-gradient(135deg,#FFF0ED,#EDE7F6);
+  border:1px solid var(--border); border-radius:16px;
+  padding:12px 14px; margin-bottom:12px; cursor:pointer;
+  transition:all .2s;
+}
+.ai-entry:active { transform:scale(0.98); }
+.ai-entry-icon { font-size:22px; }
+.ai-entry-text { flex:1; }
+.ai-entry-title { font-size:13px; font-weight:600; color:var(--text); }
+.ai-entry-sub { font-size:11px; color:var(--text-secondary); margin-top:2px; }
+
+/* ==================== 消费分析页 ==================== */
+.analysis-summary {
+  background:linear-gradient(135deg,#FF8A80,#FFB74D);
+  border-radius:16px; padding:18px; margin-bottom:12px;
+  color:#fff; box-shadow:0 4px 16px rgba(255,138,128,0.3);
+}
+.analysis-summary-label { font-size:12px; opacity:.9; margin-bottom:4px; }
+.analysis-summary-amount { font-size:28px; font-weight:700; margin-bottom:8px; }
+.analysis-summary-row { display:flex; gap:14px; font-size:12px; opacity:.95; }
+.analysis-summary-item { display:flex; flex-direction:column; gap:2px; }
+.analysis-summary-item-val { font-size:14px; font-weight:600; }
+.analysis-note { font-size:11px; color:var(--text-secondary); margin-top:2px; line-height:1.4; }
+
+/* ==================== 余额钱包 ==================== */
+.wallet-summary {
+  background:linear-gradient(135deg,#64B5F6,#5C6BC0);
+  border-radius:16px; padding:18px; margin-bottom:12px;
+  color:#fff; box-shadow:0 4px 16px rgba(100,181,246,0.3);
+}
+.wallet-summary-label { font-size:12px; opacity:.9; margin-bottom:4px; }
+.wallet-summary-amount { font-size:28px; font-weight:700; margin-bottom:8px; }
+.wallet-summary-sub { font-size:12px; opacity:.9; }
+.wallet-item {
+  display:flex; align-items:center; gap:12px;
+  background:var(--card); border:1px solid var(--border);
+  border-radius:14px; padding:14px; margin-bottom:10px;
+  cursor:pointer; transition:all .2s;
+}
+.wallet-item:active { background:var(--bg); }
+.wallet-icon { width:42px; height:42px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:21px; flex-shrink:0; }
+.wallet-info { flex:1; }
+.wallet-name { font-size:14px; font-weight:600; color:var(--text); }
+.wallet-sub { font-size:11px; color:var(--text-secondary); margin-top:2px; }
+.wallet-amount { font-size:17px; font-weight:700; color:var(--text); }
+.wallet-edit {
+  width:30px; height:30px; border-radius:9px;
+  border:none; background:var(--bg); color:var(--text-secondary);
+  font-size:14px; cursor:pointer; font-family:inherit;
+}
+.wallet-edit:active { background:var(--primary-light); color:var(--primary); }
+
+/* ==================== AI 模式中心 ==================== */
+.ai-mode-grid { display:flex; flex-direction:column; gap:10px; }
+.ai-mode-card {
+  display:flex; align-items:center; gap:12px;
+  background:var(--card); border:1px solid var(--border);
+  border-radius:16px; padding:16px; cursor:pointer;
+  transition:all .2s;
+}
+.ai-mode-card:active { transform:scale(0.98); background:var(--primary-light); }
+.ai-mode-icon { width:44px; height:44px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; }
+.ai-mode-info { flex:1; }
+.ai-mode-name { font-size:14px; font-weight:600; color:var(--text); }
+.ai-mode-desc { font-size:11px; color:var(--text-secondary); margin-top:3px; line-height:1.4; }
+
+.ai-mode-page-title { font-size:16px; font-weight:700; color:var(--text); }
+.ai-mode-page-desc { font-size:12px; color:var(--text-secondary); margin:8px 0 12px; line-height:1.5; }
+
+.ai-block { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:14px; margin-bottom:10px; }
+.ai-block-title { font-size:13px; font-weight:600; color:var(--text); margin-bottom:8px; display:flex; align-items:center; gap:6px; }
+.ai-block-title .badge { font-size:10px; padding:2px 8px; border-radius:10px; background:var(--primary-light); color:var(--primary); font-weight:500; }
+.ai-warn { background:var(--primary-light); color:#D84315; font-size:12px; padding:10px 12px; border-radius:10px; margin-bottom:10px; line-height:1.6; }
+.ai-success { background:var(--income-light); color:#00897B; font-size:12px; padding:10px 12px; border-radius:10px; margin-bottom:10px; line-height:1.6; }
+.ai-suggestion { display:flex; gap:10px; padding:10px 0; border-bottom:1px dashed var(--border); }
+.ai-suggestion:last-child { border-bottom:none; }
+.ai-suggestion-icon { font-size:16px; flex-shrink:0; }
+.ai-suggestion-text { flex:1; }
+.ai-suggestion-title { font-size:12px; font-weight:600; color:var(--text); }
+.ai-suggestion-desc { font-size:11px; color:var(--text-secondary); margin-top:2px; line-height:1.5; }
+
+.ai-form { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:14px; margin-bottom:12px; }
+.ai-form-label { font-size:12px; color:var(--text-secondary); margin-bottom:6px; font-weight:500; }
+.ai-form-input {
+  width:100%; padding:10px 12px; border:1px solid var(--border);
+  border-radius:10px; font-size:13px; margin-bottom:10px;
+  outline:none; font-family:inherit; color:var(--text); background:var(--bg);
+}
+.ai-form-input:focus { border-color:var(--primary); }
+.ai-form-btn {
+  width:100%; padding:12px; border-radius:12px; border:none;
+  background:var(--primary); color:#fff; font-size:14px;
+  font-weight:600; cursor:pointer; font-family:inherit;
+}
+
+/* ==================== 零基预算表 ==================== */
+.zbb-table { width:100%; border-collapse:collapse; }
+.zbb-table th, .zbb-table td { padding:10px 6px; text-align:left; font-size:12px; border-bottom:1px solid var(--border); }
+.zbb-table th { color:var(--text-secondary); font-weight:500; font-size:11px; }
+.zbb-table td input {
+  width:76px; padding:6px 8px; border:1px solid var(--border);
+  border-radius:8px; font-size:13px; font-weight:600;
+  text-align:right; font-family:inherit; color:var(--text); outline:none;
+}
+.zbb-table td input:focus { border-color:var(--primary); }
+.zbb-cat-name { font-weight:600; color:var(--text); }
+.zbb-pct { color:var(--text-muted); font-size:11px; white-space:nowrap; }
+
+/* ==================== 债务专家 ==================== */
+.debt-row { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+.debt-row input {
+  width:60px; padding:6px 8px; border:1px solid var(--border);
+  border-radius:8px; font-size:13px; text-align:right;
+  font-family:inherit; color:var(--text); outline:none;
+}
+.debt-row input:focus { border-color:var(--repay); }
+.debt-name { flex:1; font-size:13px; color:var(--text); }
+.step-item { display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px dashed var(--border); font-size:12px; }
+.step-item:last-child { border-bottom:none; }
+.step-num {
+  width:22px; height:22px; border-radius:7px;
+  background:var(--repay-light); color:var(--repay);
+  font-size:11px; font-weight:700; display:flex;
+  align-items:center; justify-content:center; flex-shrink:0;
+}
+.step-info { flex:1; }
+.step-name { color:var(--text); font-weight:500; }
+.step-detail { color:var(--text-secondary); font-size:11px; margin-top:2px; }
+.step-amount { font-size:13px; font-weight:600; color:var(--repay); }
+
+.method-compare { display:flex; gap:10px; margin-bottom:12px; }
+.method-card {
+  flex:1; background:var(--card); border:1.5px solid var(--border);
+  border-radius:14px; padding:12px; text-align:center;
+  transition:all .2s;
+}
+.method-card.selected { border-color:var(--repay); background:var(--repay-light); }
+.method-name { font-size:13px; font-weight:700; color:var(--text); }
+.method-desc { font-size:10px; color:var(--text-secondary); margin-top:3px; line-height:1.4; }
+.method-months { font-size:15px; font-weight:700; color:var(--repay); margin-top:6px; }
 </style>
 </head>
 <body>
@@ -810,6 +965,14 @@ body {
       <div class="entry-buttons">
         <button class="entry-btn entry-expense" onclick="openModal('expense')">− 记支出</button>
         <button class="entry-btn entry-income" onclick="openModal('income')">+ 记收入</button>
+      </div>
+      <div class="ai-entry" onclick="openSubPage('page-ai')">
+        <span class="ai-entry-icon">🧠</span>
+        <div class="ai-entry-text">
+          <div class="ai-entry-title">智能财务分析</div>
+          <div class="ai-entry-sub">支出诊断 · 副业规划 · 应急基金 · 债务方案 · 零基预算</div>
+        </div>
+        <span class="menu-arrow">›</span>
       </div>
       <div class="section-title">快捷分类</div>
       <div class="cat-grid" id="cat-grid"></div>
@@ -915,8 +1078,16 @@ body {
           <span class="menu-left"><span class="menu-icon">📊</span>统计报表</span>
           <span class="menu-arrow">›</span>
         </button>
-        <button class="menu-item" onclick="showToast('开发中…')">
-          <span class="menu-left"><span class="menu-icon">📊</span>消费分析</span>
+        <button class="menu-item" onclick="openSubPage('page-analysis')">
+          <span class="menu-left"><span class="menu-icon">📈</span>消费分析</span>
+          <span class="menu-arrow">›</span>
+        </button>
+        <button class="menu-item" onclick="openSubPage('page-wallet')">
+          <span class="menu-left"><span class="menu-icon">👛</span>余额钱包</span>
+          <span class="menu-arrow">›</span>
+        </button>
+        <button class="menu-item" onclick="openSubPage('page-ai')">
+          <span class="menu-left"><span class="menu-icon">🧠</span>智能财务分析</span>
           <span class="menu-arrow">›</span>
         </button>
         <button class="menu-item" onclick="exportData()">
@@ -932,6 +1103,43 @@ body {
           <span class="menu-arrow">›</span>
         </button>
       </div>
+    </div>
+
+    <!-- 消费分析 -->
+    <div class="page" id="page-analysis">
+      <div class="sub-header">
+        <button class="sub-back" onclick="goBackMe()">‹</button>
+        <span class="home-title">消费分析</span>
+      </div>
+      <div class="stats-tabs" id="analysis-tabs" style="margin-top:12px;">
+        <button class="stats-tab" onclick="switchAnalysis('week')">本周</button>
+        <button class="stats-tab active" onclick="switchAnalysis('month')">本月</button>
+        <button class="stats-tab" onclick="switchAnalysis('year')">本年</button>
+      </div>
+      <div id="analysis-content"></div>
+    </div>
+
+    <!-- 余额钱包 -->
+    <div class="page" id="page-wallet">
+      <div class="sub-header">
+        <button class="sub-back" onclick="goBackMe()">‹</button>
+        <span class="home-title">余额钱包</span>
+      </div>
+      <div class="wallet-summary" style="margin-top:12px;">
+        <div class="wallet-summary-label">总资产（各账户余额）</div>
+        <div class="wallet-summary-amount" id="wallet-total">¥0.00</div>
+        <div class="wallet-summary-sub" id="wallet-count">6 个账户 · 点击可编辑</div>
+      </div>
+      <div id="wallet-list"></div>
+    </div>
+
+    <!-- 智能财务分析 -->
+    <div class="page" id="page-ai">
+      <div class="sub-header">
+        <button class="sub-back" onclick="goBackMe()">‹</button>
+        <span class="home-title" id="ai-title">智能财务分析</span>
+      </div>
+      <div id="ai-content"></div>
     </div>
   </div>
 
@@ -1029,6 +1237,19 @@ body {
   </div>
 </div>
 
+<!-- 余额编辑弹窗 -->
+<div class="gen-modal-overlay" id="wallet-modal" onclick="if(event.target===this)closeWalletModal()">
+  <div class="gen-modal-sheet" onclick="event.stopPropagation()">
+    <div class="gen-modal-title" id="wallet-modal-title">编辑余额</div>
+    <div class="gen-modal-label">账户余额（元）</div>
+    <input type="number" class="gen-modal-input" id="wallet-amount" placeholder="0.00" min="0" step="0.01" inputmode="decimal">
+    <div class="gen-modal-btns">
+      <button class="gen-modal-btn cancel" onclick="closeWalletModal()">取消</button>
+      <button class="gen-modal-btn confirm" onclick="saveWallet()">确认</button>
+    </div>
+  </div>
+</div>
+
 <script>
 /* ==================== 数据管理 ==================== */
 const DEFAULT_CATS = ['餐饮','交通','购物','娱乐','日常','贷款','旅行','医疗','学习','生意','宠物','其他'];
@@ -1070,6 +1291,7 @@ function save() {
   localStorage.setItem('gg_income_cats', JSON.stringify(incomeCats));
   localStorage.setItem('gg_income_amounts', JSON.stringify(incomeAmounts));
   localStorage.setItem('gg_repay_items', JSON.stringify(repayItems));
+  localStorage.setItem('gg_wallet', JSON.stringify(wallet));
 }
 
 /* ==================== Tab 切换 ==================== */
@@ -1891,6 +2113,655 @@ function renderAll() {
   if (activePage && activePage.id === 'page-repay') renderRepayPage();
 }
 
+/* ==================== 子页面导航 ==================== */
+function openSubPage(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t => { t.className = 'tab inactive'; });
+  const meTab = document.querySelectorAll('.tab')[4];
+  if (meTab) meTab.className = 'tab active';
+  if (pageId === 'page-analysis') renderAnalysisPage();
+  if (pageId === 'page-wallet') renderWalletPage();
+  if (pageId === 'page-ai') renderAICenter();
+  if (pageId === 'page-me') renderHome();
+}
+function goBackMe() { openSubPage('page-me'); }
+
+/* ==================== 余额钱包 ==================== */
+const WALLET_DEFAULT = [
+  { id:'wx', name:'微信余额', icon:'💬', amount:2350.5 },
+  { id:'ali', name:'支付宝余额', icon:'💙', amount:1200 },
+  { id:'pouch', name:'支付宝小荷包', icon:'🧧', amount:800 },
+  { id:'ccb', name:'中国建设银行', icon:'🏦', amount:15000 },
+  { id:'boc', name:'中国银行', icon:'🏛️', amount:3000 },
+  { id:'spdb', name:'浦发银行', icon:'🏧', amount:5000 },
+];
+let wallet = JSON.parse(localStorage.getItem('gg_wallet') || 'null') || JSON.parse(JSON.stringify(WALLET_DEFAULT));
+let profile = JSON.parse(localStorage.getItem('gg_profile') || '{"skills":"","hours":5}');
+let zbb = JSON.parse(localStorage.getItem('gg_zbb') || 'null');
+let walletEditingId = null;
+
+function walletTotal() { return wallet.reduce((s,w)=>s+(w.amount||0),0); }
+
+function renderWalletPage() {
+  const total = walletTotal();
+  document.getElementById('wallet-total').textContent = '¥' + total.toFixed(2);
+  document.getElementById('wallet-count').textContent = wallet.length + ' 个账户 · 点击可编辑余额';
+  const list = document.getElementById('wallet-list');
+  const colors = ['#E3F2FD','#E8F5F3','#FFF3E0','#E8EAF6','#FCE4EC','#F3E5F5'];
+  list.innerHTML = wallet.map((w,i) => `
+    <div class="wallet-item" onclick="openWalletModal('${w.id}')">
+      <div class="wallet-icon" style="background:${colors[i%colors.length]}">${w.icon}</div>
+      <div class="wallet-info">
+        <div class="wallet-name">${w.name}</div>
+        <div class="wallet-sub">${['微信','支付宝','支付宝'].includes(w.name) ? '日常支付账户' : '储蓄账户'} · 点击编辑</div>
+      </div>
+      <span class="wallet-amount">¥${(w.amount||0).toFixed(2)}</span>
+      <button class="wallet-edit" onclick="event.stopPropagation();openWalletModal('${w.id}')">✎</button>
+    </div>`).join('');
+}
+
+function openWalletModal(id) {
+  walletEditingId = id;
+  const w = wallet.find(x => x.id === id);
+  if (!w) return;
+  document.getElementById('wallet-modal-title').textContent = '编辑余额 — ' + w.name;
+  document.getElementById('wallet-amount').value = w.amount || '';
+  document.getElementById('wallet-modal').classList.add('show');
+}
+function closeWalletModal() {
+  walletEditingId = null;
+  document.getElementById('wallet-modal').classList.remove('show');
+}
+function saveWallet() {
+  const amt = parseFloat(document.getElementById('wallet-amount').value);
+  if (isNaN(amt) || amt < 0) { showToast('请输入有效金额'); return; }
+  const w = wallet.find(x => x.id === walletEditingId);
+  if (w) w.amount = amt;
+  save();
+  closeWalletModal();
+  showToast('余额已更新 ✓');
+  renderWalletPage();
+}
+
+/* ==================== 消费分析（周/月/年） ==================== */
+let analysisPeriod = 'month';
+
+function switchAnalysis(p) {
+  analysisPeriod = p;
+  document.querySelectorAll('#analysis-tabs .stats-tab').forEach((t,i) => {
+    t.className = 'stats-tab' + (['week','month','year'][i]===p ? ' active' : '');
+  });
+  renderAnalysisPage();
+}
+
+function getPeriodRange(p) {
+  const now = new Date();
+  let start;
+  if (p === 'week') {
+    const d = new Date(now); const dow = d.getDay()===0 ? 6 : d.getDay()-1; d.setDate(d.getDate()-dow);
+    start = new Date(d); start.setHours(0,0,0,0);
+  } else if (p === 'month') {
+    start = new Date(now.getFullYear(), now.getMonth(), 1);
+  } else {
+    start = new Date(now.getFullYear(), 0, 1);
+  }
+  return start;
+}
+
+function catNote(cat, amt, n) {
+  const avg = amt/n;
+  let s = n + ' 笔 · 单笔均 ¥' + avg.toFixed(0);
+  if (cat==='餐饮') s += ' · 含咖啡/外卖可细分';
+  if (cat==='购物'||cat==='娱乐') s += ' · ⚠️ 关注非必要支出';
+  return s;
+}
+
+function renderAnalysisPage() {
+  const p = analysisPeriod;
+  const now = new Date();
+  const start = getPeriodRange(p);
+  const startStr = start.toISOString().split('T')[0];
+  const expRecords = records.filter(r => r.type==='expense' && r.date >= startStr).sort((a,b)=>b.date.localeCompare(a.date));
+  const total = expRecords.reduce((s,r)=>s+r.amount,0);
+  const periodLabel = {week:'本周',month:'本月',year:'本年'}[p];
+  const days = Math.max(1, Math.round((now - start)/86400000) + 1);
+  const avgDaily = total/days;
+
+  const catMap = {};
+  expRecords.forEach(r => { catMap[r.category] = (catMap[r.category]||0)+r.amount; });
+  const catSorted = Object.entries(catMap).sort((a,b)=>b[1]-a[1]);
+  const bigThreshold = avgDaily * 2;
+
+  let html = `
+    <div class="analysis-summary">
+      <div class="analysis-summary-label">${periodLabel}总支出</div>
+      <div class="analysis-summary-amount">¥${total.toFixed(2)}</div>
+      <div class="analysis-summary-row">
+        <div class="analysis-summary-item"><span>笔数</span><span class="analysis-summary-item-val">${expRecords.length} 笔</span></div>
+        <div class="analysis-summary-item"><span>日均</span><span class="analysis-summary-item-val">¥${avgDaily.toFixed(0)}</span></div>
+        <div class="analysis-summary-item"><span>分类</span><span class="analysis-summary-item-val">${catSorted.length} 类</span></div>
+      </div>
+    </div>`;
+
+  if (expRecords.length === 0) {
+    html += '<div class="empty-state"><div class="empty-state-emoji">📈</div><div class="empty-state-text">该周期暂无支出记录</div></div>';
+    document.getElementById('analysis-content').innerHTML = html;
+    return;
+  }
+
+  // 分类占比（附说明）
+  html += '<div class="stats-card"><div class="stats-card-title">📂 分类占比</div><div class="rank-list">';
+  catSorted.forEach(([cat,amt]) => {
+    const pct = Math.round(amt/total*100);
+    const barW = Math.round(amt/catSorted[0][1]*100);
+    const n = expRecords.filter(r=>r.category===cat).length;
+    html += `<div class="rank-item">
+      <div class="rank-info">
+        <div class="rank-name">${CAT_ICONS[cat]||'📌'} ${cat}<span class="income-tag preset" style="background:var(--primary-light);color:var(--primary)">${pct}%</span></div>
+        <div class="rank-bar-bg"><div class="rank-bar-fill" style="width:${barW}%"></div></div>
+        <div class="analysis-note">${catNote(cat, amt, n)}</div>
+      </div>
+      <span class="rank-amount">¥${amt.toFixed(0)}</span>
+    </div>`;
+  });
+  html += '</div></div>';
+
+  // 明细列表（每条附简短说明）
+  html += '<div class="stats-card"><div class="stats-card-title">📋 ' + periodLabel + '明细（附分析）</div>';
+  expRecords.forEach(r => {
+    const pct = total>0 ? Math.round(r.amount/total*100) : 0;
+    let note = '占' + periodLabel + '支出 ' + pct + '%';
+    if (r.amount >= bigThreshold && avgDaily>0) note += ' · ⚠️ 超日均 2 倍';
+    if (pct >= 20) note += ' · 🔍 单笔大额';
+    if (['购物','娱乐','其他'].includes(r.category)) note += ' · 💡 非必要消费';
+    html += `<div class="bill-item">
+      <div class="bill-left">
+        <div class="bill-icon" style="background:${CAT_COLORS[r.category]||'#ECEFF1'}">${CAT_ICONS[r.category]||'📌'}</div>
+        <div class="bill-info">
+          <span class="bill-name">${r.name}</span>
+          <span class="bill-date">${r.date} · ${r.category}</span>
+          <div class="analysis-note">${note}</div>
+        </div>
+      </div>
+      <span class="bill-amount expense">-¥${r.amount.toFixed(2)}</span>
+    </div>`;
+  });
+  html += '</div>';
+
+  document.getElementById('analysis-content').innerHTML = html;
+}
+
+/* ==================== 智能财务分析中心 ==================== */
+const AI_MODES = [
+  { id:'analyst', icon:'🔍', name:'支出分析师', desc:'识别不必要的支出，找出前3个浪费类别，给出快速收益与行为改变建议', color:'linear-gradient(135deg,#FFF0ED,#FFE0B2)' },
+  { id:'hustle', icon:'🚀', name:'副业策略师', desc:'根据收入、技能与可用时间，推荐3个30天内可启动的低成本副业', color:'linear-gradient(135deg,#E8F5F3,#B2DFDB)' },
+  { id:'planner', icon:'🛡️', name:'财务规划师', desc:'制定3个月应急基金计划：月度净目标、自动储蓄建议、阶段里程碑', color:'linear-gradient(135deg,#E3F2FD,#BBDEFB)' },
+  { id:'debt', icon:'⚖️', name:'债务专家', desc:'对比雪崩法与滚雪球法，给出心理可持续且数学合理的逐步还款计划', color:'linear-gradient(135deg,#EDE7F6,#D1C4E9)' },
+  { id:'budget', icon:'🧱', name:'预算架构师', desc:'创建零基预算表格，让每笔资金都有明确目的，月底无闲置资金', color:'linear-gradient(135deg,#FFF8E1,#FFECB3)' },
+];
+
+function renderAICenter() {
+  document.getElementById('ai-title').textContent = '智能财务分析';
+  document.getElementById('ai-content').innerHTML = `
+    <div class="ai-mode-grid" style="margin-top:12px;">
+      ${AI_MODES.map(m => `
+        <div class="ai-mode-card" onclick="openAIMode('${m.id}')">
+          <div class="ai-mode-icon" style="background:${m.color}">${m.icon}</div>
+          <div class="ai-mode-info">
+            <div class="ai-mode-name">${m.name}</div>
+            <div class="ai-mode-desc">${m.desc}</div>
+          </div>
+          <span class="menu-arrow">›</span>
+        </div>`).join('')}
+    </div>
+    <div class="ai-block" style="margin-top:14px;">
+      <div class="ai-block-title">💡 使用提示</div>
+      <div class="ai-suggestion">
+        <span class="ai-suggestion-icon">📊</span>
+        <div class="ai-suggestion-text"><div class="ai-suggestion-title">数据驱动</div><div class="ai-suggestion-desc">所有分析基于你已记录的账单、收入、还款与钱包数据，实时计算。</div></div>
+      </div>
+      <div class="ai-suggestion">
+        <span class="ai-suggestion-icon">✏️</span>
+        <div class="ai-suggestion-text"><div class="ai-suggestion-title">先记账，再分析</div><div class="ai-suggestion-desc">记录越完整，分析越准确。建议至少记录一周后再使用支出分析师。</div></div>
+      </div>
+    </div>`;
+}
+
+function openAIMode(mode) {
+  const m = AI_MODES.find(x=>x.id===mode);
+  if (!m) return;
+  document.getElementById('ai-title').textContent = m.name;
+  document.getElementById('ai-content').innerHTML = `
+    <div class="sub-header" style="padding-top:12px;padding-bottom:0;">
+      <button class="sub-back" onclick="renderAICenter()">‹</button>
+      <span class="ai-mode-page-title">${m.icon} ${m.name}</span>
+    </div>
+    <div class="ai-mode-page-desc">${m.desc}</div>
+    <div id="ai-mode-body"></div>`;
+  if (mode==='analyst') renderExpenseAnalyst();
+  else if (mode==='hustle') renderSideHustle();
+  else if (mode==='planner') renderPlanner();
+  else if (mode==='debt') renderDebtExpert();
+  else if (mode==='budget') renderBudgetArchitect();
+}
+
+/* ==================== 支出分析师模式 ==================== */
+function renderExpenseAnalyst() {
+  const body = document.getElementById('ai-mode-body');
+  const now = new Date();
+  const ym = now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+  const monthExp = records.filter(r=>r.type==='expense' && r.date.startsWith(ym));
+  const total = monthExp.reduce((s,r)=>s+r.amount,0);
+
+  if (monthExp.length === 0) {
+    body.innerHTML = '<div class="empty-state"><div class="empty-state-emoji">🔍</div><div class="empty-state-text">本月还没有支出记录，先去记几笔吧</div></div>';
+    return;
+  }
+
+  const catMap = {};
+  monthExp.forEach(r => { catMap[r.category] = (catMap[r.category]||0)+r.amount; });
+  const sorted = Object.entries(catMap).sort((a,b)=>b[1]-a[1]);
+  const wastePool = sorted.filter(([c])=>['购物','娱乐','其他'].includes(c));
+  const others = sorted.filter(([c])=>!['购物','娱乐','其他'].includes(c));
+  const top3 = [...wastePool, ...others].slice(0,3);
+
+  const wasteDescs = {
+    '购物':'冲动消费、凑单满减是主要来源',
+    '娱乐':'游戏充值、影音会员、线下娱乐',
+    '其他':'零散小额消费容易无感累积',
+    '餐饮':'咖啡奶茶外卖的隐性高频支出',
+  };
+
+  let html = '';
+  html += `<div class="ai-warn">📊 本月已支出 <b>¥${total.toFixed(0)}</b>，共 ${monthExp.length} 笔。以下为对非必要支出的自动识别：</div>`;
+
+  html += '<div class="ai-block"><div class="ai-block-title">🚨 前3个浪费类别 <span class="badge">重点</span></div>';
+  top3.forEach(([cat,amt],i) => {
+    const pct = Math.round(amt/total*100);
+    const n = monthExp.filter(r=>r.category===cat).length;
+    html += `<div class="ai-suggestion">
+      <span class="ai-suggestion-icon">${['🥇','🥈','🥉'][i]}</span>
+      <div class="ai-suggestion-text">
+        <div class="ai-suggestion-title">${CAT_ICONS[cat]||'📌'} ${cat} — ¥${amt.toFixed(0)}（${pct}%，${n}笔）</div>
+        <div class="ai-suggestion-desc">${wasteDescs[cat]||'建议重点关注'}</div>
+      </div>
+    </div>`;
+  });
+  html += '</div>';
+
+  html += '<div class="ai-block"><div class="ai-block-title">⚡ 快速收益 <span class="badge">立即行动</span></div>';
+  top3.forEach(([cat,amt]) => {
+    const half = (amt*0.5).toFixed(0);
+    const n = monthExp.filter(r=>r.category===cat).length;
+    html += `<div class="ai-suggestion">
+      <span class="ai-suggestion-icon">⚡</span>
+      <div class="ai-suggestion-text">
+        <div class="ai-suggestion-title">${cat} 减半 → 每月省 ¥${half}</div>
+        <div class="ai-suggestion-desc">该分类共 ${n} 笔。给 ${cat} 设本月预算为当前金额的 50%（¥${half}），达成即立省。</div>
+      </div>
+    </div>`;
+  });
+  html += '</div>';
+
+  html += '<div class="ai-block"><div class="ai-block-title">🔄 行为改变建议</div>';
+  const tips = [
+    ['🛒','购物冷静期','超过 ¥200 的购物先放购物车 48 小时再决定，冲动购买率可降低 60%'],
+    ['☕','咖啡/奶茶降频','每周少买 2 杯（约 ¥50），一年可省 ¥2,600'],
+    ['🎮','订阅瘦身','检查视频/音乐/游戏会员，停用低频订阅，平均每月可省 ¥30-80'],
+  ];
+  tips.forEach(([ic,t,d]) => {
+    html += `<div class="ai-suggestion"><span class="ai-suggestion-icon">${ic}</span><div class="ai-suggestion-text"><div class="ai-suggestion-title">${t}</div><div class="ai-suggestion-desc">${d}</div></div></div>`;
+  });
+  html += '</div>';
+
+  body.innerHTML = html;
+}
+
+/* ==================== 副业策略师模式 ==================== */
+function renderSideHustle() {
+  const body = document.getElementById('ai-mode-body');
+  const now = new Date();
+  const ym = now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+  const monthInc = records.filter(r=>r.type==='income' && r.date.startsWith(ym)).reduce((s,r)=>s+r.amount,0);
+
+  body.innerHTML = `
+    <div class="ai-form">
+      <div class="ai-form-label">💪 我的技能 / 特长（逗号分隔，可留空）</div>
+      <input class="ai-form-input" id="hustle-skills" placeholder="如：设计、写作、摄影、编程" value="${profile.skills||''}">
+      <div class="ai-form-label">⏰ 每周可投入时间（小时）</div>
+      <input class="ai-form-input" id="hustle-hours" type="number" min="1" max="40" placeholder="如：8" value="${profile.hours||5}">
+      <button class="ai-form-btn" onclick="runSideHustle()">🎯 生成副业方案</button>
+    </div>
+    <div id="hustle-result"></div>
+    <div class="ai-block">
+      <div class="ai-block-title">📊 当前收入概况</div>
+      <div class="ai-suggestion">
+        <span class="ai-suggestion-icon">💰</span>
+        <div class="ai-suggestion-text"><div class="ai-suggestion-title">本月收入 ¥${monthInc.toFixed(0)}</div><div class="ai-suggestion-desc">副业建议从「不占用主业的碎片时间」切入，30 天内跑通最小闭环。</div></div>
+      </div>
+    </div>`;
+}
+
+function runSideHustle() {
+  const skills = document.getElementById('hustle-skills').value.trim();
+  const hours = Math.min(40, Math.max(1, parseFloat(document.getElementById('hustle-hours').value)||5));
+  profile.skills = skills;
+  profile.hours = hours;
+  localStorage.setItem('gg_profile', JSON.stringify(profile));
+
+  const sk = skills.toLowerCase();
+  const plans = [];
+
+  const matchPlan = (kw, plan) => { if (sk.includes(kw)) plans.push(plan); };
+  matchPlan('设计', { name:'设计接单（logo/海报/PPT美化）', diff:'★☆☆ 低', first:'在闲鱼/小红书发布作品集，首单 ¥50-100 建立好评', income:'¥800-3,000/月', risk:'初期需低价获客，注意控制交付周期' });
+  matchPlan('写作', { name:'公众号/小红书代写文案', diff:'★☆☆ 低', first:'整理 3 篇作品样稿，在豆瓣/知乎接单小组发布', income:'¥600-2,500/月', risk:'改稿次数多，需提前约定修改范围' });
+  matchPlan('编程', { name:'接单开发（小程序/爬虫/脚本）', diff:'★★☆ 中', first:'在程序员客栈/闲鱼挂出技术栈，接 ¥200-500 的小单', income:'¥1,500-5,000/月', risk:'需求边界不清易扯皮，先写清需求单' });
+  matchPlan('摄影', { name:'周末人像/宠物约拍', diff:'★☆☆ 低', first:'小红书发 9 宫格样片，定价 ¥99 体验价拍 10 组', income:'¥800-2,000/月', risk:'天气与档期影响，需提前收定金' });
+  matchPlan('翻译', { name:'英语/日语翻译接单', diff:'★★☆ 中', first:'注册译客/有道众包，先完成入门测试题', income:'¥1,000-3,000/月', risk:'初期单价低，专业领域单价高但门槛也高' });
+  matchPlan('教育', { name:'线上辅导/陪学', diff:'★☆☆ 低', first:'在家长群/闲鱼发布陪学信息，1v1 首节试听免费', income:'¥1,000-3,500/月', risk:'需要固定时间段，寒暑假需求波动大' });
+
+  if (plans.length === 0) {
+    plans.push({ name:'二手转卖（闲鱼无本生意）', diff:'★☆☆ 低', first:'整理家中闲置 10 件上架，首周低价引流冲销量', income:'¥300-1,500/月', risk:'需要耐心回复消息，注意物流破损退换' });
+    plans.push({ name:'小红书图文自媒体（好物/日常）', diff:'★☆☆ 低', first:'每周发 3 篇图文，垂直一个领域（如通勤穿搭、便当）', income:'¥0-2,000/月（第2-3月起）', risk:'起号慢，前 30 天可能零收入' });
+    plans.push({ name:'技能轻接单（PPT/简历/修图）', diff:'★★☆ 中', first:'闲鱼挂「30 元起 PPT 美化」，24 小时内交付', income:'¥500-2,000/月', risk:'时薪偏低，需筛选高价值客户' });
+  }
+
+  plans.sort((a,b)=>a.diff.length-b.diff.length);
+  const top3 = plans.slice(0,3);
+
+  document.getElementById('hustle-result').innerHTML = `
+    <div class="ai-success">✅ 已根据你的信息生成 3 个方案（按难度排序）。每周 ${profile.hours} 小时，建议先专注跑通 1 个。</div>
+    ${top3.map((p,i)=>`
+      <div class="ai-block">
+        <div class="ai-block-title">${['🥇','🥈','🥉'][i]} ${p.name} <span class="badge">难度 ${p.diff}</span></div>
+        <div class="ai-suggestion"><span class="ai-suggestion-icon">👣</span><div class="ai-suggestion-text"><div class="ai-suggestion-title">第一步</div><div class="ai-suggestion-desc">${p.first}</div></div></div>
+        <div class="ai-suggestion"><span class="ai-suggestion-icon">💰</span><div class="ai-suggestion-text"><div class="ai-suggestion-title">潜在收益</div><div class="ai-suggestion-desc">${p.income}</div></div></div>
+        <div class="ai-suggestion"><span class="ai-suggestion-icon">⚠️</span><div class="ai-suggestion-text"><div class="ai-suggestion-title">风险提示</div><div class="ai-suggestion-desc">${p.risk}</div></div></div>
+      </div>`).join('')}`;
+}
+
+/* ==================== 财务规划师模式 ==================== */
+function getMonthStat(prefix) {
+  const recs = records.filter(r => r.date.startsWith(prefix));
+  return {
+    inc: recs.filter(r=>r.type==='income').reduce((s,r)=>s+r.amount,0),
+    exp: recs.filter(r=>r.type==='expense').reduce((s,r)=>s+r.amount,0)
+  };
+}
+
+function renderPlanner() {
+  const body = document.getElementById('ai-mode-body');
+  const now = new Date();
+  const ym = now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+  const lm = new Date(now.getFullYear(), now.getMonth()-1, 1);
+  const lm2 = new Date(now.getFullYear(), now.getMonth()-2, 1);
+
+  const m0 = getMonthStat(ym);
+  const m1 = getMonthStat(lm.getFullYear()+'-'+String(lm.getMonth()+1).padStart(2,'0'));
+  const m2 = getMonthStat(lm2.getFullYear()+'-'+String(lm2.getMonth()+1).padStart(2,'0'));
+  const months = [m0,m1,m2].filter(m => m.inc>0 || m.exp>0);
+  const avgInc = months.length ? months.reduce((s,m)=>s+m.inc,0)/months.length : 0;
+  const avgExp = months.length ? months.reduce((s,m)=>s+m.exp,0)/months.length : 0;
+  const savings = walletTotal();
+
+  const target = avgExp * 3;
+  const gap = Math.max(0, target - savings);
+  const monthlyTarget = gap/3;
+  const monthlySurplus = avgInc - avgExp;
+
+  let html = `
+    <div class="ai-block">
+      <div class="ai-block-title">📊 基础数据</div>
+      <div class="ai-suggestion"><span class="ai-suggestion-icon">💰</span><div class="ai-suggestion-text"><div class="ai-suggestion-title">月均收入 ¥${avgInc.toFixed(0)}</div><div class="ai-suggestion-desc">近 ${months.length||1} 个月记账均值</div></div></div>
+      <div class="ai-suggestion"><span class="ai-suggestion-icon">💸</span><div class="ai-suggestion-text"><div class="ai-suggestion-title">月均支出 ¥${avgExp.toFixed(0)}</div><div class="ai-suggestion-desc">应急基金目标 = 支出 × 3 = ¥${target.toFixed(0)}</div></div></div>
+      <div class="ai-suggestion"><span class="ai-suggestion-icon">👛</span><div class="ai-suggestion-text"><div class="ai-suggestion-title">现有储蓄 ¥${savings.toFixed(0)}</div><div class="ai-suggestion-desc">来自余额钱包各账户合计，可到「余额钱包」更新</div></div></div>
+    </div>`;
+
+  if (gap <= 0) {
+    html += `<div class="ai-success">🎉 恭喜！你的储蓄（¥${savings.toFixed(0)}）已达到 3 个月应急基金目标（¥${target.toFixed(0)}）。可以考虑将超出部分用于投资或大额目标，并继续保持记账习惯。</div>`;
+  } else {
+    html += `
+    <div class="ai-warn">目标 ¥${target.toFixed(0)} − 现有 ¥${savings.toFixed(0)} = 缺口 <b>¥${gap.toFixed(0)}</b>，需在 3 个月内补齐。</div>
+    <div class="ai-block">
+      <div class="ai-block-title">🎯 月度净目标 <span class="badge">核心</span></div>
+      <div class="ai-suggestion"><span class="ai-suggestion-icon">📅</span><div class="ai-suggestion-text"><div class="ai-suggestion-title">每月净存 ¥${monthlyTarget.toFixed(0)}</div><div class="ai-suggestion-desc">缺口 ÷ 3 个月 = 每月需净存入 ¥${monthlyTarget.toFixed(0)}</div></div></div>
+      <div class="ai-suggestion"><span class="ai-suggestion-icon">🧮</span><div class="ai-suggestion-text"><div class="ai-suggestion-title">月结余 ¥${monthlySurplus.toFixed(0)}</div><div class="ai-suggestion-desc">${monthlyTarget > monthlySurplus ? '<span style="color:var(--danger)">⚠️ 目标高于当前结余，需压缩支出或增加收入</span>' : '目标在结余范围内，方案可行 ✓'}</div></div></div>
+    </div>
+    <div class="ai-block">
+      <div class="ai-block-title">🤖 自动储蓄建议</div>
+      <div class="ai-suggestion"><span class="ai-suggestion-icon">📲</span><div class="ai-suggestion-text"><div class="ai-suggestion-title">发薪日先存后花</div><div class="ai-suggestion-desc">工资到账当天，自动转账 ¥${monthlyTarget.toFixed(0)} 至「支付宝小荷包」或独立储蓄账户，设置 3 个月自动定投。</div></div></div>
+      <div class="ai-suggestion"><span class="ai-suggestion-icon">🪙</span><div class="ai-suggestion-text"><div class="ai-suggestion-title">储蓄率建议</div><div class="ai-suggestion-desc">目标储蓄率 ${avgInc>0 ? Math.round(monthlyTarget/avgInc*100) : 0}%——低于 30% 属可执行范围，高于 50% 建议同步优化支出结构。</div></div></div>
+    </div>
+    <div class="ai-block">
+      <div class="ai-block-title">🏁 阶段性里程碑</div>
+      ${[1,2,3].map(i=>`
+        <div class="ai-suggestion"><span class="ai-suggestion-icon">${['🥉','🥈','🥇'][i-1]}</span><div class="ai-suggestion-text"><div class="ai-suggestion-title">第 ${i} 个月末 — 累计 ¥${(savings+monthlyTarget*i).toFixed(0)}</div><div class="ai-suggestion-desc">${i===3 ? '🎉 达成 3 个月应急基金目标！' : '进度 ' + Math.round(i*100/3) + '%，保持节奏'}</div></div></div>`).join('')}
+    </div>`;
+  }
+
+  body.innerHTML = html;
+}
+
+/* ==================== 债务专家模式 ==================== */
+function renderDebtExpert() {
+  const body = document.getElementById('ai-mode-body');
+  if (!repayItems.some(i => i.rate !== undefined)) {
+    repayItems.forEach(i => { if (i.rate === undefined) i.rate = /银行|信用卡/.test(i.creditor||'') ? 5 : 15; });
+  }
+  const debts = repayItems.map(i=>({...i, remain:(i.total||0)-(i.paid||0)})).filter(d => d.remain > 0);
+
+  if (debts.length === 0) {
+    body.innerHTML = '<div class="empty-state"><div class="empty-state-emoji">🎉</div><div class="empty-state-text">暂无未还清债务，去「还款管理」添加还款项</div></div>';
+    return;
+  }
+
+  const totalRemain = debts.reduce((s,d)=>s+d.remain,0);
+  body.innerHTML = `
+    <div class="ai-block">
+      <div class="ai-block-title">💳 债务列表（可调整年利率 %）</div>
+      ${debts.map(d => `
+        <div class="debt-row">
+          <span class="debt-name">${d.icon} ${d.name}<span style="color:var(--text-muted);font-size:11px;"> 剩 ¥${d.remain.toFixed(0)}</span></span>
+          <input type="number" min="0" max="36" step="0.5" id="rate-${d.id}" value="${d.rate}">
+          <span style="font-size:11px;color:var(--text-muted)">%/年</span>
+        </div>`).join('')}
+    </div>
+    <div class="ai-form">
+      <div class="ai-form-label">💰 每月可还款金额（元）</div>
+      <input class="ai-form-input" type="number" min="100" id="debt-monthly" value="${Math.max(500, Math.round(totalRemain/6/100)*100)}">
+      <button class="ai-form-btn" style="background:var(--repay)" onclick="runDebtPlan()">⚖️ 对比两种方案</button>
+    </div>
+    <div id="debt-result"></div>`;
+}
+
+function runDebtPlan() {
+  const monthly = Math.max(100, parseFloat(document.getElementById('debt-monthly').value) || 500);
+  repayItems.forEach(i => {
+    const el = document.getElementById('rate-'+i.id);
+    if (el) i.rate = parseFloat(el.value) || 0;
+  });
+  save();
+
+  const debts = repayItems.map(i=>({...i, remain:(i.total||0)-(i.paid||0)})).filter(d => d.remain > 0);
+  if (debts.length === 0) return;
+
+  const buildPlan = (order) => {
+    const remainMap = {};
+    debts.forEach(d => remainMap[d.id] = d.remain);
+    const steps = [];
+    let month = 1;
+    let remainingTotal = Object.values(remainMap).reduce((s,v)=>s+v,0);
+    const orderIds = order.map(d=>d.id);
+    while (remainingTotal > 0.5 && month <= 24) {
+      let budget = monthly;
+      for (const id of orderIds) {
+        if (budget <= 0) break;
+        if (remainMap[id] <= 0) continue;
+        const d = debts.find(x=>x.id===id);
+        const pay = Math.min(budget, remainMap[id]);
+        remainMap[id] -= pay;
+        budget -= pay;
+        remainingTotal -= pay;
+        steps.push({ month, name:d.name, icon:d.icon, pay, remain:Math.max(0,remainMap[id]), total:remainingTotal });
+        if (remainingTotal <= 0.5) break;
+      }
+      month++;
+    }
+    return { months: month-1, steps };
+  };
+
+  const avalanche = [...debts].sort((a,b)=>b.rate-a.rate);
+  const snowball = [...debts].sort((a,b)=>a.remain-b.remain);
+  const planA = buildPlan(avalanche);
+  const planB = buildPlan(snowball);
+
+  const maxRate = Math.max(...debts.map(d=>d.rate));
+  const minRate = Math.min(...debts.map(d=>d.rate));
+  const recommend = (maxRate - minRate >= 10) ? { name:'雪崩法（利率优先）', plan:planA } : { name:'滚雪球法（余额优先）', plan:planB };
+  const other = recommend.name.startsWith('雪崩') ? { name:'滚雪球法（余额优先）', plan:planB } : { name:'雪崩法（利率优先）', plan:planA };
+
+  let html = `<div class="method-compare">
+    <div class="method-card ${recommend.name.startsWith('雪崩')?'selected':''}">
+      <div class="method-name">❄️ 雪崩法</div>
+      <div class="method-desc">先还利率最高的债务，总利息最少</div>
+      <div class="method-months">${planA.months} 个月</div>
+    </div>
+    <div class="method-card ${recommend.name.startsWith('滚雪球')?'selected':''}">
+      <div class="method-name">⛄ 滚雪球法</div>
+      <div class="method-desc">先还金额最小的债务，成就感强</div>
+      <div class="method-months">${planB.months} 个月</div>
+    </div>
+  </div>`;
+
+  html += `<div class="ai-success">✅ 推荐方案：<b>${recommend.name}</b>${recommend.name.startsWith('雪崩') ? '（利率差异大，数学上更省利息）' : '（利率差异不大，心理可持续性更有利于坚持）'}，预计 <b>${recommend.plan.months}</b> 个月还清全部债务。</div>`;
+
+  html += `<div class="ai-block"><div class="ai-block-title">📋 ${recommend.name} — 逐步还款计划</div>`;
+  recommend.plan.steps.slice(0,12).forEach(s => {
+    html += `<div class="step-item">
+      <span class="step-num">${s.month}</span>
+      <div class="step-info"><div class="step-name">${s.icon} ${s.name}</div><div class="step-detail">第 ${s.month} 个月 · 还后该笔剩余 ¥${s.remain.toFixed(0)} · 总负债 ¥${s.total.toFixed(0)}</div></div>
+      <span class="step-amount">-¥${s.pay.toFixed(0)}</span>
+    </div>`;
+  });
+  if (recommend.plan.steps.length > 12) {
+    html += `<div class="ai-suggestion"><span class="ai-suggestion-icon">…</span><div class="ai-suggestion-text"><div class="ai-suggestion-title">后续 ${recommend.plan.steps.length-12} 个月</div><div class="ai-suggestion-desc">保持每月 ¥${monthly.toFixed(0)} 的还款节奏，直至第 ${recommend.plan.months} 个月全部还清。</div></div></div>`;
+  }
+  html += '</div>';
+
+  html += `<div class="ai-block"><div class="ai-block-title">📖 两种方法对比</div>
+    <div class="ai-suggestion"><span class="ai-suggestion-icon">❄️</span><div class="ai-suggestion-text"><div class="ai-suggestion-title">雪崩法 — 数学最优（${planA.months} 个月）</div><div class="ai-suggestion-desc">按利率从高到低还款，总利息支出最少。适合追求最优解、自制力强的人。</div></div></div>
+    <div class="ai-suggestion"><span class="ai-suggestion-icon">⛄</span><div class="ai-suggestion-text"><div class="ai-suggestion-title">滚雪球法 — 心理最优（${planB.months} 个月）</div><div class="ai-suggestion-desc">按余额从小到大还款，快速还清小债务获得成就感，更容易长期坚持。</div></div></div>
+  </div>`;
+
+  document.getElementById('debt-result').innerHTML = html;
+}
+
+/* ==================== 预算架构师模式（零基预算） ==================== */
+function getMonthIncome() {
+  const now = new Date();
+  const ym = now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+  const catRec = {};
+  records.filter(r=>r.type==='income' && r.date.startsWith(ym)).forEach(r => {
+    catRec[r.category] = (catRec[r.category]||0) + r.amount;
+  });
+  Object.keys(incomeAmounts).forEach(k => {
+    if (k.startsWith(ym+'_')) {
+      const catId = k.substring(ym.length+1);
+      const cat = incomeCats.find(c => c.id === catId);
+      if (cat) catRec[cat.name] = incomeAmounts[k];
+    }
+  });
+  return Object.values(catRec).reduce((s,v)=>s+v,0);
+}
+
+function getMonthSpent() {
+  const now = new Date();
+  const ym = now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+  return records.filter(r=>r.type==='expense' && r.date.startsWith(ym)).reduce((s,r)=>s+r.amount,0);
+}
+
+function renderBudgetArchitect() {
+  const body = document.getElementById('ai-mode-body');
+  const now = new Date();
+  const ym = now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+  const income = getMonthIncome();
+  const spent = getMonthSpent();
+  const available = Math.max(0, income - spent);
+
+  let vals;
+  if (zbb && zbb.month === ym) {
+    vals = zbb;
+  } else {
+    vals = {
+      month: ym,
+      need: Math.round(available*0.45),
+      save: Math.round(available*0.25),
+      invest: Math.round(available*0.15),
+      fun: Math.round(available*0.15)
+    };
+  }
+
+  const sum = (vals.need||0)+(vals.save||0)+(vals.invest||0)+(vals.fun||0);
+  const diff = available - sum;
+
+  body.innerHTML = `
+    <div class="ai-warn">🧱 零基预算：本月可分配资金 <b>¥${available.toFixed(0)}</b>（收入 ¥${income.toFixed(0)} − 已支出 ¥${spent.toFixed(0)}）。目标：每一分钱都有去处，月底归零、无闲置。</div>
+    <div class="ai-block">
+      <div class="ai-block-title">🗂 资金分配表 <span class="badge">零基</span></div>
+      <table class="zbb-table">
+        <tr><th>资金池</th><th>金额(元)</th><th>占比</th><th>用途</th></tr>
+        <tr><td class="zbb-cat-name">🏠 必要支出</td><td><input type="number" id="zbb-need" value="${vals.need||0}" oninput="zbbPreview()"></td><td class="zbb-pct" id="zbb-need-pct">${available>0?Math.round((vals.need||0)/available*100):0}%</td><td style="font-size:11px;color:var(--text-secondary)">房租水电、吃饭交通</td></tr>
+        <tr><td class="zbb-cat-name">🪙 储蓄</td><td><input type="number" id="zbb-save" value="${vals.save||0}" oninput="zbbPreview()"></td><td class="zbb-pct" id="zbb-save-pct">${available>0?Math.round((vals.save||0)/available*100):0}%</td><td style="font-size:11px;color:var(--text-secondary)">应急基金、大额目标</td></tr>
+        <tr><td class="zbb-cat-name">📚 自我投资</td><td><input type="number" id="zbb-invest" value="${vals.invest||0}" oninput="zbbPreview()"></td><td class="zbb-pct" id="zbb-invest-pct">${available>0?Math.round((vals.invest||0)/available*100):0}%</td><td style="font-size:11px;color:var(--text-secondary)">课程、书籍、健康</td></tr>
+        <tr><td class="zbb-cat-name">🎉 娱乐</td><td><input type="number" id="zbb-fun" value="${vals.fun||0}" oninput="zbbPreview()"></td><td class="zbb-pct" id="zbb-fun-pct">${available>0?Math.round((vals.fun||0)/available*100):0}%</td><td style="font-size:11px;color:var(--text-secondary)">奶茶、电影、游戏</td></tr>
+      </table>
+      <div id="zbb-status" style="margin-top:10px;font-size:12px;"></div>
+      <button class="ai-form-btn" style="margin-top:12px;" onclick="saveZBB()">💾 保存本月预算分配</button>
+    </div>
+    <div class="ai-block">
+      <div class="ai-block-title">🔄 均衡分配原则</div>
+      <div class="ai-suggestion"><span class="ai-suggestion-icon">📐</span><div class="ai-suggestion-text"><div class="ai-suggestion-title">参考比例：必要 45% / 储蓄 25% / 自我投资 15% / 娱乐 15%</div><div class="ai-suggestion-desc">按需调整，但建议储蓄不低于 20%、娱乐不高于 20%，保证「必要」优先。</div></div></div>
+      <div class="ai-suggestion"><span class="ai-suggestion-icon">🧹</span><div class="ai-suggestion-text"><div class="ai-suggestion-title">月度检视</div><div class="ai-suggestion-desc">月底核对：某池有剩余 → 下月转入储蓄；某池超支 → 从娱乐池预支并记录原因。</div></div></div>
+    </div>`;
+
+  zbbPreview();
+}
+
+function zbbPreview() {
+  const get = id => parseFloat(document.getElementById(id).value) || 0;
+  const need = get('zbb-need'), save = get('zbb-save'), invest = get('zbb-invest'), fun = get('zbb-fun');
+  const sum = need+save+invest+fun;
+  const available = Math.max(0, getMonthIncome() - getMonthSpent());
+  const diff = available - sum;
+  [['need',need],['save',save],['invest',invest],['fun',fun]].forEach(([k,v]) => {
+    const el = document.getElementById('zbb-'+k+'-pct');
+    if (el) el.textContent = available>0 ? Math.round(v/available*100)+'%' : '0%';
+  });
+  const st = document.getElementById('zbb-status');
+  if (Math.abs(diff) < 0.01) {
+    st.innerHTML = '<span style="color:var(--success);font-weight:600;">✅ 零基达成：¥' + sum.toFixed(0) + ' 已全部分配，无闲置资金</span>';
+  } else if (diff > 0) {
+    st.innerHTML = '<span style="color:var(--warning);font-weight:600;">⚠️ 还有 ¥' + diff.toFixed(0) + ' 待分配，请安排到储蓄或娱乐池</span>';
+  } else {
+    st.innerHTML = '<span style="color:var(--danger);font-weight:600;">🚨 超分配 ¥' + Math.abs(diff).toFixed(0) + '，请削减一个池子的金额</span>';
+  }
+}
+
+function saveZBB() {
+  const now = new Date();
+  const ym = now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+  zbb = {
+    month: ym,
+    need: parseFloat(document.getElementById('zbb-need').value) || 0,
+    save: parseFloat(document.getElementById('zbb-save').value) || 0,
+    invest: parseFloat(document.getElementById('zbb-invest').value) || 0,
+    fun: parseFloat(document.getElementById('zbb-fun').value) || 0
+  };
+  localStorage.setItem('gg_zbb', JSON.stringify(zbb));
+  showToast('预算分配已保存 ✓');
+}
+
 /* ==================== 键盘事件 ==================== */
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
@@ -1898,6 +2769,7 @@ document.addEventListener('keydown', e => {
     closeIncCatModal();
     closeRepayModal();
     closeRepayLogModal();
+    closeWalletModal();
   }
   if (e.key === 'n' && e.ctrlKey) { e.preventDefault(); openModal('expense'); }
 });
