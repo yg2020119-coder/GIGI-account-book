@@ -1090,8 +1090,12 @@ body {
           <span class="menu-left"><span class="menu-icon">🧠</span>智能财务分析</span>
           <span class="menu-arrow">›</span>
         </button>
-        <button class="menu-item" onclick="exportData()">
-          <span class="menu-left"><span class="menu-icon">📤</span>导出账单</span>
+        <button class="menu-item" onclick="exportBackup()">
+          <span class="menu-left"><span class="menu-icon">📤</span>数据备份</span>
+          <span class="menu-arrow">›</span>
+        </button>
+        <button class="menu-item" onclick="importBackup()">
+          <span class="menu-left"><span class="menu-icon">📥</span>数据恢复</span>
           <span class="menu-arrow">›</span>
         </button>
         <button class="menu-item" onclick="editBudget()">
@@ -1185,6 +1189,9 @@ body {
 
 <!-- Toast -->
 <div class="toast" id="toast"></div>
+
+<!-- 数据恢复文件选择器 -->
+<input type="file" id="import-file" accept=".json,application/json" style="display:none" onchange="handleImportFile(this)">
 
 <!-- 收入分类弹窗 -->
 <div class="gen-modal-overlay" id="inc-cat-modal" onclick="if(event.target===this)closeIncCatModal()">
@@ -1748,7 +1755,66 @@ function editBudget() {
   }
 }
 
-/* ==================== 导出 ==================== */
+/* ==================== 数据备份与恢复 ==================== */
+function exportBackup() {
+  const data = {
+    app: '格格的账本',
+    version: 1,
+    exportedAt: new Date().toISOString().slice(0, 10),
+    data: {
+      records: records,
+      budget: budget,
+      incomeCats: incomeCats,
+      incomeAmounts: incomeAmounts,
+      repayItems: repayItems,
+      wallet: wallet,
+      profile: profile,
+      zbb: zbb
+    }
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = '格格的账本_备份_' + data.exportedAt + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('备份已导出 ✓ 请发送到新设备');
+}
+
+function importBackup() {
+  document.getElementById('import-file').click();
+}
+
+function handleImportFile(input) {
+  const f = input.files[0];
+  input.value = '';
+  if (!f) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const obj = JSON.parse(reader.result);
+      const d = (obj && obj.data) || obj;
+      if (!d || !Array.isArray(d.records)) throw new Error('bad format');
+      if (!confirm('导入将覆盖当前设备上的所有数据，确定继续吗？')) return;
+      localStorage.setItem('gg_records', JSON.stringify(d.records));
+      localStorage.setItem('gg_budget', JSON.stringify(d.budget || { total: 5000 }));
+      localStorage.setItem('gg_income_cats', JSON.stringify(d.incomeCats || []));
+      localStorage.setItem('gg_income_amounts', JSON.stringify(d.incomeAmounts || {}));
+      localStorage.setItem('gg_repay_items', JSON.stringify(d.repayItems || []));
+      localStorage.setItem('gg_wallet', JSON.stringify(d.wallet || []));
+      localStorage.setItem('gg_profile', JSON.stringify(d.profile || { skills: '', hours: 5 }));
+      if (d.zbb) localStorage.setItem('gg_zbb', JSON.stringify(d.zbb));
+      showToast('数据恢复成功，刷新中…');
+      setTimeout(() => location.reload(), 600);
+    } catch (e) {
+      showToast('文件格式不正确，请选择备份文件');
+    }
+  };
+  reader.readAsText(f);
+}
+
+/* ==================== 导出账单 CSV ==================== */
 function exportData() {
   if (records.length === 0) { showToast('暂无数据可导出'); return; }
   let csv = '日期,类型,分类,名称,金额\n';
