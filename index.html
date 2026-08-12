@@ -15,6 +15,8 @@
   --income: #80CBC4;
   --income-light: #E8F5F3;
   --save: #64B5F6;
+  --repay: #B39DDB;
+  --repay-light: #EDE7F6;
   --text: #4E342E;
   --text-secondary: #8D6E63;
   --text-muted: #BCAAA4;
@@ -561,6 +563,200 @@ body {
 .double-bar-group { display: flex; gap: 1px; align-items: flex-end; flex:1; width: 100%; }
 .double-bar { width: 50%; border-radius: 2px 2px 0 0; min-height: 2px; transition: height 0.5s; }
 .double-bar-label { font-size: 8px; color: var(--text-secondary); margin-top: 3px; white-space: nowrap; }
+
+/* ==================== 收入管理页 ==================== */
+.income-summary {
+  background: linear-gradient(135deg, var(--income), #4DB6AC);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 14px;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(128,203,196,0.3);
+}
+.income-summary-label { font-size: 12px; opacity: 0.85; margin-bottom: 4px; }
+.income-summary-amount { font-size: 30px; font-weight: 700; margin-bottom: 10px; }
+.income-summary-row { display: flex; gap: 16px; font-size: 12px; opacity: 0.9; }
+.income-summary-item { display: flex; flex-direction: column; gap: 2px; }
+.income-summary-item-val { font-size: 14px; font-weight: 600; }
+
+.income-section-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 0 10px;
+}
+.income-section-title { font-size: 14px; font-weight: 600; color: var(--text); }
+.income-add-btn {
+  padding: 5px 12px; border-radius: 14px;
+  border: 1px dashed var(--income); background: var(--income-light);
+  font-size: 12px; color: var(--income); cursor: pointer; font-family: inherit;
+  transition: all 0.2s;
+}
+.income-add-btn:active { transform: scale(0.95); }
+
+.income-cat-list { display: flex; flex-direction: column; gap: 8px; }
+.income-cat-item {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 14px;
+  transition: all 0.2s;
+}
+.income-cat-item:active { background: var(--income-light); }
+.income-cat-icon {
+  width: 40px; height: 40px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0;
+}
+.income-cat-info { flex: 1; }
+.income-cat-name { font-size: 14px; font-weight: 600; color: var(--text); }
+.income-cat-desc { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+.income-cat-amount { font-size: 16px; font-weight: 700; color: var(--income); }
+.income-cat-actions { display: flex; gap: 6px; }
+.income-cat-edit, .income-cat-del {
+  width: 28px; height: 28px; border-radius: 8px;
+  border: none; cursor: pointer; font-size: 13px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: inherit; transition: all 0.2s;
+}
+.income-cat-edit { background: var(--income-light); color: var(--income); }
+.income-cat-edit:active { transform: scale(0.9); }
+.income-cat-del { background: #FFEBEE; color: var(--danger); }
+.income-cat-del:active { transform: scale(0.9); }
+
+.income-tag {
+  font-size: 10px; padding: 2px 6px; border-radius: 4px;
+  font-weight: 500; margin-left: 6px;
+}
+.income-tag.preset { background: var(--income-light); color: var(--income); }
+.income-tag.custom { background: #FFF3E0; color: var(--warning); }
+
+/* ==================== 还款管理页 ==================== */
+.repay-summary {
+  background: linear-gradient(135deg, var(--repay), #9575CD);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 14px;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(179,157,219,0.3);
+}
+.repay-summary-label { font-size: 12px; opacity: 0.85; margin-bottom: 4px; }
+.repay-summary-amount { font-size: 30px; font-weight: 700; margin-bottom: 10px; }
+.repay-summary-row { display: flex; gap: 16px; font-size: 12px; opacity: 0.9; }
+.repay-summary-item { display: flex; flex-direction: column; gap: 2px; }
+.repay-summary-item-val { font-size: 14px; font-weight: 600; }
+
+.repay-progress-bar {
+  height: 6px; background: rgba(255,255,255,0.3); border-radius: 3px;
+  overflow: hidden; margin-top: 10px;
+}
+.repay-progress-fill {
+  height: 100%; background: #fff; border-radius: 3px; transition: width 0.5s;
+}
+
+.repay-item {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 16px; margin-bottom: 10px;
+  transition: all 0.2s;
+}
+.repay-item:active { transform: scale(0.98); }
+.repay-item-header {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+}
+.repay-item-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0; background: var(--repay-light);
+}
+.repay-item-name { flex: 1; font-size: 14px; font-weight: 600; color: var(--text); }
+.repay-item-creditor { font-size: 11px; color: var(--text-secondary); }
+.repay-item-actions { display: flex; gap: 6px; }
+.repay-act-btn {
+  width: 28px; height: 28px; border-radius: 8px;
+  border: none; cursor: pointer; font-size: 13px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: inherit; transition: all 0.2s;
+}
+.repay-act-log { background: var(--repay-light); color: var(--repay); }
+.repay-act-edit { background: #E3F2FD; color: #1976D2; }
+.repay-act-del { background: #FFEBEE; color: var(--danger); }
+.repay-act-btn:active { transform: scale(0.9); }
+
+.repay-progress-bg {
+  height: 8px; background: var(--border); border-radius: 4px;
+  overflow: hidden; margin-bottom: 8px;
+}
+.repay-progress-bar-fill {
+  height: 100%; background: var(--repay); border-radius: 4px; transition: width 0.5s;
+}
+.repay-item-detail {
+  display: flex; justify-content: space-between; font-size: 12px;
+}
+.repay-detail-paid { color: var(--success); font-weight: 600; }
+.repay-detail-remain { color: var(--danger); font-weight: 600; }
+.repay-detail-total { color: var(--text-secondary); }
+
+.repay-log-list {
+  margin-top: 10px; padding-top: 10px;
+  border-top: 1px dashed var(--border);
+  display: flex; flex-direction: column; gap: 6px;
+}
+.repay-log-item {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 12px; padding: 6px 8px; background: var(--bg);
+  border-radius: 8px;
+}
+.repay-log-date { color: var(--text-secondary); }
+.repay-log-amount { color: var(--repay); font-weight: 600; }
+.repay-log-del {
+  width: 20px; height: 20px; border-radius: 6px;
+  border: none; cursor: pointer; background: transparent;
+  color: var(--text-muted); font-size: 12px; font-family: inherit;
+}
+.repay-log-del:hover { color: var(--danger); }
+
+/* ==================== 通用弹窗（分类/还款项添加） ==================== */
+.gen-modal-overlay {
+  position: fixed; top:0; left:0; right:0; bottom:0;
+  background: rgba(78,52,46,0.4); z-index: 110;
+  display: none; justify-content: center; align-items: flex-end;
+}
+.gen-modal-overlay.show { display: flex; }
+.gen-modal-sheet {
+  width: 375px; background: var(--card);
+  border-radius: 20px 20px 0 0; padding: 24px 20px 32px;
+  animation: slideUp 0.3s ease;
+}
+.gen-modal-title {
+  font-size: 17px; font-weight: 700; color: var(--text);
+  text-align: center; margin-bottom: 20px;
+}
+.gen-modal-label { font-size: 12px; color: var(--text-secondary); margin-bottom: 6px; font-weight: 500; }
+.gen-modal-input {
+  width: 100%; padding: 12px 14px;
+  border: 1px solid var(--border); border-radius: 12px;
+  font-size: 14px; margin-bottom: 14px; outline: none;
+  font-family: inherit; color: var(--text); background: var(--bg);
+}
+.gen-modal-input:focus { border-color: var(--primary); }
+.gen-modal-emoji-row {
+  display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;
+}
+.gen-emoji-btn {
+  width: 36px; height: 36px; border-radius: 10px;
+  border: 2px solid var(--border); background: var(--card);
+  font-size: 18px; cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center;
+}
+.gen-emoji-btn.selected { border-color: var(--primary); background: var(--primary-light); }
+.gen-modal-btns { display: flex; gap: 10px; }
+.gen-modal-btn {
+  flex: 1; padding: 14px; border-radius: 14px;
+  font-size: 15px; font-weight: 700; border: none; cursor: pointer;
+  font-family: inherit; transition: all 0.2s;
+}
+.gen-modal-btn:active { transform: scale(0.97); }
+.gen-modal-btn.cancel { background: var(--border); color: var(--text-secondary); }
+.gen-modal-btn.confirm { background: var(--primary); color: #fff; }
+.gen-modal-btn.confirm.income { background: var(--income); }
+.gen-modal-btn.confirm.repay { background: var(--repay); }
 </style>
 </head>
 <body>
@@ -578,7 +774,10 @@ body {
     <div class="page active" id="page-home">
       <div class="home-header">
         <span class="home-title">格格的账本</span>
-        <span class="home-month" id="current-month">2026年8月</span>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button onclick="document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-stats').classList.add('active');document.querySelectorAll('.tab').forEach(t=>t.className='tab inactive');renderStats();" style="border:none;background:none;cursor:pointer;font-size:18px;padding:4px;">📊</button>
+          <span class="home-month" id="current-month">2026年8月</span>
+        </div>
       </div>
       <div class="card balance-card" id="balance-card">
         <div class="balance-label">本月结余</div>
@@ -638,6 +837,69 @@ body {
       <div id="stats-content"></div>
     </div>
 
+    <!-- 收入管理 -->
+    <div class="page" id="page-income">
+      <div style="padding-top:12px;">
+        <span class="home-title">收入管理</span>
+      </div>
+      <div class="income-summary" style="margin-top:12px;">
+        <div class="income-summary-label">本月总收入</div>
+        <div class="income-summary-amount" id="inc-total">¥0.00</div>
+        <div class="income-summary-row">
+          <div class="income-summary-item">
+            <span>来源数</span>
+            <span class="income-summary-item-val" id="inc-src-count">0</span>
+          </div>
+          <div class="income-summary-item">
+            <span>月均收入</span>
+            <span class="income-summary-item-val" id="inc-avg">¥0</span>
+          </div>
+          <div class="income-summary-item">
+            <span>自定义分类</span>
+            <span class="income-summary-item-val" id="inc-custom-count">0</span>
+          </div>
+        </div>
+      </div>
+      <div class="income-section-header">
+        <span class="income-section-title">收入分类</span>
+        <button class="income-add-btn" onclick="openIncomeCatModal()">+ 添加分类</button>
+      </div>
+      <div class="income-cat-list" id="income-cat-list"></div>
+    </div>
+
+    <!-- 还款管理 -->
+    <div class="page" id="page-repay">
+      <div style="padding-top:12px;">
+        <span class="home-title">还款管理</span>
+      </div>
+      <div class="repay-summary" style="margin-top:12px;">
+        <div class="repay-summary-label">待还总额</div>
+        <div class="repay-summary-amount" id="repay-total">¥0.00</div>
+        <div class="repay-summary-row">
+          <div class="repay-summary-item">
+            <span>已还</span>
+            <span class="repay-summary-item-val" id="repay-paid">¥0</span>
+          </div>
+          <div class="repay-summary-item">
+            <span>剩余</span>
+            <span class="repay-summary-item-val" id="repay-remain">¥0</span>
+          </div>
+          <div class="repay-summary-item">
+            <span>还款项</span>
+            <span class="repay-summary-item-val" id="repay-count">0</span>
+          </div>
+        </div>
+        <div class="repay-progress-bar">
+          <div class="repay-progress-fill" id="repay-progress" style="width:0%"></div>
+        </div>
+      </div>
+      <div class="income-section-header">
+        <span class="income-section-title">还款项目</span>
+        <button class="income-add-btn" style="border-color:var(--repay);background:var(--repay-light);color:var(--repay)" onclick="openRepayItemModal()">+ 添加还款项</button>
+      </div>
+      <div id="repay-item-list"></div>
+    </div>
+
     <!-- 我的 -->
     <div class="page" id="page-me">
       <div style="padding-top:12px;"></div>
@@ -649,6 +911,10 @@ body {
         </div>
       </div>
       <div class="menu-list">
+        <button class="menu-item" onclick="document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-stats').classList.add('active');document.querySelectorAll('.tab').forEach(t=>t.className='tab inactive');renderStats();">
+          <span class="menu-left"><span class="menu-icon">📊</span>统计报表</span>
+          <span class="menu-arrow">›</span>
+        </button>
         <button class="menu-item" onclick="showToast('开发中…')">
           <span class="menu-left"><span class="menu-icon">📊</span>消费分析</span>
           <span class="menu-arrow">›</span>
@@ -675,13 +941,17 @@ body {
       <svg viewBox="0 0 22 22" fill="none"><path d="M3 10L11 3L19 10V19H13V13H9V19H3V10Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
       <span>首页</span>
     </button>
+    <button class="tab inactive" onclick="switchPage('income', this)">
+      <svg viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="1.5"/><path d="M11 7V15M11 7L8 10M11 7L14 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>收入</span>
+    </button>
     <button class="tab inactive" onclick="switchPage('bills', this)">
       <svg viewBox="0 0 22 22" fill="none"><rect x="3" y="3" width="16" height="16" rx="3" stroke="currentColor" stroke-width="1.5"/><line x1="7" y1="8" x2="15" y2="8" stroke="currentColor" stroke-width="1.2"/><line x1="7" y1="12" x2="15" y2="12" stroke="currentColor" stroke-width="1.2"/><line x1="7" y1="16" x2="11" y2="16" stroke="currentColor" stroke-width="1.2"/></svg>
       <span>账单</span>
     </button>
-    <button class="tab inactive" onclick="switchPage('stats', this)">
-      <svg viewBox="0 0 22 22" fill="none"><rect x="3" y="14" width="3" height="5" rx="1" fill="currentColor"/><rect x="9" y="8" width="3" height="11" rx="1" fill="currentColor"/><rect x="15" y="3" width="3" height="16" rx="1" fill="currentColor"/></svg>
-      <span>统计</span>
+    <button class="tab inactive" onclick="switchPage('repay', this)">
+      <svg viewBox="0 0 22 22" fill="none"><rect x="3" y="5" width="16" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><circle cx="11" cy="11" r="2.5" stroke="currentColor" stroke-width="1.5"/><line x1="3" y1="9" x2="19" y2="9" stroke="currentColor" stroke-width="1.2"/></svg>
+      <span>还款</span>
     </button>
     <button class="tab inactive" onclick="switchPage('me', this)">
       <svg viewBox="0 0 22 22" fill="none"><circle cx="11" cy="8" r="4" stroke="currentColor" stroke-width="1.5"/><path d="M3 21C3 16 6.5 14 11 14C15.5 14 19 16 19 21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
@@ -708,30 +978,111 @@ body {
 <!-- Toast -->
 <div class="toast" id="toast"></div>
 
+<!-- 收入分类弹窗 -->
+<div class="gen-modal-overlay" id="inc-cat-modal" onclick="if(event.target===this)closeIncCatModal()">
+  <div class="gen-modal-sheet" onclick="event.stopPropagation()">
+    <div class="gen-modal-title" id="inc-cat-modal-title">添加收入分类</div>
+    <div class="gen-modal-label">分类名称</div>
+    <input type="text" class="gen-modal-input" id="inc-cat-name" placeholder="如：VAS、皮爷咖啡" maxlength="12">
+    <div class="gen-modal-label">选择图标</div>
+    <div class="gen-modal-emoji-row" id="inc-cat-emojis"></div>
+    <div class="gen-modal-label">本月金额（元）</div>
+    <input type="number" class="gen-modal-input" id="inc-cat-amount" placeholder="0.00" min="0" step="0.01" inputmode="decimal">
+    <div class="gen-modal-btns">
+      <button class="gen-modal-btn cancel" onclick="closeIncCatModal()">取消</button>
+      <button class="gen-modal-btn confirm income" onclick="saveIncCat()">确认</button>
+    </div>
+  </div>
+</div>
+
+<!-- 还款项弹窗 -->
+<div class="gen-modal-overlay" id="repay-item-modal" onclick="if(event.target===this)closeRepayModal()">
+  <div class="gen-modal-sheet" onclick="event.stopPropagation()">
+    <div class="gen-modal-title" id="repay-modal-title">添加还款项</div>
+    <div class="gen-modal-label">还款名称</div>
+    <input type="text" class="gen-modal-input" id="repay-name" placeholder="如：花呗、借呗" maxlength="12">
+    <div class="gen-modal-label">债权方</div>
+    <input type="text" class="gen-modal-input" id="repay-creditor" placeholder="如：支付宝、中信银行" maxlength="20">
+    <div class="gen-modal-label">选择图标</div>
+    <div class="gen-modal-emoji-row" id="repay-emojis"></div>
+    <div class="gen-modal-label">待还总额（元）</div>
+    <input type="number" class="gen-modal-input" id="repay-total-amount" placeholder="0.00" min="0" step="0.01" inputmode="decimal">
+    <div class="gen-modal-btns">
+      <button class="gen-modal-btn cancel" onclick="closeRepayModal()">取消</button>
+      <button class="gen-modal-btn confirm repay" onclick="saveRepayItem()">确认</button>
+    </div>
+  </div>
+</div>
+
+<!-- 还款记录弹窗 -->
+<div class="gen-modal-overlay" id="repay-log-modal" onclick="if(event.target===this)closeRepayLogModal()">
+  <div class="gen-modal-sheet" onclick="event.stopPropagation()">
+    <div class="gen-modal-title" id="repay-log-title">记录还款</div>
+    <div class="gen-modal-label">还款金额（元）</div>
+    <input type="number" class="gen-modal-input" id="repay-log-amount" placeholder="0.00" min="0" step="0.01" inputmode="decimal">
+    <div class="gen-modal-label">还款日期</div>
+    <input type="date" class="gen-modal-input" id="repay-log-date">
+    <div class="gen-modal-btns">
+      <button class="gen-modal-btn cancel" onclick="closeRepayLogModal()">取消</button>
+      <button class="gen-modal-btn confirm repay" onclick="saveRepayLog()">确认还款</button>
+    </div>
+  </div>
+</div>
+
 <script>
 /* ==================== 数据管理 ==================== */
 const DEFAULT_CATS = ['餐饮','交通','购物','娱乐','日常','贷款','旅行','医疗','学习','生意','宠物','其他'];
 const CAT_ICONS = { '餐饮':'🍜', '交通':'🚇', '购物':'🛍', '娱乐':'🎮', '日常':'🏠', '贷款':'💳', '旅行':'✈️', '医疗':'🏥', '学习':'📚', '生意':'💼', '宠物':'🐾', '其他':'📌' };
 const CAT_COLORS = { '餐饮':'#FFF3E0', '交通':'#E3F2FD', '购物':'#FCE4EC', '娱乐':'#F3E5F5', '日常':'#E8F5E9', '贷款':'#FFF8E1', '旅行':'#E0F7FA', '医疗':'#FFEBEE', '学习':'#E8EAF6', '生意':'#EFEBE9', '宠物':'#F1F8E9', '其他':'#ECEFF1' };
 
+/* 收入分类数据 */
+const INCOME_PRESET = [
+  { id:'inc_salary', name:'月工资', icon:'💼', preset:true },
+  { id:'inc_fund', name:'月公积金', icon:'🏦', preset:true },
+  { id:'inc_parttime', name:'月兼职收入', icon:'🔨', preset:true },
+];
+const INCOME_EMOJIS = ['💼','🏦','🔨','💰','💵','📈','🎁','🧧','💻','🎨','📝','🛒','📦','🎯','⚡','🌟'];
+
+/* 还款分类数据 */
+const REPAY_PRESET = [
+  { id:'repay_flight', name:'机票还款', creditor:'航空公司', icon:'✈️', total:0, paid:0, preset:true, logs:[] },
+  { id:'repay_boc', name:'中国银行还款', creditor:'中国银行', icon:'🏦', total:0, paid:0, preset:true, logs:[] },
+  { id:'repay_abc', name:'农业银行还款', creditor:'农业银行', icon:'🌾', total:0, paid:0, preset:true, logs:[] },
+];
+const REPAY_EMOJIS = ['✈️','🏦','🌾','💳','🏠','🚗','📱','💰','📊','🔔','📦','🎯','⚡','🔒','📝','💼'];
+
 let records = JSON.parse(localStorage.getItem('gg_records') || '[]');
 let budget = JSON.parse(localStorage.getItem('gg_budget') || '{"total":5000}');
+let incomeCats = JSON.parse(localStorage.getItem('gg_income_cats') || 'null') || JSON.parse(JSON.stringify(INCOME_PRESET));
+let incomeAmounts = JSON.parse(localStorage.getItem('gg_income_amounts') || '{}');
+let repayItems = JSON.parse(localStorage.getItem('gg_repay_items') || 'null') || JSON.parse(JSON.stringify(REPAY_PRESET));
 let modalType = 'expense', editingId = null;
 let modalCat = '餐饮';
+
+/* 收入分类弹窗状态 */
+let incCatEditingId = null, incCatEmoji = '💰';
+/* 还款项弹窗状态 */
+let repayEditingId = null, repayEmoji = '💳', repayLogItemId = null;
 
 function save() {
   localStorage.setItem('gg_records', JSON.stringify(records));
   localStorage.setItem('gg_budget', JSON.stringify(budget));
+  localStorage.setItem('gg_income_cats', JSON.stringify(incomeCats));
+  localStorage.setItem('gg_income_amounts', JSON.stringify(incomeAmounts));
+  localStorage.setItem('gg_repay_items', JSON.stringify(repayItems));
 }
 
 /* ==================== Tab 切换 ==================== */
 function switchPage(page, btn) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => { t.className = 'tab inactive'; });
-  document.getElementById('page-' + page).classList.add('active');
+  const pageEl = document.getElementById('page-' + page);
+  if (pageEl) pageEl.classList.add('active');
   if (btn) btn.className = 'tab active';
   if (page === 'bills') renderBills();
   if (page === 'stats') renderStats();
+  if (page === 'income') renderIncomePage();
+  if (page === 'repay') renderRepayPage();
   renderHome();
 }
 
@@ -754,10 +1105,18 @@ function setModalType(t) { modalType = t; openModal(t); }
 
 function renderModalCats() {
   const h = document.getElementById('modal-cats');
-  modalCat = modalCat || '餐饮';
-  h.innerHTML = DEFAULT_CATS.map(c =>
-    `<button class="modal-cat${modalCat===c?' active':''}" onclick="modalCat='${c}';renderModalCats()">${CAT_ICONS[c]} ${c}</button>`
-  ).join('');
+  if (modalType === 'income') {
+    // 收入时显示收入分类
+    if (!incomeCats.find(c => c.name === modalCat)) modalCat = incomeCats[0]?.name || '月工资';
+    h.innerHTML = incomeCats.map(c =>
+      `<button class="modal-cat${modalCat===c.name?' active':''}" style="${modalCat===c.name?'background:var(--income);border-color:var(--income)':''}" onclick="modalCat='${c.name}';renderModalCats()">${c.icon} ${c.name}</button>`
+    ).join('');
+  } else {
+    modalCat = modalCat || '餐饮';
+    h.innerHTML = DEFAULT_CATS.map(c =>
+      `<button class="modal-cat${modalCat===c?' active':''}" onclick="modalCat='${c}';renderModalCats()">${CAT_ICONS[c]} ${c}</button>`
+    ).join('');
+  }
 }
 
 function submitRecord() {
@@ -1199,17 +1558,347 @@ function showToast(msg) {
   clearTimeout(t._t); t._t = setTimeout(()=>t.classList.remove('show'),1800);
 }
 
-/* ==================== 全局刷新 ==================== */
+/* ==================== 收入管理页 ==================== */
+function renderIncomePage() {
+  const now = new Date();
+  const ym = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0');
+  
+  // 计算本月各分类收入
+  const monthIncRecords = records.filter(r => r.type==='income' && r.date.startsWith(ym));
+  const catMonthAmount = {};
+  monthIncRecords.forEach(r => {
+    catMonthAmount[r.category] = (catMonthAmount[r.category]||0) + r.amount;
+  });
+  // 合并手动设置的金额
+  Object.keys(incomeAmounts).forEach(k => {
+    if (k.startsWith(ym + '_')) {
+      const catId = k.substring(ym.length + 1);
+      const cat = incomeCats.find(c => c.id === catId);
+      if (cat) {
+        catMonthAmount[cat.name] = incomeAmounts[k];
+      }
+    }
+  });
+
+  const totalInc = Object.values(catMonthAmount).reduce((s,v)=>s+v, 0);
+  const customCount = incomeCats.filter(c => !c.preset).length;
+  const srcCount = Object.keys(catMonthAmount).length;
+
+  // 计算月均
+  const allMonths = new Set(records.filter(r=>r.type==='income').map(r=>r.date.substring(0,7)));
+  const avgInc = allMonths.size > 0 ? totalInc / Math.max(1, allMonths.size) : 0;
+
+  document.getElementById('inc-total').textContent = '¥' + totalInc.toFixed(2);
+  document.getElementById('inc-src-count').textContent = srcCount;
+  document.getElementById('inc-avg').textContent = '¥' + avgInc.toFixed(0);
+  document.getElementById('inc-custom-count').textContent = customCount;
+
+  // 渲染分类列表
+  const list = document.getElementById('income-cat-list');
+  list.innerHTML = incomeCats.map(cat => {
+    const amt = catMonthAmount[cat.name] || 0;
+    return `<div class="income-cat-item">
+      <div class="income-cat-icon" style="background:var(--income-light)">${cat.icon}</div>
+      <div class="income-cat-info">
+        <div class="income-cat-name">${cat.name}<span class="income-tag ${cat.preset?'preset':'custom'}">${cat.preset?'预设':'自定义'}</span></div>
+        <div class="income-cat-desc">本月收入 ¥${amt.toFixed(2)}</div>
+      </div>
+      <div class="income-cat-amount">¥${amt.toFixed(0)}</div>
+      <div class="income-cat-actions">
+        <button class="income-cat-edit" onclick="openIncomeCatModal('${cat.id}')">✎</button>
+        ${cat.preset ? '' : `<button class="income-cat-del" onclick="delIncomeCat('${cat.id}')">×</button>`}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openIncomeCatModal(catId) {
+  incCatEditingId = catId || null;
+  const title = catId ? '编辑收入分类' : '添加收入分类';
+  document.getElementById('inc-cat-modal-title').textContent = title;
+  
+  if (catId) {
+    const cat = incomeCats.find(c => c.id === catId);
+    if (cat) {
+      document.getElementById('inc-cat-name').value = cat.name;
+      incCatEmoji = cat.icon;
+      const now = new Date();
+      const ym = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0');
+      const amtKey = ym + '_' + catId;
+      document.getElementById('inc-cat-amount').value = incomeAmounts[amtKey] || '';
+    }
+  } else {
+    document.getElementById('inc-cat-name').value = '';
+    document.getElementById('inc-cat-amount').value = '';
+    incCatEmoji = '💰';
+  }
+  
+  // 渲染 emoji 选择
+  document.getElementById('inc-cat-emojis').innerHTML = INCOME_EMOJIS.map(e =>
+    `<button class="gen-emoji-btn${incCatEmoji===e?' selected':''}" onclick="incCatEmoji='${e}';document.querySelectorAll('#inc-cat-emojis .gen-emoji-btn').forEach(b=>b.classList.remove('selected'));this.classList.add('selected')">${e}</button>`
+  ).join('');
+  
+  document.getElementById('inc-cat-modal').classList.add('show');
+}
+
+function closeIncCatModal() {
+  incCatEditingId = null;
+  document.getElementById('inc-cat-modal').classList.remove('show');
+}
+
+function saveIncCat() {
+  const name = document.getElementById('inc-cat-name').value.trim();
+  const amount = parseFloat(document.getElementById('inc-cat-amount').value) || 0;
+  if (!name) { showToast('请输入分类名称'); return; }
+  
+  const now = new Date();
+  const ym = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0');
+  
+  if (incCatEditingId) {
+    const cat = incomeCats.find(c => c.id === incCatEditingId);
+    if (cat) {
+      cat.name = name;
+      cat.icon = incCatEmoji;
+    }
+  } else {
+    const newId = 'inc_custom_' + Date.now();
+    incomeCats.push({ id:newId, name, icon:incCatEmoji, preset:false });
+    incCatEditingId = newId;
+  }
+  
+  // 保存金额
+  if (amount > 0) {
+    incomeAmounts[ym + '_' + incCatEditingId] = amount;
+  } else {
+    delete incomeAmounts[ym + '_' + incCatEditingId];
+  }
+  
+  save();
+  closeIncCatModal();
+  showToast(incCatEditingId ? '分类已更新 ✓' : '分类已添加 ✓');
+  renderIncomePage();
+}
+
+function delIncomeCat(catId) {
+  if (!confirm('确定删除这个收入分类吗？')) return;
+  incomeCats = incomeCats.filter(c => c.id !== catId);
+  save();
+  renderIncomePage();
+  showToast('已删除');
+}
+
+/* ==================== 还款管理页 ==================== */
+function renderRepayPage() {
+  let totalDebt = 0, totalPaid = 0;
+  repayItems.forEach(item => {
+    totalDebt += item.total;
+    totalPaid += item.paid;
+  });
+  const totalRemain = totalDebt - totalPaid;
+  const pct = totalDebt > 0 ? Math.round(totalPaid / totalDebt * 100) : 0;
+
+  document.getElementById('repay-total').textContent = '¥' + totalRemain.toFixed(2);
+  document.getElementById('repay-paid').textContent = '¥' + totalPaid.toFixed(0);
+  document.getElementById('repay-remain').textContent = '¥' + totalRemain.toFixed(0);
+  document.getElementById('repay-count').textContent = repayItems.length;
+  document.getElementById('repay-progress').style.width = pct + '%';
+
+  const list = document.getElementById('repay-item-list');
+  if (repayItems.length === 0) {
+    list.innerHTML = '<div class="empty-state"><div class="empty-state-emoji">📋</div><div class="empty-state-text">还没有还款项，点击上方添加</div></div>';
+    return;
+  }
+
+  list.innerHTML = repayItems.map(item => {
+    const remain = item.total - item.paid;
+    const itemPct = item.total > 0 ? Math.round(item.paid / item.total * 100) : 0;
+    const isDone = remain <= 0 && item.total > 0;
+    let logsHTML = '';
+    if (item.logs && item.logs.length > 0) {
+      logsHTML = '<div class="repay-log-list">' + item.logs.map(log =>
+        `<div class="repay-log-item">
+          <span class="repay-log-date">${log.date}</span>
+          <span class="repay-log-amount">-¥${log.amount.toFixed(2)}</span>
+          <button class="repay-log-del" onclick="event.stopPropagation();delRepayLog('${item.id}','${log.id}')">×</button>
+        </div>`
+      ).join('') + '</div>';
+    }
+    return `<div class="repay-item" onclick="toggleRepayLogs('${item.id}')">
+      <div class="repay-item-header">
+        <div class="repay-item-icon">${item.icon}</div>
+        <div class="repay-item-name">${item.name}<span class="income-tag ${item.preset?'preset':'custom'}">${item.preset?'预设':'自定义'}</span>
+          <div class="repay-item-creditor">债权方：${item.creditor}</div>
+        </div>
+        <div class="repay-item-actions">
+          <button class="repay-act-log" onclick="event.stopPropagation();openRepayLogModal('${item.id}')">+</button>
+          <button class="repay-act-edit" onclick="event.stopPropagation();openRepayItemModal('${item.id}')">✎</button>
+          ${item.preset ? '' : `<button class="repay-act-del" onclick="event.stopPropagation();delRepayItem('${item.id}')">×</button>`}
+        </div>
+      </div>
+      <div class="repay-progress-bg">
+        <div class="repay-progress-bar-fill" style="width:${itemPct}%"></div>
+      </div>
+      <div class="repay-item-detail">
+        <span class="repay-detail-paid">已还 ¥${item.paid.toFixed(0)}</span>
+        <span class="repay-detail-total">总额 ¥${item.total.toFixed(0)}</span>
+        <span class="repay-detail-remain">${isDone?'✅ 已还清':'剩余 ¥'+remain.toFixed(0)}</span>
+      </div>
+      ${logsHTML}
+    </div>`;
+  }).join('');
+}
+
+function toggleRepayLogs(itemId) {
+  // 可选：展开/折叠还款记录
+}
+
+function openRepayItemModal(itemId) {
+  repayEditingId = itemId || null;
+  const title = itemId ? '编辑还款项' : '添加还款项';
+  document.getElementById('repay-modal-title').textContent = title;
+  
+  if (itemId) {
+    const item = repayItems.find(i => i.id === itemId);
+    if (item) {
+      document.getElementById('repay-name').value = item.name;
+      document.getElementById('repay-creditor').value = item.creditor;
+      document.getElementById('repay-total-amount').value = item.total || '';
+      repayEmoji = item.icon;
+    }
+  } else {
+    document.getElementById('repay-name').value = '';
+    document.getElementById('repay-creditor').value = '';
+    document.getElementById('repay-total-amount').value = '';
+    repayEmoji = '💳';
+  }
+  
+  document.getElementById('repay-emojis').innerHTML = REPAY_EMOJIS.map(e =>
+    `<button class="gen-emoji-btn${repayEmoji===e?' selected':''}" onclick="repayEmoji='${e}';document.querySelectorAll('#repay-emojis .gen-emoji-btn').forEach(b=>b.classList.remove('selected'));this.classList.add('selected')">${e}</button>`
+  ).join('');
+  
+  document.getElementById('repay-item-modal').classList.add('show');
+}
+
+function closeRepayModal() {
+  repayEditingId = null;
+  document.getElementById('repay-item-modal').classList.remove('show');
+}
+
+function saveRepayItem() {
+  const name = document.getElementById('repay-name').value.trim();
+  const creditor = document.getElementById('repay-creditor').value.trim() || '未指定';
+  const total = parseFloat(document.getElementById('repay-total-amount').value) || 0;
+  if (!name) { showToast('请输入还款名称'); return; }
+  
+  if (repayEditingId) {
+    const item = repayItems.find(i => i.id === repayEditingId);
+    if (item) {
+      item.name = name;
+      item.creditor = creditor;
+      item.icon = repayEmoji;
+      item.total = total;
+    }
+  } else {
+    repayItems.push({
+      id: 'repay_custom_' + Date.now(),
+      name, creditor, icon: repayEmoji,
+      total, paid: 0, preset: false, logs: []
+    });
+  }
+  
+  save();
+  closeRepayModal();
+  showToast(repayEditingId ? '还款项已更新 ✓' : '还款项已添加 ✓');
+  renderRepayPage();
+}
+
+function delRepayItem(itemId) {
+  if (!confirm('确定删除这个还款项吗？')) return;
+  repayItems = repayItems.filter(i => i.id !== itemId);
+  save();
+  renderRepayPage();
+  showToast('已删除');
+}
+
+function openRepayLogModal(itemId) {
+  repayLogItemId = itemId;
+  const item = repayItems.find(i => i.id === itemId);
+  if (!item) return;
+  document.getElementById('repay-log-title').textContent = '记录还款 — ' + item.name;
+  document.getElementById('repay-log-amount').value = '';
+  document.getElementById('repay-log-date').value = new Date().toISOString().split('T')[0];
+  document.getElementById('repay-log-modal').classList.add('show');
+}
+
+function closeRepayLogModal() {
+  repayLogItemId = null;
+  document.getElementById('repay-log-modal').classList.remove('show');
+}
+
+function saveRepayLog() {
+  const amount = parseFloat(document.getElementById('repay-log-amount').value);
+  const date = document.getElementById('repay-log-date').value;
+  if (!amount || amount <= 0) { showToast('请输入还款金额'); return; }
+  if (!date) { showToast('请选择日期'); return; }
+  
+  const item = repayItems.find(i => i.id === repayLogItemId);
+  if (!item) { showToast('还款项不存在'); return; }
+  
+  const logId = 'log_' + Date.now();
+  if (!item.logs) item.logs = [];
+  item.logs.unshift({ id: logId, amount, date });
+  item.paid = (item.paid || 0) + amount;
+  
+  // 同时在账单中记录一笔还款支出
+  records.unshift({
+    id: Date.now(),
+    type: 'expense',
+    category: '贷款',
+    name: item.name + '还款',
+    amount: amount,
+    date: date,
+    time: Date.now()
+  });
+  
+  save();
+  closeRepayLogModal();
+  showToast('还款已记录 ✓');
+  renderRepayPage();
+  renderAll();
+}
+
+function delRepayLog(itemId, logId) {
+  const item = repayItems.find(i => i.id === itemId);
+  if (!item || !item.logs) return;
+  const log = item.logs.find(l => l.id === logId);
+  if (!log) return;
+  if (!confirm('删除这条还款记录吗？')) return;
+  item.paid -= log.amount;
+  if (item.paid < 0) item.paid = 0;
+  item.logs = item.logs.filter(l => l.id !== logId);
+  save();
+  renderRepayPage();
+  showToast('已删除');
+}
+
+
 function renderAll() {
   renderHome();
   const activePage = document.querySelector('.page.active');
   if (activePage && activePage.id === 'page-bills') renderBills();
   if (activePage && activePage.id === 'page-stats') renderStats();
+  if (activePage && activePage.id === 'page-income') renderIncomePage();
+  if (activePage && activePage.id === 'page-repay') renderRepayPage();
 }
 
 /* ==================== 键盘事件 ==================== */
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeModal();
+  if (e.key === 'Escape') {
+    closeModal();
+    closeIncCatModal();
+    closeRepayModal();
+    closeRepayLogModal();
+  }
   if (e.key === 'n' && e.ctrlKey) { e.preventDefault(); openModal('expense'); }
 });
 
@@ -1217,18 +1906,39 @@ document.addEventListener('keydown', e => {
 renderAll();
 renderBills();
 renderStats();
+renderIncomePage();
+renderRepayPage();
 
-// 如果没有数据，加一条示例记录
+// 如果没有数据，加示例记录
 if (records.length === 0) {
   const demo = [
-    { id: Date.now()-600000, type:'income', category:'工资', name:'月工资', amount:15000, date:'2026-08-10', time: Date.now()-600000 },
+    { id: Date.now()-600000, type:'income', category:'月工资', name:'8月工资', amount:15000, date:'2026-08-10', time: Date.now()-600000 },
+    { id: Date.now()-550000, type:'income', category:'月公积金', name:'公积金入账', amount:2400, date:'2026-08-10', time: Date.now()-550000 },
+    { id: Date.now()-500000, type:'income', category:'月兼职收入', name:'兼职设计费', amount:3500, date:'2026-08-09', time: Date.now()-500000 },
+    { id: Date.now()-400000, type:'income', category:'VAS', name:'VAS收入', amount:800, date:'2026-08-08', time: Date.now()-400000 },
     { id: Date.now()-300000, type:'expense', category:'餐饮', name:'皮爷咖啡', amount:38, date:'2026-08-10', time: Date.now()-300000 },
-    { id: Date.now()-200000, type:'expense', category:'贷款', name:'中国银行还款', amount:2000, date:'2026-08-09', time: Date.now()-200000 },
-    { id: Date.now()-100000, type:'expense', category:'餐饮', name:'买菜', amount:128.5, date:'2026-08-08', time: Date.now()-100000 },
+    { id: Date.now()-200000, type:'expense', category:'餐饮', name:'买菜', amount:128.5, date:'2026-08-08', time: Date.now()-200000 },
+    { id: Date.now()-100000, type:'expense', category:'交通', name:'地铁充值', amount:50, date:'2026-08-07', time: Date.now()-100000 },
   ];
   records = demo;
+  
+  // 添加自定义收入分类示例
+  incomeCats.push({ id:'inc_vas', name:'VAS', icon:'⚡', preset:false });
+  
+  // 设置还款项数据
+  repayItems[0].total = 3200; // 机票还款
+  repayItems[0].paid = 1000;
+  repayItems[0].logs = [{ id:'log_demo1', amount:1000, date:'2026-08-05' }];
+  repayItems[1].total = 8000; // 中国银行
+  repayItems[1].paid = 2000;
+  repayItems[1].logs = [{ id:'log_demo2', amount:2000, date:'2026-08-09' }];
+  repayItems[2].total = 5000; // 农业银行
+  repayItems[2].paid = 0;
+  
   save();
   renderAll();
+  renderIncomePage();
+  renderRepayPage();
 }
 </script>
 </body>
