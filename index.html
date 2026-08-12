@@ -263,7 +263,7 @@ body {
 
 .cat-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 8px;
 }
 .cat-item {
@@ -569,6 +569,8 @@ body {
   font-family: inherit;
 }
 .modal-cat.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+.modal-cats.grid-cats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.modal-cats.grid-cats .modal-cat { padding: 8px 2px; text-align: center; font-size: 12px; white-space: nowrap; }
 
 .modal-btn {
   width: 100%; padding: 14px;
@@ -779,6 +781,44 @@ body {
   color: var(--text-muted); font-size: 12px; font-family: inherit;
 }
 .repay-log-del:hover { color: var(--danger); }
+
+/* ===== 债权方同名汇总分组 ===== */
+.repay-group {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; margin-bottom: 10px; overflow: hidden;
+}
+.repay-group-header {
+  padding: 14px 16px; cursor: pointer; transition: background 0.2s;
+}
+.repay-group-header:active { background: var(--bg); }
+.repay-group-top {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 8px;
+}
+.repay-group-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0; background: var(--repay-light);
+}
+.repay-group-title { flex: 1; font-size: 14px; font-weight: 700; color: var(--text); }
+.repay-group-count {
+  font-size: 11px; color: var(--repay); background: var(--repay-light);
+  border-radius: 10px; padding: 2px 8px; font-weight: 600;
+}
+.repay-group-arrow {
+  color: var(--text-muted); font-size: 12px; transition: transform 0.25s;
+}
+.repay-group.collapsed .repay-group-arrow { transform: rotate(-90deg); }
+.repay-group-summary {
+  display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 8px;
+}
+.repay-group-summary .paid { color: var(--success); font-weight: 600; }
+.repay-group-summary .remain { color: var(--danger); font-weight: 600; }
+.repay-group-body {
+  padding: 0 12px 12px; border-top: 1px dashed var(--border);
+  padding-top: 10px; display: flex; flex-direction: column; gap: 10px;
+}
+.repay-group.collapsed .repay-group-body { display: none; }
+.repay-group-body .repay-item { margin-bottom: 0; border-color: var(--border); background: var(--bg); }
 
 /* ==================== 通用弹窗（分类/还款项添加） ==================== */
 .gen-modal-overlay {
@@ -1379,9 +1419,9 @@ body {
 
 <script>
 /* ==================== 数据管理 ==================== */
-const DEFAULT_CATS = ['餐饮','交通','购物','娱乐','日常','贷款','旅行','医疗','学习','生意','宠物','其他'];
-const CAT_ICONS = { '餐饮':'🍜', '交通':'🚇', '购物':'🛍', '娱乐':'🎮', '日常':'🏠', '贷款':'💳', '旅行':'✈️', '医疗':'🏥', '学习':'📚', '生意':'💼', '宠物':'🐾', '其他':'📌' };
-const CAT_COLORS = { '餐饮':'#FFF3E0', '交通':'#E3F2FD', '购物':'#FCE4EC', '娱乐':'#F3E5F5', '日常':'#E8F5E9', '贷款':'#FFF8E1', '旅行':'#E0F7FA', '医疗':'#FFEBEE', '学习':'#E8EAF6', '生意':'#EFEBE9', '宠物':'#F1F8E9', '其他':'#ECEFF1' };
+const DEFAULT_CATS = ['美食','奶茶','电影','演出','服装','医疗','话费','房租','生活用品','其他'];
+const CAT_ICONS = { '美食':'🍜', '奶茶':'🧋', '电影':'🎬', '演出':'🎭', '服装':'👕', '医疗':'💊', '话费':'📱', '房租':'🏠', '生活用品':'🧴', '其他':'📌', '餐饮':'🍜', '交通':'🚇', '购物':'🛍', '娱乐':'🎮', '日常':'🏠', '贷款':'💳', '旅行':'✈️', '学习':'📚', '生意':'💼', '宠物':'🐾' };
+const CAT_COLORS = { '美食':'#FFF3E0', '奶茶':'#FCE4EC', '电影':'#F3E5F5', '演出':'#EDE7F6', '服装':'#E3F2FD', '医疗':'#FFEBEE', '话费':'#E0F7FA', '房租':'#EFEBE9', '生活用品':'#E8F5E9', '其他':'#ECEFF1', '餐饮':'#FFF3E0', '交通':'#E3F2FD', '购物':'#FCE4EC', '娱乐':'#F3E5F5', '日常':'#E8F5E9', '贷款':'#FFF8E1', '旅行':'#E0F7FA', '学习':'#E8EAF6', '生意':'#EFEBE9', '宠物':'#F1F8E9' };
 
 /* 收入分类数据 */
 const INCOME_PRESET = [
@@ -1405,7 +1445,7 @@ let incomeCats = JSON.parse(localStorage.getItem('gg_income_cats') || 'null') ||
 let incomeAmounts = JSON.parse(localStorage.getItem('gg_income_amounts') || '{}');
 let repayItems = JSON.parse(localStorage.getItem('gg_repay_items') || 'null') || JSON.parse(JSON.stringify(REPAY_PRESET));
 let modalType = 'expense', editingId = null;
-let modalCat = '餐饮';
+let modalCat = '美食';
 
 /* 收入分类弹窗状态 */
 let incCatEditingId = null, incCatEmoji = '💰';
@@ -1444,7 +1484,7 @@ function openModal(type, record) {
   document.getElementById('modal-type-income').className = 'modal-type income' + (modalType==='income'?' active':'');
   document.getElementById('modal-amount').value = record ? record.amount : '';
   document.getElementById('modal-name').value = record ? record.name : '';
-  modalCat = record ? record.category : (modalCat || '餐饮');
+  modalCat = record ? record.category : (modalCat || '美食');
   document.getElementById('modal-overlay').classList.add('show');
   if (!record) document.getElementById('modal-amount').focus();
   renderModalCats();
@@ -1459,14 +1499,19 @@ function setModalType(t) { modalType = t; openModal(t); }
 function renderModalCats() {
   const h = document.getElementById('modal-cats');
   if (modalType === 'income') {
+    h.classList.remove('grid-cats');
     // 收入时显示收入分类
     if (!incomeCats.find(c => c.name === modalCat)) modalCat = incomeCats[0]?.name || '月工资';
     h.innerHTML = incomeCats.map(c =>
       `<button class="modal-cat${modalCat===c.name?' active':''}" style="${modalCat===c.name?'background:var(--income);border-color:var(--income)':''}" onclick="modalCat='${c.name}';renderModalCats()">${c.icon} ${c.name}</button>`
     ).join('');
   } else {
-    modalCat = modalCat || '餐饮';
-    h.innerHTML = DEFAULT_CATS.map(c =>
+    h.classList.add('grid-cats');
+    if (!modalCat) modalCat = '美食';
+    // 历史记录可能是旧分类，临时加入候选列表以便高亮编辑
+    let cats = DEFAULT_CATS;
+    if (!DEFAULT_CATS.includes(modalCat)) cats = [...DEFAULT_CATS, modalCat];
+    h.innerHTML = cats.map(c =>
       `<button class="modal-cat${modalCat===c?' active':''}" onclick="modalCat='${c}';renderModalCats()">${CAT_ICONS[c]} ${c}</button>`
     ).join('');
   }
@@ -1891,7 +1936,7 @@ function editBudget() {
 /* ==================== 拍小票 · OCR 自动记账 ==================== */
 let receiptImageData = null;   // 压缩后的小票 base64
 let pendingReceipt = null;     // 待写入记录的小票图
-let receiptCat = '餐饮';
+let receiptCat = '美食';
 let tesseractLoading = null;
 
 /* 本地日期格式化（避免 UTC 时区偏移一天） */
@@ -2044,14 +2089,17 @@ function extractReceiptData(text) {
     }
   }
   // 分类：关键词匹配
-  let cat = '餐饮';
+  let cat = '美食';
   const kw = [
-    ['餐饮', ['咖啡', '奶茶', '餐厅', '饭店', '面馆', '小吃', '外卖', '肯德基', '麦当劳', '瑞幸', '星巴克', '火锅', '茶']],
-    ['购物', ['超市', '便利店', '百货', '商场', '优衣库', 'zara', '购物', '商行']],
-    ['交通', ['地铁', '公交', '出租', '滴滴', '加油', '停车', '高铁', '机票', '出行']],
-    ['医疗', ['药', '医院', '诊所', '挂号']],
-    ['娱乐', ['电影', '游戏', 'ktv', '酒吧', '足疗']],
-    ['日常', ['水电', '燃气', '物业', '宽带', '房租', '话费', '移动', '联通', '电信', '超市']],
+    ['美食', ['餐厅', '饭店', '面馆', '小吃', '外卖', '火锅', '肯德基', '麦当劳', '汉堡', '烧烤', '早餐', '午餐', '晚餐', '面包', '蛋糕', '饭', '面']],
+    ['奶茶', ['奶茶', '咖啡', '瑞幸', '星巴克', '茶百道', '蜜雪', '喜茶', '奈雪', '一点点', 'coco', '益禾堂', '柠檬茶']],
+    ['电影', ['电影', '影院', '淘票票', '猫眼']],
+    ['演出', ['演出', '演唱', '音乐节', '剧场', '话剧', '展览', '门票', 'livehouse']],
+    ['服装', ['服装', '衣服', '优衣库', 'zara', '鞋', '袜子', '服饰']],
+    ['医疗', ['药', '医院', '诊所', '挂号', '体检']],
+    ['话费', ['话费', '移动', '联通', '电信', '充值', '流量']],
+    ['房租', ['房租', '租金', '物业', '水费', '电费', '燃气', '水电']],
+    ['生活用品', ['超市', '便利店', '百货', '永辉', '沃尔玛', '生活', '纸巾', '洗护']],
   ];
   for (const [c, keys] of kw) {
     if (keys.some(k => text.toLowerCase().includes(k))) { cat = c; break; }
@@ -2350,47 +2398,95 @@ function renderRepayPage() {
     return;
   }
 
-  list.innerHTML = repayItems.map(item => {
-    const remain = item.total - item.paid;
-    const itemPct = item.total > 0 ? Math.round(item.paid / item.total * 100) : 0;
-    const isDone = remain <= 0 && item.total > 0;
-    let logsHTML = '';
-    if (item.logs && item.logs.length > 0) {
-      logsHTML = '<div class="repay-log-list">' + item.logs.map(log =>
-        `<div class="repay-log-item">
-          <span class="repay-log-date">${log.date}</span>
-          <span class="repay-log-amount">-¥${log.amount.toFixed(2)}</span>
-          <button class="repay-log-del" onclick="event.stopPropagation();delRepayLog('${item.id}','${log.id}')">×</button>
-        </div>`
-      ).join('') + '</div>';
-    }
-    return `<div class="repay-item" onclick="toggleRepayLogs('${item.id}')">
-      <div class="repay-item-header">
-        <div class="repay-item-icon">${item.icon}</div>
-        <div class="repay-item-name">${item.name}<span class="income-tag ${item.preset?'preset':'custom'}">${item.preset?'预设':'自定义'}</span>
-          <div class="repay-item-creditor">债权方：${item.creditor}</div>
+  // 按债权方同名分组（≥2项时汇总显示）
+  const groups = {};
+  repayItems.forEach(item => {
+    const key = (item.creditor || '未指定').trim();
+    (groups[key] = groups[key] || []).push(item);
+  });
+  const groupKeys = Object.keys(groups);
+  const hasDupe = groupKeys.some(k => groups[k].length > 1);
+
+  if (hasDupe) {
+    list.innerHTML = groupKeys.map(creditor => {
+      const items = groups[creditor];
+      if (items.length === 1) return repayItemCard(items[0]);
+      const total = items.reduce((s, i) => s + (i.total || 0), 0);
+      const paid = items.reduce((s, i) => s + (i.paid || 0), 0);
+      const remain = total - paid;
+      const pct = total > 0 ? Math.round(paid / total * 100) : 0;
+      const icon = items[0].icon;
+      return `<div class="repay-group" id="repay-group-${encodeURIComponent(creditor)}">
+        <div class="repay-group-header" onclick="toggleRepayGroup('${creditor.replace(/'/g, "\\'")}')">
+          <div class="repay-group-top">
+            <div class="repay-group-icon">${icon}</div>
+            <div class="repay-group-title">${creditor}</div>
+            <span class="repay-group-count">${items.length} 笔</span>
+            <span class="repay-group-arrow">▾</span>
+          </div>
+          <div class="repay-group-summary">
+            <span class="paid">已还 ¥${paid.toFixed(0)}</span>
+            <span>总额 ¥${total.toFixed(0)}</span>
+            <span class="remain">${remain <= 0 ? '✅ 已还清' : '剩余 ¥' + remain.toFixed(0)}</span>
+          </div>
+          <div class="repay-progress-bg">
+            <div class="repay-progress-bar-fill" style="width:${pct}%"></div>
+          </div>
         </div>
-        <div class="repay-item-actions">
-          <button class="repay-act-log" onclick="event.stopPropagation();openRepayLogModal('${item.id}')">+</button>
-          <button class="repay-act-edit" onclick="event.stopPropagation();openRepayItemModal('${item.id}')">✎</button>
-          ${item.preset ? '' : `<button class="repay-act-del" onclick="event.stopPropagation();delRepayItem('${item.id}')">×</button>`}
-        </div>
+        <div class="repay-group-body">${items.map(repayItemCard).join('')}</div>
+      </div>`;
+    }).join('');
+  } else {
+    list.innerHTML = repayItems.map(repayItemCard).join('');
+  }
+}
+
+function repayItemCard(item) {
+  const remain = item.total - item.paid;
+  const itemPct = item.total > 0 ? Math.round(item.paid / item.total * 100) : 0;
+  const isDone = remain <= 0 && item.total > 0;
+  let logsHTML = '';
+  if (item.logs && item.logs.length > 0) {
+    logsHTML = '<div class="repay-log-list repay-logs-' + item.id + '" style="display:none">' + item.logs.map(log =>
+      `<div class="repay-log-item">
+        <span class="repay-log-date">${log.date}</span>
+        <span class="repay-log-amount">-¥${log.amount.toFixed(2)}</span>
+        <button class="repay-log-del" onclick="event.stopPropagation();delRepayLog('${item.id}','${log.id}')">×</button>
+      </div>`
+    ).join('') + '</div>';
+  }
+  return `<div class="repay-item" onclick="toggleRepayLogs('${item.id}')">
+    <div class="repay-item-header">
+      <div class="repay-item-icon">${item.icon}</div>
+      <div class="repay-item-name">${item.name}<span class="income-tag ${item.preset?'preset':'custom'}">${item.preset?'预设':'自定义'}</span>
+        <div class="repay-item-creditor">债权方：${item.creditor}</div>
       </div>
-      <div class="repay-progress-bg">
-        <div class="repay-progress-bar-fill" style="width:${itemPct}%"></div>
+      <div class="repay-item-actions">
+        <button class="repay-act-log" onclick="event.stopPropagation();openRepayLogModal('${item.id}')">+</button>
+        <button class="repay-act-edit" onclick="event.stopPropagation();openRepayItemModal('${item.id}')">✎</button>
+        ${item.preset ? '' : `<button class="repay-act-del" onclick="event.stopPropagation();delRepayItem('${item.id}')">×</button>`}
       </div>
-      <div class="repay-item-detail">
-        <span class="repay-detail-paid">已还 ¥${item.paid.toFixed(0)}</span>
-        <span class="repay-detail-total">总额 ¥${item.total.toFixed(0)}</span>
-        <span class="repay-detail-remain">${isDone?'✅ 已还清':'剩余 ¥'+remain.toFixed(0)}</span>
-      </div>
-      ${logsHTML}
-    </div>`;
-  }).join('');
+    </div>
+    <div class="repay-progress-bg">
+      <div class="repay-progress-bar-fill" style="width:${itemPct}%"></div>
+    </div>
+    <div class="repay-item-detail">
+      <span class="repay-detail-paid">已还 ¥${item.paid.toFixed(0)}</span>
+      <span class="repay-detail-total">总额 ¥${item.total.toFixed(0)}</span>
+      <span class="repay-detail-remain">${isDone?'✅ 已还清':'剩余 ¥'+remain.toFixed(0)}</span>
+    </div>
+    ${logsHTML}
+  </div>`;
+}
+
+function toggleRepayGroup(creditor) {
+  const el = document.getElementById('repay-group-' + encodeURIComponent(creditor));
+  if (el) el.classList.toggle('collapsed');
 }
 
 function toggleRepayLogs(itemId) {
-  // 可选：展开/折叠还款记录
+  const logs = document.querySelector('.repay-logs-' + itemId);
+  if (logs) logs.style.display = logs.style.display === 'none' ? 'flex' : 'none';
 }
 
 function openRepayItemModal(itemId) {
@@ -2494,7 +2590,7 @@ function saveRepayLog() {
   records.unshift({
     id: Date.now(),
     type: 'expense',
-    category: '贷款',
+    category: '其他',
     name: item.name + '还款',
     amount: amount,
     date: date,
@@ -2631,8 +2727,8 @@ function getPeriodRange(p) {
 function catNote(cat, amt, n) {
   const avg = amt/n;
   let s = n + ' 笔 · 单笔均 ¥' + avg.toFixed(0);
-  if (cat==='餐饮') s += ' · 含咖啡/外卖可细分';
-  if (cat==='购物'||cat==='娱乐') s += ' · ⚠️ 关注非必要支出';
+  if (cat==='美食'||cat==='奶茶') s += ' · 含外卖/饮品可细分';
+  if (['奶茶','电影','演出','服装'].includes(cat)) s += ' · ⚠️ 关注非必要支出';
   return s;
 }
 
@@ -2693,7 +2789,7 @@ function renderAnalysisPage() {
     let note = '占' + periodLabel + '支出 ' + pct + '%';
     if (r.amount >= bigThreshold && avgDaily>0) note += ' · ⚠️ 超日均 2 倍';
     if (pct >= 20) note += ' · 🔍 单笔大额';
-    if (['购物','娱乐','其他'].includes(r.category)) note += ' · 💡 非必要消费';
+    if (['奶茶','电影','演出','服装','其他'].includes(r.category)) note += ' · 💡 非必要消费';
     html += `<div class="bill-item">
       <div class="bill-left">
         <div class="bill-icon" style="background:${CAT_COLORS[r.category]||'#ECEFF1'}">${CAT_ICONS[r.category]||'📌'}</div>
@@ -2781,15 +2877,17 @@ function renderExpenseAnalyst() {
   const catMap = {};
   monthExp.forEach(r => { catMap[r.category] = (catMap[r.category]||0)+r.amount; });
   const sorted = Object.entries(catMap).sort((a,b)=>b[1]-a[1]);
-  const wastePool = sorted.filter(([c])=>['购物','娱乐','其他'].includes(c));
-  const others = sorted.filter(([c])=>!['购物','娱乐','其他'].includes(c));
+  const wastePool = sorted.filter(([c])=>['奶茶','电影','演出','服装','其他'].includes(c));
+  const others = sorted.filter(([c])=>!['奶茶','电影','演出','服装','其他'].includes(c));
   const top3 = [...wastePool, ...others].slice(0,3);
 
   const wasteDescs = {
-    '购物':'冲动消费、凑单满减是主要来源',
-    '娱乐':'游戏充值、影音会员、线下娱乐',
+    '奶茶':'高频小额饮品支出，一天一杯一年超千元',
+    '电影':'影票、会员等娱乐消费，可寻找替代方案',
+    '演出':'演出展览门票，冲动消费高发区',
+    '服装':'折扣营销驱动的冲动购物',
     '其他':'零散小额消费容易无感累积',
-    '餐饮':'咖啡奶茶外卖的隐性高频支出',
+    '美食':'外卖、咖啡的隐性高频支出',
   };
 
   let html = '';
