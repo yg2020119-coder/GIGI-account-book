@@ -1732,7 +1732,7 @@ function renderModalCats() {
     let cats = DEFAULT_CATS;
     if (!DEFAULT_CATS.includes(modalCat)) cats = [...DEFAULT_CATS, modalCat];
     h.innerHTML = cats.map(c =>
-      `<button class="modal-cat${modalCat===c?' active':''}" onclick="modalCat='${c}';renderModalCats()">${CAT_ICONS[c]} ${c}</button>`
+      `<button class="modal-cat${modalCat===c?' active':''}" onclick="modalCat='${c}';renderModalCats()">${CAT_ICONS[c]||'💰'} ${c}</button>`
     ).join('');
   }
   // 收支均显示账户选择
@@ -1758,11 +1758,22 @@ function submitRecord() {
   if (editingId) {
     const idx = records.findIndex(r => r.id === editingId);
     if (idx !== -1) {
+      const old = records[idx];
+      // 回滚旧余额
+      if (old.account) {
+        const w = wallet.find(x => x.name === old.account);
+        if (w) w.amount = (w.amount || 0) + (old.type==='expense' ? old.amount : -old.amount);
+      }
       records[idx].type = modalType;
       records[idx].category = modalCat;
       records[idx].name = name;
       records[idx].amount = amount;
       records[idx].account = modalAccount || null;
+      // 应用新余额
+      if (modalAccount) {
+        const w = wallet.find(x => x.name === modalAccount);
+        if (w) w.amount = (w.amount || 0) + (modalType==='expense' ? -amount : amount);
+      }
     }
     editingId = null;
   } else {
@@ -1777,6 +1788,11 @@ function submitRecord() {
       account: modalAccount || null,
       receipt: pendingReceipt || null
     });
+    // 新增：自动增减钱包余额
+    if (modalAccount) {
+      const w = wallet.find(x => x.name === modalAccount);
+      if (w) w.amount = (w.amount || 0) + (modalType==='expense' ? -amount : amount);
+    }
   }
   pendingReceipt = null;
   save();
@@ -1787,6 +1803,11 @@ function submitRecord() {
 
 function deleteRecord(id) {
   if (!confirm('确定删除这条记录吗？')) return;
+  const old = records.find(r => r.id === id);
+  if (old && old.account) {
+    const w = wallet.find(x => x.name === old.account);
+    if (w) w.amount = (w.amount || 0) + (old.type==='expense' ? old.amount : -old.amount);
+  }
   records = records.filter(r => r.id !== id);
   save();
   renderAll();
@@ -1865,7 +1886,7 @@ function renderHome() {
   // Category grid
   document.getElementById('cat-grid').innerHTML = DEFAULT_CATS.map(c =>
     `<div class="cat-item" onclick="quickAdd('${c}','expense')">
-      <div class="cat-icon" style="background:${CAT_COLORS[c]}">${CAT_ICONS[c]}</div>
+      <div class="cat-icon" style="background:${CAT_COLORS[c]}">${CAT_ICONS[c]||'💰'}</div>
       <span class="cat-name">${c}</span>
     </div>`
   ).join('');
@@ -1934,7 +1955,7 @@ function renderBills(filter) {
   renderBalanceOverview();
 
   filters.innerHTML = allCats.map(c =>
-    `<button class="filter-chip${(filter||'全部')===c?' active':''}" onclick="renderBills('${c}')">${c==='全部'?'全部':c==='小票'?'🧾 小票':CAT_ICONS[c]+' '+c}</button>`
+    `<button class="filter-chip${(filter||'全部')===c?' active':''}" onclick="renderBills('${c}')">${c==='全部'?'全部':c==='小票'?'🧾 小票':(CAT_ICONS[c]||'💰')+' '+c}</button>`
   ).join('');
 
   let filtered;
@@ -2576,7 +2597,7 @@ function copyReceiptJSON() {
 
 function renderReceiptCats() {
   document.getElementById('receipt-cats').innerHTML = DEFAULT_CATS.map(c =>
-    `<button class="modal-cat${receiptCat===c?' active':''}" onclick="receiptCat='${c}';renderReceiptCats()">${CAT_ICONS[c]} ${c}</button>`
+    `<button class="modal-cat${receiptCat===c?' active':''}" onclick="receiptCat='${c}';renderReceiptCats()">${CAT_ICONS[c]||'💰'} ${c}</button>`
   ).join('');
 }
 
@@ -3038,15 +3059,21 @@ function saveRepayLog() {
   const date = document.getElementById('repay-log-date').value;
   if (!amount || amount <= 0) { showToast('请输入还款金额'); return; }
   if (!date) { showToast('请选择日期'); return; }
-  
+
   const item = repayItems.find(i => i.id === repayLogItemId);
   if (!item) { showToast('还款项不存在'); return; }
-  
+
   const logId = 'log_' + Date.now();
   if (!item.logs) item.logs = [];
   item.logs.unshift({ id: logId, amount, date, account: repayLogAccount || null });
   item.paid = (item.paid || 0) + amount;
-  
+
+  // 还款扣减钱包余额
+  if (repayLogAccount) {
+    const w = wallet.find(x => x.name === repayLogAccount);
+    if (w) w.amount = (w.amount || 0) - amount;
+  }
+
   // 同时在账单中记录一笔还款支出（带支付账户，余额界面自动推算余额）
   records.unshift({
     id: Date.now(),
@@ -3058,7 +3085,7 @@ function saveRepayLog() {
     time: Date.now(),
     account: repayLogAccount || null
   });
-  
+
   save();
   closeRepayLogModal();
   showToast('还款已记录 ✓');
@@ -3072,6 +3099,11 @@ function delRepayLog(itemId, logId) {
   const log = item.logs.find(l => l.id === logId);
   if (!log) return;
   if (!confirm('删除这条还款记录吗？')) return;
+  // 恢复钱包余额
+  if (log.account) {
+    const w = wallet.find(x => x.name === log.account);
+    if (w) w.amount = (w.amount || 0) + log.amount;
+  }
   item.paid -= log.amount;
   if (item.paid < 0) item.paid = 0;
   item.logs = item.logs.filter(l => l.id !== logId);
