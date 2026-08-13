@@ -5,26 +5,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>格格的账本</title>
 <style>
-/* ==================== 马卡龙配色变量 ==================== */
+/* ==================== 蓝色基调配色变量 ==================== */
 :root {
-  --bg: #FFF9F5;
+  --bg: #F3F7FC;
   --card: #FFFFFF;
-  --border: #F0EBE6;
-  --primary: #FF8A80;
-  --primary-light: #FFF0ED;
-  --income: #80CBC4;
-  --income-light: #E8F5F3;
-  --save: #64B5F6;
-  --repay: #B39DDB;
-  --repay-light: #EDE7F6;
-  --text: #4E342E;
-  --text-secondary: #8D6E63;
-  --text-muted: #BCAAA4;
-  --tab-inactive: #BCAAA4;
-  --shadow: 0 4px 12px rgba(255,138,128,0.08);
-  --danger: #EF5350;
-  --warning: #FFB74D;
-  --success: #81C784;
+  --border: #DFE7F2;
+  --primary: #2F6BFF;
+  --primary-light: #E8F0FE;
+  --primary-dark: #1B4FD8;
+  --income: #0E9F6E;
+  --income-light: #E5F6EF;
+  --save: #38BDF8;
+  --repay: #7C5CE0;
+  --repay-light: #EFEAFD;
+  --text: #17233B;
+  --text-secondary: #55657D;
+  --text-muted: #8CA0B8;
+  --tab-inactive: #8CA0B8;
+  --shadow: 0 4px 12px rgba(47,107,255,0.10);
+  --danger: #E03131;
+  --warning: #F59F00;
+  --success: #12A150;
 }
 
 * { margin:0; padding:0; box-sizing:border-box; }
@@ -128,15 +129,44 @@ body {
   margin-bottom: 12px;
 }
 
-.balance-card { text-align: center; padding: 20px; }
-.balance-label { font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; }
-.balance-amount { font-size: 32px; font-weight: 700; color: var(--text); margin-bottom: 12px; }
+.balance-card {
+  text-align: center;
+  padding: 16px 12px 14px;
+  background: linear-gradient(135deg, #2F6BFF 0%, #38BDF8 100%);
+  border: none;
+}
+.balance-label { font-size: 12px; color: rgba(255,255,255,0.85); margin-bottom: 4px; }
+.balance-amount { font-size: 32px; font-weight: 700; color: #fff; margin-bottom: 8px; text-shadow: 0 1px 6px rgba(0,0,0,0.15); }
 .balance-row { display: flex; justify-content: space-around; }
 .balance-item { text-align: center; }
-.balance-item-label { font-size: 11px; color: var(--text-secondary); margin-bottom: 2px; }
+.balance-item-label { font-size: 11px; color: rgba(255,255,255,0.75); margin-bottom: 2px; }
 .balance-item-val { font-size: 15px; font-weight: 600; }
-.income-val { color: var(--income); }
-.expense-val { color: var(--primary); }
+.income-val { color: #D3F9D8; }
+.expense-val { color: #FFC9C9; }
+
+/* 月历：每日支出 */
+.cal-wrap { margin-top: 14px; border-top: 1px dashed rgba(255,255,255,0.3); padding-top: 10px; }
+.cal-week { display: grid; grid-template-columns: repeat(7,1fr); font-size: 10px; color: rgba(255,255,255,0.7); margin-bottom: 4px; }
+.cal-week span { text-align: center; padding: 2px 0; }
+.cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 3px; }
+.cal-cell {
+  min-height: 40px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.14);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 0;
+  position: relative;
+}
+.cal-cell.has-exp { background: #FFE3E3; }
+.cal-cell.has-exp .cal-day { color: #C92A2A; }
+.cal-cell.has-exp .cal-amount { color: #E03131; }
+.cal-cell.today { outline: 2px solid #fff; outline-offset: -1px; }
+.cal-day { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.95); line-height: 1.25; }
+.cal-amount { font-size: 8px; font-weight: 700; line-height: 1.2; max-width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; padding: 0 1px; }
+.cal-empty { background: transparent; }
 
 .budget-card { padding: 16px; }
 .budget-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
@@ -177,13 +207,13 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
-  background: linear-gradient(135deg, #FFF3E0, #FFE0B2);
+  background: linear-gradient(135deg, #E8F0FE, #D6E6FF);
   border-radius: 16px;
   padding: 13px 16px;
   margin-bottom: 16px;
   cursor: pointer;
   transition: all 0.2s;
-  border: 1px dashed #FFB74D;
+  border: 1px dashed #7FA8FF;
 }
 .receipt-entry:active { transform: scale(0.98); }
 .receipt-entry-icon {
@@ -192,12 +222,12 @@ body {
   background: #fff;
   display: flex; align-items: center; justify-content: center;
   font-size: 22px;
-  box-shadow: 0 2px 8px rgba(255,152,0,0.18);
+  box-shadow: 0 2px 8px rgba(47,107,255,0.18);
   flex-shrink: 0;
 }
 .receipt-entry-text { flex: 1; }
 .receipt-entry-title { font-size: 14px; font-weight: 600; color: var(--text); }
-.receipt-entry-sub { font-size: 11px; color: #A1887F; margin-top: 2px; }
+.receipt-entry-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
 
 .receipt-preview { margin: 14px 0 4px; border-radius: 12px; overflow: hidden; background: #F5F5F5; max-height: 260px; display: flex; justify-content: center; }
 .receipt-preview img { max-width: 100%; max-height: 260px; object-fit: contain; }
@@ -205,7 +235,7 @@ body {
 .receipt-progress { margin: 14px 0 4px; }
 .receipt-progress-text { font-size: 12px; color: var(--text-secondary); margin-bottom: 8px; text-align: center; }
 .receipt-progress-bar { height: 6px; background: #F0EBE6; border-radius: 3px; overflow: hidden; }
-.receipt-progress-fill { height: 100%; width: 0; background: linear-gradient(90deg,#FF8A80,#FFB74D); border-radius: 3px; transition: width 0.3s; }
+.receipt-progress-fill { height: 100%; width: 0; background: linear-gradient(90deg,#2F6BFF,#38BDF8); border-radius: 3px; transition: width 0.3s; }
 
 .receipt-summary { margin: 14px 0 4px; }
 .receipt-summary-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 10px; }
@@ -323,7 +353,7 @@ body {
 .bill-date { font-size: 11px; color: var(--text-secondary); }
 .bill-right { display: flex; align-items: center; gap: 10px; }
 .bill-amount { font-size: 15px; font-weight: 600; }
-.bill-amount.expense { color: var(--primary); }
+.bill-amount.expense { color: var(--danger); }
 .bill-amount.income { color: var(--income); }
 .bill-del {
   width: 24px; height: 24px;
@@ -452,7 +482,7 @@ body {
   justify-content: center;
   font-size: 28px;
   flex-shrink: 0;
-  background: linear-gradient(135deg, #FFCDD2, #FF8A80);
+  background: linear-gradient(135deg, #BBDEFB, #7FB2FF);
 }
 .profile-info { flex:1; }
 .profile-name { font-size: 17px; font-weight: 700; color: var(--text); }
@@ -562,6 +592,22 @@ body {
 .modal-cat.active { background: var(--primary); color: #fff; border-color: var(--primary); }
 .modal-cats.grid-cats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
 .modal-cats.grid-cats .modal-cat { padding: 8px 2px; text-align: center; font-size: 12px; white-space: nowrap; }
+
+/* 记收入：选择存入账户 */
+.modal-account-row { display: flex; flex-direction: column; gap: 8px; margin: 12px 0 4px; }
+.modal-account-label { font-size: 12px; font-weight: 600; color: var(--text-secondary); }
+.modal-account-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.modal-acc-chip {
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: 16px;
+  padding: 6px 12px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.modal-acc-chip.active { background: var(--income); border-color: var(--income); color: #fff; font-weight: 600; }
 
 .modal-btn {
   width: 100%; padding: 14px;
@@ -871,7 +917,7 @@ body {
 /* ==================== AI 分析入口横幅 ==================== */
 .ai-entry {
   display:flex; align-items:center; gap:10px;
-  background:linear-gradient(135deg,#FFF0ED,#EDE7F6);
+  background:linear-gradient(135deg,#E8F0FE,#EFEAFD);
   border:1px solid var(--border); border-radius:16px;
   padding:12px 14px; margin-bottom:12px; cursor:pointer;
   transition:all .2s;
@@ -884,9 +930,9 @@ body {
 
 /* ==================== 消费分析页 ==================== */
 .analysis-summary {
-  background:linear-gradient(135deg,#FF8A80,#FFB74D);
+  background:linear-gradient(135deg,#2F6BFF,#38BDF8);
   border-radius:16px; padding:18px; margin-bottom:12px;
-  color:#fff; box-shadow:0 4px 16px rgba(255,138,128,0.3);
+  color:#fff; box-shadow:0 4px 16px rgba(47,107,255,0.3);
 }
 .analysis-summary-label { font-size:12px; opacity:.9; margin-bottom:4px; }
 .analysis-summary-amount { font-size:28px; font-weight:700; margin-bottom:8px; }
@@ -1071,6 +1117,7 @@ body {
             <div class="balance-item-val expense-val" id="total-expense">¥0.00</div>
           </div>
         </div>
+        <div class="cal-wrap" id="cal-wrap"></div>
       </div>
       <div class="card budget-card">
         <div class="budget-header">
@@ -1125,8 +1172,8 @@ body {
         <span class="home-title">统计</span>
       </div>
       <div class="stats-tabs" style="margin-top:12px;">
-        <button class="stats-tab" onclick="switchStats('week')">本周</button>
-        <button class="stats-tab active" onclick="switchStats('month')">本月</button>
+        <button class="stats-tab active" onclick="switchStats('week')">本周</button>
+        <button class="stats-tab" onclick="switchStats('month')">本月</button>
         <button class="stats-tab" onclick="switchStats('year')">本年</button>
       </div>
       <div id="stats-content"></div>
@@ -1199,7 +1246,7 @@ body {
     <div class="page" id="page-me">
       <div style="padding-top:12px;"></div>
       <div class="profile-card">
-        <div class="profile-avatar">🐱</div>
+        <div class="profile-avatar">🐻‍❄️</div>
         <div class="profile-info">
           <div class="profile-name">格格的账本</div>
           <div class="profile-streak" id="streak-days">已坚持记账 0 天</div>
@@ -1315,6 +1362,10 @@ body {
     <input type="text" class="modal-input" id="modal-name" placeholder="备注（如：皮爷咖啡）" maxlength="30">
     <input type="number" class="modal-amount" id="modal-amount" placeholder="0" min="0" step="0.01" inputmode="decimal">
     <div class="modal-cats" id="modal-cats"></div>
+    <div class="modal-account-row" id="modal-account-row" style="display:none">
+      <div class="modal-account-label">💰 存入账户</div>
+      <div class="modal-account-chips" id="modal-account-chips"></div>
+    </div>
     <button class="modal-btn primary" id="modal-submit" onclick="submitRecord()">确认记录</button>
   </div>
 </div>
@@ -1471,7 +1522,7 @@ const CAT_COLORS = { '美食':'#FFF3E0', '奶茶':'#FCE4EC', '电影':'#F3E5F5',
 
 /* 收入分类数据 */
 const INCOME_PRESET = [
-  { id:'inc_salary', name:'月工资', icon:'💼', preset:true },
+  { id:'inc_salary', name:'月工资', icon:'💰', preset:true },
   { id:'inc_fund', name:'月公积金', icon:'🏦', preset:true },
   { id:'inc_parttime', name:'月兼职收入', icon:'🔨', preset:true },
 ];
@@ -1488,10 +1539,12 @@ const REPAY_EMOJIS = ['✈️','🏦','🌾','💳','🏠','🚗','📱','💰',
 let records = JSON.parse(localStorage.getItem('gg_records') || '[]');
 let budget = JSON.parse(localStorage.getItem('gg_budget') || '{"total":5000}');
 let incomeCats = JSON.parse(localStorage.getItem('gg_income_cats') || 'null') || JSON.parse(JSON.stringify(INCOME_PRESET));
+incomeCats.forEach(c => { if (!c.icon) c.icon = '💰'; }); // 历史数据图标兜底，避免显示 undefined
 let incomeAmounts = JSON.parse(localStorage.getItem('gg_income_amounts') || '{}');
 let repayItems = JSON.parse(localStorage.getItem('gg_repay_items') || 'null') || JSON.parse(JSON.stringify(REPAY_PRESET));
 let modalType = 'expense', editingId = null;
 let modalCat = '美食';
+let modalAccount = ''; // 记收入时选择存入的账户（余额钱包账户名）
 
 /* 收入分类弹窗状态 */
 let incCatEditingId = null, incCatEmoji = '💰';
@@ -1532,6 +1585,7 @@ function openModal(type, record) {
   document.getElementById('modal-amount').value = record ? record.amount : '';
   document.getElementById('modal-name').value = record ? record.name : '';
   modalCat = record ? record.category : (modalCat || '美食');
+  modalAccount = record ? (record.account || '') : '';
   document.getElementById('modal-overlay').classList.add('show');
   if (!record) document.getElementById('modal-amount').focus();
   renderModalCats();
@@ -1550,10 +1604,14 @@ function renderModalCats() {
     // 收入时显示收入分类
     if (!incomeCats.find(c => c.name === modalCat)) modalCat = incomeCats[0]?.name || '月工资';
     h.innerHTML = incomeCats.map(c =>
-      `<button class="modal-cat${modalCat===c.name?' active':''}" style="${modalCat===c.name?'background:var(--income);border-color:var(--income)':''}" onclick="modalCat='${c.name}';renderModalCats()">${c.icon} ${c.name}</button>`
+      `<button class="modal-cat${modalCat===c.name?' active':''}" style="${modalCat===c.name?'background:var(--income);border-color:var(--income)':''}" onclick="modalCat='${c.name}';renderModalCats()">${c.icon||'💰'} ${c.name}</button>`
     ).join('');
+    // 收入时显示存入账户选择
+    document.getElementById('modal-account-row').style.display = 'flex';
+    renderModalAccountChips();
   } else {
     h.classList.add('grid-cats');
+    document.getElementById('modal-account-row').style.display = 'none';
     if (!modalCat) modalCat = '美食';
     // 历史记录可能是旧分类，临时加入候选列表以便高亮编辑
     let cats = DEFAULT_CATS;
@@ -1562,6 +1620,14 @@ function renderModalCats() {
       `<button class="modal-cat${modalCat===c?' active':''}" onclick="modalCat='${c}';renderModalCats()">${CAT_ICONS[c]} ${c}</button>`
     ).join('');
   }
+}
+
+function renderModalAccountChips() {
+  const box = document.getElementById('modal-account-chips');
+  if (!wallet.find(w => w.name === modalAccount)) modalAccount = wallet[0]?.name || '';
+  box.innerHTML = wallet.map(w =>
+    `<button class="modal-acc-chip${modalAccount===w.name?' active':''}" onclick="modalAccount='${w.name}';renderModalAccountChips()">${w.icon} ${w.name}</button>`
+  ).join('');
 }
 
 function submitRecord() {
@@ -1577,6 +1643,7 @@ function submitRecord() {
       records[idx].category = modalCat;
       records[idx].name = name;
       records[idx].amount = amount;
+      records[idx].account = modalType==='income' ? modalAccount : null;
     }
     editingId = null;
   } else {
@@ -1588,6 +1655,7 @@ function submitRecord() {
       amount: amount,
       date: new Date().toISOString().split('T')[0],
       time: Date.now(),
+      account: modalType==='income' ? modalAccount : null,
       receipt: pendingReceipt || null
     });
   }
@@ -1624,6 +1692,31 @@ function renderHome() {
   document.getElementById('balance-amount').textContent = '¥' + balance.toFixed(2);
   document.getElementById('total-income').textContent = '¥' + totalInc.toFixed(2);
   document.getElementById('total-expense').textContent = '¥' + totalExp.toFixed(2);
+
+  // 月历：每日支出
+  const calWrap = document.getElementById('cal-wrap');
+  const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+  const daysInMonth = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
+  const lead = (firstDay.getDay() + 6) % 7; // 周一开头
+  const today = now.getDate();
+  const dayExpMap = {};
+  thisMonth.filter(r=>r.type==='expense').forEach(r => {
+    const d = parseInt(r.date.slice(-2), 10);
+    dayExpMap[d] = (dayExpMap[d]||0) + r.amount;
+  });
+  let calHTML = '<div class="cal-week"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div><div class="cal-grid">';
+  for (let i = 0; i < lead; i++) calHTML += '<div class="cal-cell cal-empty"></div>';
+  for (let d = 1; d <= daysInMonth; d++) {
+    const amt = dayExpMap[d] || 0;
+    const isToday = d === today;
+    const amtText = amt > 0 ? (amt < 1000 ? amt.toFixed(0) : (amt/1000).toFixed(1) + 'k') : '';
+    calHTML += `<div class="cal-cell${amt>0?' has-exp':''}${isToday?' today':''}">
+      <span class="cal-day">${d}</span>
+      ${amt>0?`<span class="cal-amount">${amtText}</span>`:''}
+    </div>`;
+  }
+  calHTML += '</div>';
+  calWrap.innerHTML = calHTML;
 
   // Budget
   const budgetTotal = budget.total;
@@ -1703,7 +1796,7 @@ function renderBills(filter) {
           <div class="bill-icon" style="background:${CAT_COLORS[r.category] || '#ECEFF1'}">${CAT_ICONS[r.category] || '📌'}</div>
           <div class="bill-info">
             <span class="bill-name">${r.name}${r.receipt?'<span class="receipt-badge" onclick="event.stopPropagation();viewReceipt('+r.id+')">🧾</span>':''}</span>
-            <span class="bill-date">${r.date} · ${r.category}${r.type==='income'?' · 收入':''}</span>
+            <span class="bill-date">${r.date} · ${r.category}${r.type==='income'?' · 收入':''}${r.account?' · 存入'+r.account:''}</span>
           </div>
         </div>
         <div class="bill-right">
@@ -1718,7 +1811,7 @@ function renderBills(filter) {
 }
 
 /* ==================== 渲染统计 ==================== */
-let statsPeriod = 'month';
+let statsPeriod = 'week';
 
 function switchStats(p) {
   statsPeriod = p;
@@ -1755,8 +1848,8 @@ function renderStats() {
   filteredInc.forEach(r => { incCatMap[r.category] = (incCatMap[r.category]||0) + r.amount; });
   const incSorted = Object.entries(incCatMap).sort((a,b)=>b[1]-a[1]);
 
-  const pieColors = ['#FF8A80','#64B5F6','#FFD54F','#81C784','#CE93D8','#FFB74D','#4DD0E1','#A1887F','#90A4AE','#EF5350'];
-  const incColors = ['#80CBC4','#4DB6AC','#26A69A','#00897B','#B2DFDB','#81C784','#AED581','#FFF176'];
+  const pieColors = ['#2F6BFF','#38BDF8','#F59F00','#0E9F6E','#7C5CE0','#E8590C','#0CA678','#5C7CFA','#94A3B8','#E03131'];
+  const incColors = ['#0E9F6E','#12B886','#37B24D','#82C91E','#40C057','#51CF66','#69DB7C','#A9E34B'];
 
   const periodLabel = {week:'本周',month:'本月',year:'本年'}[statsPeriod];
 
@@ -1767,13 +1860,13 @@ function renderStats() {
   const expPct = Math.round(totalExp/maxVal*100);
   const incPct = Math.round(totalInc/maxVal*100);
   statsHTML += `<div class="summary-row">
-    <div class="summary-card" style="background:linear-gradient(135deg,#FFF0ED,#FFFFFF)">
+    <div class="summary-card" style="background:linear-gradient(135deg,#E8F0FE,#FFFFFF)">
       <div class="summary-card-label">💸 ${periodLabel}支出</div>
-      <div class="summary-card-amount" style="color:var(--primary)">¥${totalExp.toFixed(0)}</div>
+      <div class="summary-card-amount" style="color:var(--danger)">¥${totalExp.toFixed(0)}</div>
       <div class="summary-card-sub">${expSorted.length} 个分类</div>
-      <div class="comparison-bar"><div style="width:${expPct}%;height:100%;background:var(--primary);border-radius:3px"></div></div>
+      <div class="comparison-bar"><div style="width:${expPct}%;height:100%;background:var(--danger);border-radius:3px"></div></div>
     </div>
-    <div class="summary-card" style="background:linear-gradient(135deg,#E8F5F3,#FFFFFF)">
+    <div class="summary-card" style="background:linear-gradient(135deg,#E5F6EF,#FFFFFF)">
       <div class="summary-card-label">💰 ${periodLabel}收入</div>
       <div class="summary-card-amount" style="color:var(--income)">¥${totalInc.toFixed(0)}</div>
       <div class="summary-card-sub">${incSorted.length} 个来源</div>
@@ -1829,11 +1922,11 @@ function renderStats() {
   }
   statsHTML += '</div>';
 
-  // === 收入排行 TOP3 ===
-  statsHTML += '<div class="stats-card"><div class="stats-card-title">🏆 收入排行 TOP3</div><div class="rank-list" id="inc-rank-list"></div></div>';
-
   // === 支出排行 TOP3 ===
   statsHTML += '<div class="stats-card"><div class="stats-card-title">🏆 支出排行 TOP3</div><div class="rank-list" id="rank-list"></div></div>';
+
+  // === 收入排行 TOP3 ===
+  statsHTML += '<div class="stats-card"><div class="stats-card-title">🏆 收入排行 TOP3</div><div class="rank-list" id="inc-rank-list"></div></div>';
 
   document.getElementById('stats-content').innerHTML = statsHTML;
 
@@ -2121,7 +2214,7 @@ function firstAmount(text) {
 function detectShouzhi(text, amount) {
   const t = text.toLowerCase();
   if (/提现/.test(t)) return '支出'; // 提现：记录提现金额，勿分析为手续费支出
-  const inc = /(收入|入账|收款|存入|收到|红包|工资到账|转入|退款|退票|报销)/.test(t);
+  const inc = /(收入|入账|收款|存入|收到|红包|工资到账|转入|退款|退票)/.test(t);
   const out = /(支出|付款|消费|支付|扣款|转出|购物|购买|扫码|转账|缴纳|充值|缴费|消费)/.test(t);
   if (inc && !out) return '收入';
   if (out && !inc) return '支出';
@@ -2136,7 +2229,7 @@ function detectCategory(text, shouzhi) {
       ['月工资', ['工资', '薪资', '薪金', '代发', '薪酬', 'salary']],
       ['月公积金', ['公积金', '公积金提取']],
       ['月兼职收入', ['兼职', '外快', '劳务', '稿费', '打赏']],
-      ['其他收入', ['红包', '退款', '报销', '转账', '收款', '利息', '理财', '分红']]
+      ['其他收入', ['红包', '退款', '转账', '收款', '利息', '理财', '分红']]
     ];
     for (const [c, keys] of incKw) {
       if (keys.some(k => text.toLowerCase().includes(k))) return c;
@@ -2206,7 +2299,7 @@ function detectNote(text, shouzhi, amount, account) {
     return (m ? '提现到' + m[1] : '提现').slice(0, 12);
   }
   if (shouzhi === '收入') {
-    const m = text.match(/(工资|红包|退款|报销|转账|兼职|收款)/);
+    const m = text.match(/(工资|红包|退款|转账|兼职|收款)/);
     if (m) return m[1].slice(0, 12);
   }
   const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
@@ -2452,7 +2545,7 @@ function renderIncomePage() {
   });
 
   const totalInc = Object.values(catMonthAmount).reduce((s,v)=>s+v, 0);
-  const customCount = incomeCats.filter(c => !c.preset).length;
+  const customCount = incomeCats.filter(c => !c.preset && c.name !== '报销').length;
   const srcCount = Object.keys(catMonthAmount).length;
 
   // 计算月均
@@ -2464,12 +2557,12 @@ function renderIncomePage() {
   document.getElementById('inc-avg').textContent = '¥' + avgInc.toFixed(0);
   document.getElementById('inc-custom-count').textContent = customCount;
 
-  // 渲染分类列表
+  // 渲染分类列表（隐藏"报销"类别）
   const list = document.getElementById('income-cat-list');
-  list.innerHTML = incomeCats.map(cat => {
+  list.innerHTML = incomeCats.filter(c => c.name !== '报销').map(cat => {
     const amt = catMonthAmount[cat.name] || 0;
     return `<div class="income-cat-item">
-      <div class="income-cat-icon" style="background:var(--income-light)">${cat.icon}</div>
+      <div class="income-cat-icon" style="background:var(--income-light)">${cat.icon||'💰'}</div>
       <div class="income-cat-info">
         <div class="income-cat-name">${cat.name}<span class="income-tag ${cat.preset?'preset':'custom'}">${cat.preset?'预设':'自定义'}</span></div>
         <div class="income-cat-desc">本月收入 ¥${amt.toFixed(2)}</div>
@@ -2854,7 +2947,7 @@ function renderWalletPage() {
   document.getElementById('wallet-total').textContent = '¥' + total.toFixed(2);
   document.getElementById('wallet-count').textContent = wallet.length + ' 个账户 · 点击可编辑余额';
   const list = document.getElementById('wallet-list');
-  const colors = ['#E3F2FD','#E8F5F3','#FFF3E0','#E8EAF6','#FCE4EC','#F3E5F5'];
+  const colors = ['#E8F0FE','#D6E6FF','#E5F6EF','#E8EAF6','#FFF3E0','#FCE4EC'];
   list.innerHTML = wallet.map((w,i) => `
     <div class="wallet-item" onclick="openWalletModal('${w.id}')">
       <div class="wallet-icon" style="background:${colors[i%colors.length]}">${w.icon}</div>
@@ -3000,9 +3093,9 @@ function renderAnalysisPage() {
 
 /* ==================== 智能财务分析中心 ==================== */
 const AI_MODES = [
-  { id:'debt', icon:'⚖️', name:'还款分析', desc:'基于收入、支出与债务明细，对比雪崩法与滚雪球法，输出逐月还款计划与预计还清时间', color:'linear-gradient(135deg,#EDE7F6,#D1C4E9)', hot:true },
-  { id:'analyst', icon:'🔍', name:'支出分析师', desc:'识别不必要的支出，找出前3个浪费类别，给出快速收益与行为改变建议', color:'linear-gradient(135deg,#FFF0ED,#FFE0B2)' },
-  { id:'planner', icon:'🛡️', name:'财务规划师', desc:'制定3个月应急基金计划：月度净目标、自动储蓄建议、阶段里程碑', color:'linear-gradient(135deg,#E3F2FD,#BBDEFB)' },
+  { id:'debt', icon:'⚖️', name:'还款分析', desc:'基于收入、支出与债务明细，对比雪崩法与滚雪球法，输出逐月还款计划与预计还清时间', color:'linear-gradient(135deg,#E8F0FE,#BFDBFE)', hot:true },
+  { id:'analyst', icon:'🔍', name:'支出分析师', desc:'识别不必要的支出，找出前3个浪费类别，给出快速收益与行为改变建议', color:'linear-gradient(135deg,#E8F0FE,#D6E6FF)' },
+  { id:'planner', icon:'🛡️', name:'财务规划师', desc:'制定3个月应急基金计划：月度净目标、自动储蓄建议、阶段里程碑', color:'linear-gradient(135deg,#E5F6EF,#B7E4C7)' },
   { id:'budget', icon:'🧱', name:'预算架构师', desc:'创建零基预算表格，让每笔资金都有明确目的，月底无闲置资金', color:'linear-gradient(135deg,#FFF8E1,#FFECB3)' },
 ];
 
