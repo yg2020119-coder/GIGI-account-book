@@ -398,6 +398,56 @@ body {
   padding: 16px 0 8px;
 }
 
+/* ==================== 余额界面（账单页升级） ==================== */
+.balance-overview-card {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--save) 100%);
+  border-radius: 18px;
+  padding: 20px 18px;
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(56,133,252,0.28);
+  margin-bottom: 14px;
+}
+.balance-ov-label { font-size: 12px; opacity: 0.9; margin-bottom: 4px; }
+.balance-ov-total { font-size: 30px; font-weight: 700; letter-spacing: 0.5px; }
+.balance-ov-sub { font-size: 11px; opacity: 0.85; margin-top: 4px; }
+.balance-ov-accounts {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  scrollbar-width: none;
+}
+.balance-ov-accounts::-webkit-scrollbar { display: none; }
+.balance-ov-acc {
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.16);
+  border-radius: 12px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+.balance-ov-acc:active { transform: scale(0.96); }
+.balance-ov-acc-icon { font-size: 16px; }
+.balance-ov-acc-info { display: flex; flex-direction: column; }
+.balance-ov-acc-name { font-size: 11px; opacity: 0.9; white-space: nowrap; }
+.balance-ov-acc-amt { font-size: 13px; font-weight: 600; white-space: nowrap; }
+
+.bill-balance {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 1px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+.bill-balance .bbl { color: var(--text-muted); }
+.bill-balance .bval { color: var(--primary); font-weight: 600; }
+
 /* ==================== 统计页 ==================== */
 .stats-tabs {
   display: flex;
@@ -615,6 +665,7 @@ body {
   transition: all 0.2s;
 }
 .modal-acc-chip.active { background: var(--income); border-color: var(--income); color: #fff; font-weight: 600; }
+.modal-acc-chip.repay.active { background: var(--repay); border-color: var(--repay); }
 
 .modal-btn {
   width: 100%; padding: 14px;
@@ -1173,12 +1224,13 @@ body {
       <div class="cat-grid" id="cat-grid"></div>
     </div>
 
-    <!-- 账单 -->
+    <!-- 余额 -->
     <div class="page" id="page-bills">
       <div style="padding-top:12px;">
-        <span class="home-title">账单</span>
+        <span class="home-title">余额</span>
       </div>
-      <div class="bill-filter" style="margin-top:12px;" id="bill-filters"></div>
+      <div id="balance-overview" style="margin-top:12px;"></div>
+      <div class="bill-filter" id="bill-filters"></div>
       <div id="bill-list"></div>
     </div>
 
@@ -1354,7 +1406,7 @@ body {
     </button>
     <button class="tab inactive" onclick="switchPage('bills', this)">
       <svg viewBox="0 0 22 22" fill="none"><rect x="3" y="3" width="16" height="16" rx="3" stroke="currentColor" stroke-width="1.5"/><line x1="7" y1="8" x2="15" y2="8" stroke="currentColor" stroke-width="1.2"/><line x1="7" y1="12" x2="15" y2="12" stroke="currentColor" stroke-width="1.2"/><line x1="7" y1="16" x2="11" y2="16" stroke="currentColor" stroke-width="1.2"/></svg>
-      <span>账单</span>
+      <span>余额</span>
     </button>
     <button class="tab inactive" onclick="switchPage('repay', this)">
       <svg viewBox="0 0 22 22" fill="none"><rect x="3" y="5" width="16" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><circle cx="11" cy="11" r="2.5" stroke="currentColor" stroke-width="1.5"/><line x1="3" y1="9" x2="19" y2="9" stroke="currentColor" stroke-width="1.2"/></svg>
@@ -1485,6 +1537,8 @@ body {
     <input type="number" class="gen-modal-input" id="repay-log-amount" placeholder="0.00" min="0" step="0.01" inputmode="decimal">
     <div class="gen-modal-label">还款日期</div>
     <input type="date" class="gen-modal-input" id="repay-log-date">
+    <div class="gen-modal-label" style="margin-top:10px;">💳 支付账户</div>
+    <div class="modal-account-chips" id="repay-log-account-chips"></div>
     <div class="gen-modal-btns">
       <button class="gen-modal-btn cancel" onclick="closeRepayLogModal()">取消</button>
       <button class="gen-modal-btn confirm repay" onclick="saveRepayLog()">确认还款</button>
@@ -1571,6 +1625,7 @@ let repayItems = JSON.parse(localStorage.getItem('gg_repay_items') || 'null') ||
 let modalType = 'expense', editingId = null;
 let modalCat = '美食';
 let modalAccount = ''; // 记收入时选择存入的账户（余额钱包账户名）
+let repayLogAccount = ''; // 记录还款时选择的支付账户
 
 /* 收入分类弹窗状态 */
 let incCatEditingId = null, incCatEmoji = '💰';
@@ -1827,11 +1882,56 @@ function quickAdd(cat, type) {
   openModal(type);
 }
 
+/* ==================== 余额界面 ==================== */
+// 以钱包当前余额为基准，按账户倒序回放，推算每笔交易发生后的账户余额
+function calcBalances() {
+  const balAfter = {};
+  const byAcc = {};
+  records.forEach(r => {
+    if (!r.account) return;
+    if (!byAcc[r.account]) byAcc[r.account] = [];
+    byAcc[r.account].push(r);
+  });
+  for (const acc of Object.keys(byAcc)) {
+    const w = wallet.find(x => x.name === acc);
+    let bal = w ? (w.amount || 0) : 0;
+    const list = byAcc[acc].sort((a,b) => (b.date||'').localeCompare(a.date||'') || (b.time||0)-(a.time||0));
+    for (const r of list) {
+      balAfter[r.id] = bal;
+      bal = bal + (r.type === 'expense' ? r.amount : -r.amount);
+    }
+  }
+  return balAfter;
+}
+
+function renderBalanceOverview() {
+  const box = document.getElementById('balance-overview');
+  if (!box) return;
+  const total = walletTotal();
+  const accs = wallet.map(w => `
+    <div class="balance-ov-acc" onclick="openWalletModal('${w.id}')">
+      <span class="balance-ov-acc-icon">${w.icon}</span>
+      <span class="balance-ov-acc-info">
+        <span class="balance-ov-acc-name">${w.name}</span>
+        <span class="balance-ov-acc-amt">¥${(w.amount||0).toFixed(2)}</span>
+      </span>
+    </div>`).join('');
+  box.innerHTML = `
+    <div class="balance-overview-card">
+      <div class="balance-ov-label">总资产（各账户余额）</div>
+      <div class="balance-ov-total">¥${total.toFixed(2)}</div>
+      <div class="balance-ov-sub">点击账户可编辑余额 · 每笔流水显示交易后余额</div>
+      <div class="balance-ov-accounts">${accs}</div>
+    </div>`;
+}
+
 /* ==================== 渲染账单 ==================== */
 function renderBills(filter) {
   const list = document.getElementById('bill-list');
   const filters = document.getElementById('bill-filters');
   const allCats = ['全部', '小票', ...new Set(records.map(r=>r.category))];
+
+  renderBalanceOverview();
 
   filters.innerHTML = allCats.map(c =>
     `<button class="filter-chip${(filter||'全部')===c?' active':''}" onclick="renderBills('${c}')">${c==='全部'?'全部':c==='小票'?'🧾 小票':CAT_ICONS[c]+' '+c}</button>`
@@ -1859,17 +1959,20 @@ function renderBills(filter) {
     groups[m].push(r);
   });
 
+  const balMap = calcBalances();
   let html = '';
   for (const [month, items] of Object.entries(groups).sort().reverse()) {
     const [y, m] = month.split('-');
     html += `<div class="bill-month-header">${y}年${m}月</div>`;
     items.forEach(r => {
+      const bal = balMap[r.id];
       html += `<div class="bill-item">
         <div class="bill-left">
           <div class="bill-icon" style="background:${CAT_COLORS[r.category] || '#ECEFF1'}">${CAT_ICONS[r.category] || '📌'}</div>
           <div class="bill-info">
             <span class="bill-name">${r.name}${r.receipt?'<span class="receipt-badge" onclick="event.stopPropagation();viewReceipt('+r.id+')">🧾</span>':''}</span>
             <span class="bill-date">${r.date} · ${r.category}${r.type==='income'?' · 收入':''}${r.account?' · '+(r.type==='income'?'存入':'支付')+r.account:''}</span>
+            ${bal!==undefined?`<span class="bill-balance"><span class="bbl">余额</span><span class="bval">¥${bal.toFixed(2)}</span></span>`:''}
           </div>
         </div>
         <div class="bill-right">
@@ -2797,7 +2900,7 @@ function repayItemCard(item) {
   if (item.logs && item.logs.length > 0) {
     logsHTML = '<div class="repay-log-list repay-logs-' + item.id + '" style="display:none">' + item.logs.map(log =>
       `<div class="repay-log-item">
-        <span class="repay-log-date">${log.date}</span>
+        <span class="repay-log-date">${log.date}${log.account?' · 支付'+log.account:''}</span>
         <span class="repay-log-amount">-¥${log.amount.toFixed(2)}</span>
         <button class="repay-log-del" onclick="event.stopPropagation();delRepayLog('${item.id}','${log.id}')">×</button>
       </div>`
@@ -2909,10 +3012,20 @@ function openRepayLogModal(itemId) {
   repayLogItemId = itemId;
   const item = repayItems.find(i => i.id === itemId);
   if (!item) return;
+  repayLogAccount = wallet[0]?.name || '';
   document.getElementById('repay-log-title').textContent = '记录还款 — ' + item.name;
   document.getElementById('repay-log-amount').value = '';
   document.getElementById('repay-log-date').value = new Date().toISOString().split('T')[0];
+  renderRepayLogAccounts();
   document.getElementById('repay-log-modal').classList.add('show');
+}
+
+function renderRepayLogAccounts() {
+  const box = document.getElementById('repay-log-account-chips');
+  if (!wallet.find(w => w.name === repayLogAccount)) repayLogAccount = wallet[0]?.name || '';
+  box.innerHTML = wallet.map(w =>
+    `<button class="modal-acc-chip repay${repayLogAccount===w.name?' active':''}" onclick="repayLogAccount='${w.name}';renderRepayLogAccounts()">${w.icon} ${w.name}</button>`
+  ).join('');
 }
 
 function closeRepayLogModal() {
@@ -2931,10 +3044,10 @@ function saveRepayLog() {
   
   const logId = 'log_' + Date.now();
   if (!item.logs) item.logs = [];
-  item.logs.unshift({ id: logId, amount, date });
+  item.logs.unshift({ id: logId, amount, date, account: repayLogAccount || null });
   item.paid = (item.paid || 0) + amount;
   
-  // 同时在账单中记录一笔还款支出
+  // 同时在账单中记录一笔还款支出（带支付账户，余额界面自动推算余额）
   records.unshift({
     id: Date.now(),
     type: 'expense',
@@ -2942,7 +3055,8 @@ function saveRepayLog() {
     name: item.name + '还款',
     amount: amount,
     date: date,
-    time: Date.now()
+    time: Date.now(),
+    account: repayLogAccount || null
   });
   
   save();
@@ -3054,6 +3168,8 @@ function saveWallet() {
   closeWalletModal();
   showToast('余额已更新 ✓');
   renderWalletPage();
+  // 余额界面同步刷新（若当前在余额页）
+  if (document.getElementById('page-bills').classList.contains('active')) renderBills();
 }
 
 /* ==================== 消费分析（周/月/年） ==================== */
@@ -3772,13 +3888,13 @@ renderRepayPage();
 // 如果没有数据，加示例记录
 if (records.length === 0) {
   const demo = [
-    { id: Date.now()-600000, type:'income', category:'月工资', name:'8月工资', amount:15000, date:'2026-08-10', time: Date.now()-600000 },
-    { id: Date.now()-550000, type:'income', category:'月公积金', name:'公积金入账', amount:2400, date:'2026-08-10', time: Date.now()-550000 },
-    { id: Date.now()-500000, type:'income', category:'月兼职收入', name:'兼职设计费', amount:3500, date:'2026-08-09', time: Date.now()-500000 },
-    { id: Date.now()-400000, type:'income', category:'VAS', name:'VAS收入', amount:800, date:'2026-08-08', time: Date.now()-400000 },
-    { id: Date.now()-300000, type:'expense', category:'餐饮', name:'皮爷咖啡', amount:38, date:'2026-08-10', time: Date.now()-300000 },
-    { id: Date.now()-200000, type:'expense', category:'餐饮', name:'买菜', amount:128.5, date:'2026-08-08', time: Date.now()-200000 },
-    { id: Date.now()-100000, type:'expense', category:'交通', name:'地铁充值', amount:50, date:'2026-08-07', time: Date.now()-100000 },
+    { id: Date.now()-600000, type:'income', category:'月工资', name:'8月工资', amount:15000, date:'2026-08-10', time: Date.now()-600000, account:'中国建设银行' },
+    { id: Date.now()-550000, type:'income', category:'月公积金', name:'公积金入账', amount:2400, date:'2026-08-10', time: Date.now()-550000, account:'中国建设银行' },
+    { id: Date.now()-500000, type:'income', category:'月兼职收入', name:'兼职设计费', amount:3500, date:'2026-08-09', time: Date.now()-500000, account:'中国银行' },
+    { id: Date.now()-400000, type:'income', category:'VAS', name:'VAS收入', amount:800, date:'2026-08-08', time: Date.now()-400000, account:'支付宝余额' },
+    { id: Date.now()-300000, type:'expense', category:'餐饮', name:'皮爷咖啡', amount:38, date:'2026-08-10', time: Date.now()-300000, account:'微信余额' },
+    { id: Date.now()-200000, type:'expense', category:'餐饮', name:'买菜', amount:128.5, date:'2026-08-08', time: Date.now()-200000, account:'微信余额' },
+    { id: Date.now()-100000, type:'expense', category:'交通', name:'地铁充值', amount:50, date:'2026-08-07', time: Date.now()-100000, account:'微信余额' },
   ];
   records = demo;
   
