@@ -808,6 +808,36 @@ body {
 .repay-summary-item { display: flex; flex-direction: column; gap: 2px; }
 .repay-summary-item-val { font-size: 14px; font-weight: 600; }
 
+/* 还款页按月选择条 */
+.repay-month-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  margin: 0 0 12px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 10px 12px; box-shadow: var(--shadow);
+}
+.repay-month-nav {
+  width: 32px; height: 32px; border: none; border-radius: 50%;
+  background: var(--primary-light); color: var(--primary-dark);
+  font-size: 18px; font-weight: 700; cursor: pointer;
+  flex-shrink: 0; font-family: inherit; line-height: 1;
+}
+.repay-month-nav:active { transform: scale(0.9); }
+.repay-month-mid { flex: 1; text-align: center; cursor: pointer; }
+.repay-month-label { font-size: 15px; font-weight: 700; color: var(--text); display: block; }
+.repay-month-sub { font-size: 11px; color: var(--text-muted); display: block; margin-top: 2px; }
+
+/* 最迟还款日徽标 */
+.repay-due-badge {
+  display: inline-block; margin-left: 6px;
+  font-size: 10px; font-weight: 600;
+  background: var(--primary-light); color: var(--primary-dark);
+  border-radius: 6px; padding: 1px 6px;
+  vertical-align: middle; white-space: nowrap;
+}
+.repay-due-badge.overdue { background: #FFE3E3; color: #C92A2A; }
+.repay-due-badge.today { background: #FFF3E0; color: #E8590C; }
+.repay-due-badge.none { background: #F1F3F5; color: var(--text-muted); }
+
 .repay-progress-bar {
   height: 6px; background: rgba(255,255,255,0.3); border-radius: 3px;
   overflow: hidden; margin-top: 10px;
@@ -854,7 +884,6 @@ body {
 .repay-item-detail {
   display: flex; justify-content: space-between; font-size: 12px;
 }
-.repay-detail-paid { color: var(--success); font-weight: 600; }
 .repay-detail-remain { color: var(--danger); font-weight: 600; }
 .repay-detail-total { color: var(--text-secondary); }
 
@@ -1287,8 +1316,8 @@ body {
         <div class="repay-summary-amount" id="repay-total">¥0.00</div>
         <div class="repay-summary-row">
           <div class="repay-summary-item">
-            <span>已还</span>
-            <span class="repay-summary-item-val" id="repay-paid">¥0</span>
+            <span>本月到期</span>
+            <span class="repay-summary-item-val" id="repay-due-amt">¥0</span>
           </div>
           <div class="repay-summary-item">
             <span>剩余</span>
@@ -1302,6 +1331,14 @@ body {
         <div class="repay-progress-bar">
           <div class="repay-progress-fill" id="repay-progress" style="width:0%"></div>
         </div>
+      </div>
+      <div class="repay-month-bar">
+        <button class="repay-month-nav" onclick="shiftRepayMonth(-1)">‹</button>
+        <div class="repay-month-mid" onclick="resetRepayMonth()">
+          <span class="repay-month-label" id="repay-month-label">本月</span>
+          <span class="repay-month-sub" id="repay-month-sub">本月到期 0 笔</span>
+        </div>
+        <button class="repay-month-nav" onclick="shiftRepayMonth(1)">›</button>
       </div>
       <div class="income-section-header">
         <span class="income-section-title">还款项目</span>
@@ -1522,6 +1559,8 @@ body {
     <div class="gen-modal-emoji-row" id="repay-emojis"></div>
     <div class="gen-modal-label">待还总额（元）</div>
     <input type="number" class="gen-modal-input" id="repay-total-amount" placeholder="0.00" min="0" step="0.01" inputmode="decimal">
+    <div class="gen-modal-label">最迟还款日（每月几号，可选）</div>
+    <input type="number" class="gen-modal-input" id="repay-due-day" placeholder="如：15（每月 15 日前还清）" min="1" max="31" step="1" inputmode="numeric">
     <div class="gen-modal-btns">
       <button class="gen-modal-btn cancel" onclick="closeRepayModal()">取消</button>
       <button class="gen-modal-btn confirm repay" onclick="saveRepayItem()">确认</button>
@@ -1610,9 +1649,9 @@ const INCOME_EMOJIS = ['💼','🏦','🔨','💰','💵','📈','🎁','🧧','
 
 /* 还款分类数据 */
 const REPAY_PRESET = [
-  { id:'repay_flight', name:'机票还款', creditor:'航空公司', icon:'✈️', total:0, paid:0, preset:true, logs:[] },
-  { id:'repay_boc', name:'中国银行还款', creditor:'中国银行', icon:'🏦', total:0, paid:0, preset:true, logs:[] },
-  { id:'repay_abc', name:'农业银行还款', creditor:'农业银行', icon:'🌾', total:0, paid:0, preset:true, logs:[] },
+  { id:'repay_flight', name:'机票还款', creditor:'航空公司', icon:'✈️', total:0, paid:0, preset:true, logs:[], dueDay:5 },
+  { id:'repay_boc', name:'中国银行还款', creditor:'中国银行', icon:'🏦', total:0, paid:0, preset:true, logs:[], dueDay:15 },
+  { id:'repay_abc', name:'农业银行还款', creditor:'农业银行', icon:'🌾', total:0, paid:0, preset:true, logs:[], dueDay:20 },
 ];
 const REPAY_EMOJIS = ['✈️','🏦','🌾','💳','🏠','🚗','📱','💰','📊','🔔','📦','🎯','⚡','🔒','📝','💼'];
 
@@ -1631,6 +1670,8 @@ let repayLogAccount = ''; // 记录还款时选择的支付账户
 let incCatEditingId = null, incCatEmoji = '💰';
 /* 还款项弹窗状态 */
 let repayEditingId = null, repayEmoji = '💳', repayLogItemId = null;
+/* 还款页所选月份（'' = 本月，格式 YYYY-MM） */
+let repayMonthCursor = '';
 
 function save() {
   localStorage.setItem('gg_records', JSON.stringify(records));
@@ -2849,20 +2890,62 @@ function delIncomeCat(catId) {
 }
 
 /* ==================== 还款管理页 ==================== */
+function getRepayYM() {
+  if (repayMonthCursor) return repayMonthCursor;
+  const n = new Date();
+  return n.getFullYear() + '-' + String(n.getMonth() + 1).padStart(2, '0');
+}
+function shiftRepayMonth(delta) {
+  const [y, m] = getRepayYM().split('-').map(Number);
+  const d = new Date(y, m - 1 + delta, 1);
+  repayMonthCursor = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+  renderRepayPage();
+}
+function resetRepayMonth() {
+  repayMonthCursor = '';
+  renderRepayPage();
+}
+
+function repayDueBadge(item, isDone) {
+  if (isDone) return '<span class="repay-due-badge none">✅ 已还清</span>';
+  if (!item.dueDay) return '<span class="repay-due-badge none">📅 未设还款日</span>';
+  const [y, m] = getRepayYM().split('-').map(Number);
+  const now = new Date();
+  const isThisMonth = y === now.getFullYear() && m === now.getMonth() + 1;
+  if (isThisMonth) {
+    if (now.getDate() > item.dueDay) return `<span class="repay-due-badge overdue">⚠️ ${item.dueDay} 日已过</span>`;
+    if (now.getDate() === item.dueDay) return `<span class="repay-due-badge today">🔔 今天到期</span>`;
+    return `<span class="repay-due-badge">⏰ 每月 ${item.dueDay} 日前</span>`;
+  }
+  return `<span class="repay-due-badge">📅 每月 ${item.dueDay} 日</span>`;
+}
+
 function renderRepayPage() {
-  let totalDebt = 0, totalPaid = 0;
+  const [curY, curM] = getRepayYM().split('-').map(Number);
+  const now = new Date();
+  const isThisMonth = curY === now.getFullYear() && curM === now.getMonth() + 1;
+
+  // 本月到期统计（随所选月份）：未还清且有最迟还款日的项
+  let dueCount = 0, dueAmt = 0, totalDebt = 0, totalPaid = 0;
   repayItems.forEach(item => {
-    totalDebt += item.total;
-    totalPaid += item.paid;
+    totalDebt += item.total || 0;
+    totalPaid += item.paid || 0;
+    const remain = (item.total || 0) - (item.paid || 0);
+    if (remain > 0 && item.dueDay) { dueCount++; dueAmt += remain; }
   });
   const totalRemain = totalDebt - totalPaid;
   const pct = totalDebt > 0 ? Math.round(totalPaid / totalDebt * 100) : 0;
 
   document.getElementById('repay-total').textContent = '¥' + totalRemain.toFixed(2);
-  document.getElementById('repay-paid').textContent = '¥' + totalPaid.toFixed(0);
+  document.getElementById('repay-due-amt').textContent = '¥' + dueAmt.toFixed(0) + (dueCount ? ' · ' + dueCount + '笔' : '');
   document.getElementById('repay-remain').textContent = '¥' + totalRemain.toFixed(0);
   document.getElementById('repay-count').textContent = repayItems.length;
   document.getElementById('repay-progress').style.width = pct + '%';
+
+  // 月份选择条
+  document.getElementById('repay-month-label').textContent = curY + '年' + curM + '月';
+  document.getElementById('repay-month-sub').textContent =
+    isThisMonth ? (dueCount ? '本月到期 ' + dueCount + ' 笔' : '本月无到期') : '点击回到本月 ›';
 
   const list = document.getElementById('repay-item-list');
   if (repayItems.length === 0) {
@@ -2870,9 +2953,17 @@ function renderRepayPage() {
     return;
   }
 
+  // 排序：未还清在前（按最迟还款日升序），已还清排最后
+  const sorted = [...repayItems].sort((a, b) => {
+    const aDone = (a.total || 0) - (a.paid || 0) <= 0 && a.total > 0;
+    const bDone = (b.total || 0) - (b.paid || 0) <= 0 && b.total > 0;
+    if (aDone !== bDone) return aDone ? 1 : -1;
+    return (a.dueDay || 99) - (b.dueDay || 99);
+  });
+
   // 按债权方同名分组（≥2项时汇总显示）
   const groups = {};
-  repayItems.forEach(item => {
+  sorted.forEach(item => {
     const key = (item.creditor || '未指定').trim();
     (groups[key] = groups[key] || []).push(item);
   });
@@ -2897,7 +2988,6 @@ function renderRepayPage() {
             <span class="repay-group-arrow">▾</span>
           </div>
           <div class="repay-group-summary">
-            <span class="paid">已还 ¥${paid.toFixed(0)}</span>
             <span>总额 ¥${total.toFixed(0)}</span>
             <span class="remain">${remain <= 0 ? '✅ 已还清' : '剩余 ¥' + remain.toFixed(0)}</span>
           </div>
@@ -2909,7 +2999,7 @@ function renderRepayPage() {
       </div>`;
     }).join('');
   } else {
-    list.innerHTML = repayItems.map(repayItemCard).join('');
+    list.innerHTML = sorted.map(repayItemCard).join('');
   }
 }
 
@@ -2917,6 +3007,7 @@ function repayItemCard(item) {
   const remain = item.total - item.paid;
   const itemPct = item.total > 0 ? Math.round(item.paid / item.total * 100) : 0;
   const isDone = remain <= 0 && item.total > 0;
+  const dueBadge = repayDueBadge(item, isDone);
   let logsHTML = '';
   if (item.logs && item.logs.length > 0) {
     logsHTML = '<div class="repay-log-list repay-logs-' + item.id + '" style="display:none">' + item.logs.map(log =>
@@ -2931,7 +3022,7 @@ function repayItemCard(item) {
     <div class="repay-item-header">
       <div class="repay-item-icon">${item.icon}</div>
       <div class="repay-item-name">${item.name}<span class="income-tag ${item.preset?'preset':'custom'}">${item.preset?'预设':'自定义'}</span>
-        <div class="repay-item-creditor">债权方：${item.creditor}</div>
+        <div class="repay-item-creditor">债权方：${item.creditor}${dueBadge}</div>
       </div>
       <div class="repay-item-actions">
         <button class="repay-act-log" onclick="event.stopPropagation();openRepayLogModal('${item.id}')">+</button>
@@ -2943,7 +3034,6 @@ function repayItemCard(item) {
       <div class="repay-progress-bar-fill" style="width:${itemPct}%"></div>
     </div>
     <div class="repay-item-detail">
-      <span class="repay-detail-paid">已还 ¥${item.paid.toFixed(0)}</span>
       <span class="repay-detail-total">总额 ¥${item.total.toFixed(0)}</span>
       <span class="repay-detail-remain">${isDone?'✅ 已还清':'剩余 ¥'+remain.toFixed(0)}</span>
     </div>
@@ -2972,12 +3062,14 @@ function openRepayItemModal(itemId) {
       document.getElementById('repay-name').value = item.name;
       document.getElementById('repay-creditor').value = item.creditor;
       document.getElementById('repay-total-amount').value = item.total || '';
+      document.getElementById('repay-due-day').value = item.dueDay || '';
       repayEmoji = item.icon;
     }
   } else {
     document.getElementById('repay-name').value = '';
     document.getElementById('repay-creditor').value = '';
     document.getElementById('repay-total-amount').value = '';
+    document.getElementById('repay-due-day').value = '';
     repayEmoji = '💳';
   }
   
@@ -2997,8 +3089,11 @@ function saveRepayItem() {
   const name = document.getElementById('repay-name').value.trim();
   const creditor = document.getElementById('repay-creditor').value.trim() || '未指定';
   const total = parseFloat(document.getElementById('repay-total-amount').value) || 0;
+  const dueVal = document.getElementById('repay-due-day').value.trim();
+  const dueDay = dueVal ? parseInt(dueVal, 10) : null;
   if (!name) { showToast('请输入还款名称'); return; }
-  
+  if (dueDay !== null && (isNaN(dueDay) || dueDay < 1 || dueDay > 31)) { showToast('最迟还款日需在 1-31 之间'); return; }
+
   if (repayEditingId) {
     const item = repayItems.find(i => i.id === repayEditingId);
     if (item) {
@@ -3006,12 +3101,13 @@ function saveRepayItem() {
       item.creditor = creditor;
       item.icon = repayEmoji;
       item.total = total;
+      item.dueDay = dueDay;
     }
   } else {
     repayItems.push({
       id: 'repay_custom_' + Date.now(),
       name, creditor, icon: repayEmoji,
-      total, paid: 0, preset: false, logs: []
+      total, paid: 0, preset: false, logs: [], dueDay
     });
   }
   
