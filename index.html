@@ -221,6 +221,13 @@ body {
   grid-template-columns: repeat(5, 1fr);
   gap: 8px;
 }
+.cat-group-label {
+  grid-column: 1 / -1;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  padding: 4px 2px 0;
+}
 .cat-item {
   display: flex;
   flex-direction: column;
@@ -1057,6 +1064,7 @@ body {
 .zbb-table td input:focus { border-color:var(--primary); }
 .zbb-cat-name { font-weight:600; color:var(--text); }
 .zbb-pct { color:var(--text-muted); font-size:11px; white-space:nowrap; }
+.zbb-auto-val { font-weight:600; color:var(--text); }
 
 /* ==================== 债务专家 ==================== */
 .debt-row { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
@@ -1523,7 +1531,9 @@ body {
 
 <script>
 /* ==================== 数据管理 ==================== */
-const DEFAULT_CATS = ['美食','奶茶','电影','演出','服装','医疗','话费','房租','生活用品','其他'];
+/* 必要支出：第一级「必要支出」→ 第二级「房租 / 交通 / 话费」 */
+const NECESSITY_CATS = ['房租','交通','话费'];
+const DEFAULT_CATS = [...NECESSITY_CATS, '美食','奶茶','电影','演出','服装','医疗','生活用品','其他'];
 const CAT_ICONS = { '美食':'🍜', '奶茶':'🧋', '电影':'🎬', '演出':'🎭', '服装':'👕', '医疗':'💊', '话费':'📱', '房租':'🏠', '生活用品':'🧴', '其他':'📌', '餐饮':'🍜', '交通':'🚇', '购物':'🛍', '娱乐':'🎮', '日常':'🏠', '贷款':'💳', '旅行':'✈️', '学习':'📚', '生意':'💼', '宠物':'🐾' };
 const CAT_COLORS = { '美食':'#FFF3E0', '奶茶':'#FCE4EC', '电影':'#F3E5F5', '演出':'#EDE7F6', '服装':'#E3F2FD', '医疗':'#FFEBEE', '话费':'#E0F7FA', '房租':'#EFEBE9', '生活用品':'#E8F5E9', '其他':'#ECEFF1', '餐饮':'#FFF3E0', '交通':'#E3F2FD', '购物':'#FCE4EC', '娱乐':'#F3E5F5', '日常':'#E8F5E9', '贷款':'#FFF8E1', '旅行':'#E0F7FA', '学习':'#E8EAF6', '生意':'#EFEBE9', '宠物':'#F1F8E9' };
 
@@ -1668,9 +1678,11 @@ function renderModalCats() {
     if (!modalCat) modalCat = '美食';
     let cats = DEFAULT_CATS;
     if (!DEFAULT_CATS.includes(modalCat)) cats = [...DEFAULT_CATS, modalCat];
-    h.innerHTML = cats.map(c =>
-      `<button class="modal-cat${modalCat===c?' active':''}" onclick="modalCat='${c}';renderModalCats()">${CAT_ICONS[c]||'💰'} ${c}</button>`
-    ).join('');
+    const nec = cats.filter(c => NECESSITY_CATS.includes(c));
+    const rest = cats.filter(c => !NECESSITY_CATS.includes(c));
+    const mk = c => `<button class="modal-cat${modalCat===c?' active':''}" onclick="modalCat='${c}';renderModalCats()">${CAT_ICONS[c]||'💰'} ${c}</button>`;
+    h.innerHTML = `<div class="cat-group-label">必要支出</div>` + nec.map(mk).join('') +
+      (rest.length ? `<div class="cat-group-label">其他</div>` + rest.map(mk).join('') : '');
   }
   // 收支均显示账户选择
   document.getElementById('modal-account-row').style.display = 'flex';
@@ -1802,13 +1814,15 @@ function renderHome() {
   calHTML += '</div>';
   calWrap.innerHTML = calHTML;
 
-  // Budget: 每月可支配金额固定 800
+  // Budget: 每月可支配固定 800（房租/交通/话费已从收入先行扣除，不计入 800 池）
   const disposableTotal = 800;
-  const pct = Math.min(100, Math.round(totalExp / disposableTotal * 100));
-  const remain = disposableTotal - totalExp;
+  const necSpent = thisMonth.filter(r => r.type==='expense' && NECESSITY_CATS.includes(r.category)).reduce((s,r)=>s+r.amount,0);
+  const poolSpent = Math.max(0, totalExp - necSpent);
+  const pct = Math.min(100, Math.round(poolSpent / disposableTotal * 100));
+  const remain = disposableTotal - poolSpent;
   document.getElementById('budget-bar').style.width = pct + '%';
   document.getElementById('budget-remain').textContent = '剩余 ¥' + Math.max(0,remain).toFixed(0);
-  document.getElementById('budget-used').textContent = '已用 ¥' + totalExp.toFixed(0) + ' / 总额 ¥' + disposableTotal.toFixed(0);
+  document.getElementById('budget-used').textContent = '已用 ¥' + poolSpent.toFixed(0) + ' / 总额 ¥' + disposableTotal.toFixed(0);
   document.getElementById('budget-status').textContent = remain >= 0 ? '剩余 ¥' + remain.toFixed(0) : '超支 ¥' + Math.abs(remain).toFixed(0);
   if (remain < 0) {
     document.getElementById('budget-bar').style.background = '#EF5350';
@@ -1818,13 +1832,16 @@ function renderHome() {
     document.getElementById('budget-status').style.color = 'var(--primary)';
   }
 
-  // Category grid
-  document.getElementById('cat-grid').innerHTML = DEFAULT_CATS.map(c =>
-    `<div class="cat-item" onclick="quickAdd('${c}','expense')">
+  // Category grid（第一级「必要支出」→ 房租/交通/话费）
+  const necCats = DEFAULT_CATS.filter(c => NECESSITY_CATS.includes(c));
+  const restCats = DEFAULT_CATS.filter(c => !NECESSITY_CATS.includes(c));
+  const catItem = c => `<div class="cat-item" onclick="quickAdd('${c}','expense')">
       <div class="cat-icon" style="background:${CAT_COLORS[c]}">${CAT_ICONS[c]||'💰'}</div>
       <span class="cat-name">${c}</span>
-    </div>`
-  ).join('');
+    </div>`;
+  document.getElementById('cat-grid').innerHTML =
+    `<div class="cat-group-label">必要支出</div>` + necCats.map(catItem).join('') +
+    `<div class="cat-group-label">其他</div>` + restCats.map(catItem).join('');
 
   // Streak
   const days = new Set(records.map(r=>r.date));
@@ -3467,80 +3484,57 @@ function renderBudgetArchitect() {
   const body = document.getElementById('ai-mode-body');
   const now = new Date();
   const ym = now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
-  const income = getMonthIncome();
-  const spent = getMonthSpent();
-  const available = Math.max(0, income - spent);
-  const FIXED_DISPOSABLE = 800; // 每月可支配金额固定 800
+  const FIXED_DISPOSABLE = 800; // 每月可支配固定 800
 
-  let vals;
-  if (zbb && zbb.month === ym) {
-    vals = zbb;
-  } else {
-    vals = {
-      month: ym,
-      need: Math.round(available*0.55),
-      repay: Math.round(available*0.45),
-      disposable: FIXED_DISPOSABLE
-    };
-  }
+  // ① 必要支出池 = 本月实际记账的 房租+交通+话费（自动统计，只读）
+  const necRecs = records.filter(r => r.type==='expense' && r.date.startsWith(ym) && NECESSITY_CATS.includes(r.category));
+  const necTotal = necRecs.reduce((s,r)=>s+r.amount,0);
+  const byCat = {};
+  NECESSITY_CATS.forEach(c => byCat[c] = necRecs.filter(r=>r.category===c).reduce((s,r)=>s+r.amount,0));
 
-  const sum = (vals.need||0)+(vals.repay||0)+FIXED_DISPOSABLE;
-  const diff = available - sum;
+  // ② 还款 = 固定收入 − 必要支出 − 800（800 以外多的钱全部用于还款）
+  const fixedIncome = financeProfile.fixedIncome || 0;
+  const repay = fixedIncome - necTotal - FIXED_DISPOSABLE;
+  const canRepay = repay > 0;
+  const pctOf = v => fixedIncome > 0 ? Math.round(v/fixedIncome*100) + '%' : '0%';
+  const necDesc = '房租 ¥' + (byCat['房租']||0).toFixed(0) + ' + 交通 ¥' + (byCat['交通']||0).toFixed(0) + ' + 话费 ¥' + (byCat['话费']||0).toFixed(0);
 
   body.innerHTML = `
-    <div class="ai-warn">🧱 零基预算：本月可分配资金 <b>¥${available.toFixed(0)}</b>（收入 ¥${income.toFixed(0)} − 已支出 ¥${spent.toFixed(0)}）。每月可支配金额固定 <b>¥${FIXED_DISPOSABLE}</b>，其余分配至必要支出与还款。</div>
+    <div class="ai-warn">🧮 分配公式：<b>固定收入 ¥${fixedIncome.toFixed(0)}</b> − 必要支出（房租/交通/话费）− 每月可支配 <b>¥${FIXED_DISPOSABLE}</b> = 还款。800 以外多的钱全部用来还债。</div>
     <div class="ai-block">
-      <div class="ai-block-title">🗂 资金分配表 <span class="badge">零基</span></div>
+      <div class="ai-block-title">🗂 资金分配表 <span class="badge">自动</span></div>
       <table class="zbb-table">
-        <tr><th>资金池</th><th>金额(元)</th><th>占比</th><th>用途</th></tr>
-        <tr><td class="zbb-cat-name">🏠 必要支出</td><td><input type="number" id="zbb-need" value="${vals.need||0}" oninput="zbbPreview()"></td><td class="zbb-pct" id="zbb-need-pct">${available>0?Math.round((vals.need||0)/available*100):0}%</td><td style="font-size:11px;color:var(--text-secondary)">房租、交通</td></tr>
-        <tr><td class="zbb-cat-name">💳 还款</td><td><input type="number" id="zbb-repay" value="${vals.repay||0}" oninput="zbbPreview()"></td><td class="zbb-pct" id="zbb-repay-pct">${available>0?Math.round((vals.repay||0)/available*100):0}%</td><td style="font-size:11px;color:var(--text-secondary)">信用卡、贷款等</td></tr>
-        <tr><td class="zbb-cat-name">🪙 每月可支配</td><td><input type="number" id="zbb-disposable" value="${FIXED_DISPOSABLE}" readonly style="background:var(--bg);color:var(--text-secondary);"></td><td class="zbb-pct" id="zbb-disposable-pct">${available>0?Math.round(FIXED_DISPOSABLE/available*100):0}%</td><td style="font-size:11px;color:var(--text-secondary)">自由支出，固定 ¥800</td></tr>
+        <tr><th>资金池</th><th>金额(元)</th><th>占收入</th><th>说明</th></tr>
+        <tr>
+          <td class="zbb-cat-name">🏠 必要支出</td>
+          <td class="zbb-auto-val">¥${necTotal.toFixed(0)}</td>
+          <td class="zbb-pct">${pctOf(necTotal)}</td>
+          <td style="font-size:11px;color:var(--text-secondary)">${necDesc}（按记账自动统计）</td>
+        </tr>
+        <tr>
+          <td class="zbb-cat-name">💳 还款</td>
+          <td class="zbb-auto-val">${canRepay ? '¥' + repay.toFixed(0) : '<span style="color:var(--danger)">¥0</span>'}</td>
+          <td class="zbb-pct">${pctOf(Math.max(0,repay))}</td>
+          <td style="font-size:11px;color:var(--text-secondary)">剩余资金全部用于还款</td>
+        </tr>
+        <tr>
+          <td class="zbb-cat-name">🪙 每月可支配</td>
+          <td class="zbb-auto-val">¥${FIXED_DISPOSABLE}</td>
+          <td class="zbb-pct">${pctOf(FIXED_DISPOSABLE)}</td>
+          <td style="font-size:11px;color:var(--text-secondary)">固定 ¥800，自由支配</td>
+        </tr>
       </table>
-      <div id="zbb-status" style="margin-top:10px;font-size:12px;"></div>
-      <button class="ai-form-btn" style="margin-top:12px;" onclick="saveZBB()">💾 保存本月预算分配</button>
+      <div style="margin-top:10px;font-size:12px;">
+        ${canRepay
+          ? '<span style="color:var(--success);font-weight:600;">✅ 零基达成：固定收入 ¥' + fixedIncome.toFixed(0) + ' = 必要 ¥' + necTotal.toFixed(0) + ' + 还款 ¥' + repay.toFixed(0) + ' + 可支配 ¥800</span>'
+          : '<span style="color:var(--danger);font-weight:600;">🚨 必要支出 ¥' + necTotal.toFixed(0) + ' + 可支配 ¥800 已超过固定收入 ¥' + fixedIncome.toFixed(0) + '，缺口 ¥' + Math.abs(repay).toFixed(0) + '，本月无还款能力</span>'}
+      </div>
     </div>
     <div class="ai-block">
-      <div class="ai-block-title">🔄 均衡分配原则</div>
-      <div class="ai-suggestion"><span class="ai-suggestion-icon">📐</span><div class="ai-suggestion-text"><div class="ai-suggestion-title">参考比例：必要支出 55% / 还款 45%（每月可支配固定 ¥800）</div><div class="ai-suggestion-desc">按需调整，但建议每月可支配不低于固定值，保证「必要支出」与「还款」优先。</div></div></div>
-      <div class="ai-suggestion"><span class="ai-suggestion-icon">🧹</span><div class="ai-suggestion-text"><div class="ai-suggestion-title">月度检视</div><div class="ai-suggestion-desc">月底核对：还款池有剩余 → 下月追加还款；必要池超支 → 从可支配池预支并记录原因。</div></div></div>
+      <div class="ai-block-title">📐 分配原则</div>
+      <div class="ai-suggestion"><span class="ai-suggestion-icon">💳</span><div class="ai-suggestion-text"><div class="ai-suggestion-title">还款优先</div><div class="ai-suggestion-desc">固定收入扣掉必要支出与每月可支配 ¥800 后，剩余全部用于还款，加快清债。</div></div></div>
+      <div class="ai-suggestion"><span class="ai-suggestion-icon">🧹</span><div class="ai-suggestion-text"><div class="ai-suggestion-title">月度检视</div><div class="ai-suggestion-desc">每月可支配 800 花不完 → 结转下月或追加还款；超出 → 从还款预算扣减并控制下月支出。</div></div></div>
     </div>`;
-
-  zbbPreview();
-}
-
-function zbbPreview() {
-  const get = id => parseFloat(document.getElementById(id).value) || 0;
-  const need = get('zbb-need'), repay = get('zbb-repay');
-  const FIXED_DISPOSABLE = 800;
-  const sum = need + repay + FIXED_DISPOSABLE;
-  const available = Math.max(0, getMonthIncome() - getMonthSpent());
-  const diff = available - sum;
-  [['need',need],['repay',repay],['disposable',FIXED_DISPOSABLE]].forEach(([k,v]) => {
-    const el = document.getElementById('zbb-'+k+'-pct');
-    if (el) el.textContent = available>0 ? Math.round(v/available*100)+'%' : '0%';
-  });
-  const st = document.getElementById('zbb-status');
-  if (Math.abs(diff) < 0.01) {
-    st.innerHTML = '<span style="color:var(--success);font-weight:600;">✅ 零基达成：¥' + sum.toFixed(0) + ' 已全部分配，无闲置资金</span>';
-  } else if (diff > 0) {
-    st.innerHTML = '<span style="color:var(--warning);font-weight:600;">⚠️ 还有 ¥' + diff.toFixed(0) + ' 待分配，建议追加还款或存入可支配</span>';
-  } else {
-    st.innerHTML = '<span style="color:var(--danger);font-weight:600;">🚨 超分配 ¥' + Math.abs(diff).toFixed(0) + '，请削减必要支出或还款金额</span>';
-  }
-}
-
-function saveZBB() {
-  const now = new Date();
-  const ym = now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
-  zbb = {
-    month: ym,
-    need: parseFloat(document.getElementById('zbb-need').value) || 0,
-    repay: parseFloat(document.getElementById('zbb-repay').value) || 0,
-    disposable: 800
-  };
-  localStorage.setItem('gg_zbb', JSON.stringify(zbb));
-  showToast('预算分配已保存 ✓');
 }
 
 /* ==================== 键盘事件 ==================== */
