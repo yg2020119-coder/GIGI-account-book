@@ -209,79 +209,6 @@ body {
 .entry-expense { background: var(--primary); color: #fff; }
 .entry-income { background: var(--income); color: #fff; }
 
-/* ===== 小票拍照 ===== */
-.receipt-entry {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: linear-gradient(135deg, #DEE9FF, #D6E9FF);
-  border-radius: 16px;
-  padding: 13px 16px;
-  margin-bottom: 16px;
-  cursor: pointer;
-  transition: all 0.2s;
-  border: 1px dashed #7FB5FF;
-}
-.receipt-entry:active { transform: scale(0.98); }
-.receipt-entry-icon {
-  width: 42px; height: 42px;
-  border-radius: 12px;
-  background: #fff;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 22px;
-  box-shadow: 0 2px 8px rgba(47,107,255,0.18);
-  flex-shrink: 0;
-}
-.receipt-entry-text { flex: 1; }
-.receipt-entry-title { font-size: 14px; font-weight: 600; color: var(--text); }
-.receipt-entry-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-
-.receipt-preview { margin: 14px 0 4px; border-radius: 12px; overflow: hidden; background: #F5F5F5; max-height: 260px; display: flex; justify-content: center; }
-.receipt-preview img { max-width: 100%; max-height: 260px; object-fit: contain; }
-
-.receipt-progress { margin: 14px 0 4px; }
-.receipt-progress-text { font-size: 12px; color: var(--text-secondary); margin-bottom: 8px; text-align: center; }
-.receipt-progress-bar { height: 6px; background: #F0EBE6; border-radius: 3px; overflow: hidden; }
-.receipt-progress-fill { height: 100%; width: 0; background: linear-gradient(90deg,#3885FC,#56A0FC); border-radius: 3px; transition: width 0.3s; }
-
-.receipt-summary { margin: 14px 0 4px; }
-.receipt-summary-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 10px; }
-.receipt-summary input {
-  width: 100%; box-sizing: border-box;
-  border: 1px solid #E0D8D0; border-radius: 10px;
-  padding: 11px 12px; font-size: 15px; font-family: inherit;
-  margin-bottom: 10px; outline: none; background: #fff;
-}
-.receipt-summary input:focus { border-color: var(--primary); }
-.receipt-cats { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 4px; }
-.receipt-json-block { margin: 12px 0 6px; }
-.receipt-json-head { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--text-secondary); margin-bottom: 6px; }
-.receipt-json-copy { background: var(--primary); color: #fff; border: none; border-radius: 8px; padding: 3px 14px; font-size: 12px; cursor: pointer; }
-.receipt-json-area { width: 100%; height: 176px; background: #F7F3EF; border: 1px dashed #E5DED7; border-radius: 10px; padding: 8px 10px; font-family: 'SF Mono', Consolas, Menlo, monospace; font-size: 12px; color: #5D4037; resize: none; box-sizing: border-box; line-height: 1.7; }
-.receipt-comment { margin-top: 8px; font-size: 13px; color: #8D6E63; background: #FFF3E0; border-radius: 10px; padding: 8px 12px; line-height: 1.6; }
-.receipt-total {
-  font-size: 11px; color: #A1887F; text-align: center;
-  margin-top: 2px; padding: 8px; background: #FFF8F0; border-radius: 10px;
-}
-
-.receipt-actions { display: flex; gap: 10px; margin-top: 14px; }
-.receipt-action {
-  flex: 1; padding: 13px; border-radius: 12px; border: 1px solid #E0D8D0;
-  background: #fff; font-size: 14px; font-weight: 600; font-family: inherit;
-  cursor: pointer; color: var(--text); transition: all 0.2s;
-}
-.receipt-action:active { transform: scale(0.97); background: #FFF8F0; }
-
-.receipt-view-sheet { padding: 20px; }
-.receipt-view-img { width: 100%; border-radius: 12px; max-height: 60vh; object-fit: contain; background: #F5F5F5; }
-.receipt-view-info { font-size: 13px; color: var(--text-secondary); text-align: center; margin: 12px 0; }
-
-.receipt-badge {
-  display: inline-block; font-size: 12px; cursor: pointer;
-  background: #FFF3E0; border-radius: 6px; padding: 1px 5px;
-  margin-left: 6px; vertical-align: middle;
-}
-
 .section-title {
   font-size: 14px;
   font-weight: 600;
@@ -838,6 +765,25 @@ body {
 .repay-due-badge.today { background: #FFF3E0; color: #E8590C; }
 .repay-due-badge.none { background: #F1F3F5; color: var(--text-muted); }
 
+/* 已还清归档 */
+.repay-archive {
+  margin-top: 18px; border-top: 1px dashed var(--border); padding-top: 12px;
+}
+.repay-archive-header {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 600; color: var(--text-secondary);
+  cursor: pointer; padding: 6px 0; user-select: none;
+}
+.repay-archive-count {
+  font-size: 11px; background: var(--border); color: var(--text-muted);
+  border-radius: 8px; padding: 1px 7px; font-weight: 500;
+}
+.repay-archive-arrow { margin-left: auto; transition: transform 0.2s; font-size: 12px; }
+.repay-archive.open .repay-archive-arrow { transform: rotate(180deg); }
+.repay-archive-body { display: none; margin-top: 10px; }
+.repay-archive.open .repay-archive-body { display: block; }
+.repay-archive .repay-item { opacity: 0.65; }
+
 .repay-progress-bar {
   height: 6px; background: rgba(255,255,255,0.3); border-radius: 3px;
   overflow: hidden; margin-top: 10px;
@@ -1232,14 +1178,6 @@ body {
         <button class="entry-btn entry-expense" onclick="openModal('expense')">− 记支出</button>
         <button class="entry-btn entry-income" onclick="openModal('income')">+ 记收入</button>
       </div>
-      <div class="receipt-entry" onclick="openReceiptModal()">
-        <span class="receipt-entry-icon">🧾</span>
-        <div class="receipt-entry-text">
-          <div class="receipt-entry-title">拍小票 · 自动记账</div>
-          <div class="receipt-entry-sub">拍照识别金额与分类，免手输</div>
-        </div>
-        <span class="menu-arrow">›</span>
-      </div>
       <div class="ai-entry" onclick="openSubPage('page-ai')">
         <span class="ai-entry-icon">🧠</span>
         <div class="ai-entry-text">
@@ -1480,55 +1418,6 @@ body {
 <!-- 数据恢复文件选择器 -->
 <input type="file" id="import-file" accept=".json,application/json" style="display:none" onchange="handleImportFile(this)">
 
-<!-- 小票文件选择器 -->
-<input type="file" id="receipt-file" accept="image/*" style="display:none" onchange="handleReceiptFile(this)">
-
-<!-- 拍小票弹窗 -->
-<div class="gen-modal-overlay" id="receipt-modal" onclick="if(event.target===this)closeReceiptModal()">
-  <div class="gen-modal-sheet" onclick="event.stopPropagation()">
-    <div class="gen-modal-title">🧾 拍小票 · 自动记账</div>
-    <div class="receipt-total" id="receipt-total"></div>
-    <div class="receipt-actions">
-      <button class="receipt-action" onclick="pickReceiptImage(true)">📷 拍照</button>
-      <button class="receipt-action" onclick="pickReceiptImage(false)">🖼 从相册选择</button>
-    </div>
-    <div class="receipt-preview" id="receipt-preview" style="display:none">
-      <img id="receipt-img" alt="小票预览" />
-    </div>
-    <div class="receipt-progress" id="receipt-progress" style="display:none">
-      <div class="receipt-progress-text" id="receipt-progress-text">准备中…</div>
-      <div class="receipt-progress-bar"><div class="receipt-progress-fill" id="receipt-progress-fill"></div></div>
-    </div>
-    <div class="receipt-summary" id="receipt-summary" style="display:none">
-      <div class="receipt-summary-title">识别结果（请确认）</div>
-      <input id="receipt-amount" type="number" placeholder="金额 ¥" step="0.01" />
-      <div id="receipt-cats" class="receipt-cats"></div>
-      <input id="receipt-name" type="text" placeholder="备注（商家/商品）" />
-      <div class="receipt-json-block" id="receipt-json-block" style="display:none">
-        <div class="receipt-json-head"><span>📋 结构化解析（纯文本 JSON）</span><button class="receipt-json-copy" onclick="copyReceiptJSON()">复制</button></div>
-        <textarea class="receipt-json-area" id="receipt-json" readonly spellcheck="false"></textarea>
-        <div class="receipt-comment" id="receipt-comment"></div>
-      </div>
-    </div>
-    <div class="gen-modal-btns">
-      <button class="gen-modal-btn cancel" onclick="closeReceiptModal()">取消</button>
-      <button class="gen-modal-btn confirm" id="receipt-confirm" style="display:none" onclick="confirmReceiptRecord()">确认记账</button>
-    </div>
-  </div>
-</div>
-
-<!-- 查看小票大图弹窗 -->
-<div class="gen-modal-overlay" id="receipt-view-modal" onclick="if(event.target===this)closeReceiptView()">
-  <div class="gen-modal-sheet receipt-view-sheet" onclick="event.stopPropagation()">
-    <div class="gen-modal-title">🧾 小票凭证</div>
-    <img id="receipt-view-img" class="receipt-view-img" alt="小票原图" />
-    <div class="receipt-view-info" id="receipt-view-info"></div>
-    <div class="gen-modal-btns">
-      <button class="gen-modal-btn confirm" onclick="closeReceiptView()">关闭</button>
-    </div>
-  </div>
-</div>
-
 <!-- 收入分类弹窗 -->
 <div class="gen-modal-overlay" id="inc-cat-modal" onclick="if(event.target===this)closeIncCatModal()">
   <div class="gen-modal-sheet" onclick="event.stopPropagation()">
@@ -1558,8 +1447,8 @@ body {
     <div class="gen-modal-emoji-row" id="repay-emojis"></div>
     <div class="gen-modal-label">待还总额（元）</div>
     <input type="number" class="gen-modal-input" id="repay-total-amount" placeholder="0.00" min="0" step="0.01" inputmode="decimal">
-    <div class="gen-modal-label">最迟还款日（每月几号，可选）</div>
-    <input type="number" class="gen-modal-input" id="repay-due-day" placeholder="如：15（每月 15 日前还清）" min="1" max="31" step="1" inputmode="numeric">
+    <div class="gen-modal-label">最迟还款日（可选）</div>
+    <input type="date" class="gen-modal-input" id="repay-due-date">
     <div class="gen-modal-btns">
       <button class="gen-modal-btn cancel" onclick="closeRepayModal()">取消</button>
       <button class="gen-modal-btn confirm repay" onclick="saveRepayItem()">确认</button>
@@ -1648,9 +1537,9 @@ const INCOME_EMOJIS = ['💼','🏦','🔨','💰','💵','📈','🎁','🧧','
 
 /* 还款分类数据 */
 const REPAY_PRESET = [
-  { id:'repay_flight', name:'机票还款', creditor:'航空公司', icon:'✈️', total:0, paid:0, preset:true, logs:[], dueDay:5 },
-  { id:'repay_boc', name:'中国银行还款', creditor:'中国银行', icon:'🏦', total:0, paid:0, preset:true, logs:[], dueDay:15 },
-  { id:'repay_abc', name:'农业银行还款', creditor:'农业银行', icon:'🌾', total:0, paid:0, preset:true, logs:[], dueDay:20 },
+  { id:'repay_flight', name:'机票还款', creditor:'航空公司', icon:'✈️', total:0, paid:0, preset:true, logs:[], dueDate:'2026-08-05' },
+  { id:'repay_boc', name:'中国银行还款', creditor:'中国银行', icon:'🏦', total:0, paid:0, preset:true, logs:[], dueDate:'2026-08-15' },
+  { id:'repay_abc', name:'农业银行还款', creditor:'农业银行', icon:'🌾', total:0, paid:0, preset:true, logs:[], dueDate:'2026-08-20' },
 ];
 const REPAY_EMOJIS = ['✈️','🏦','🌾','💳','🏠','🚗','📱','💰','📊','🔔','📦','🎯','⚡','🔒','📝','💼'];
 
@@ -1660,6 +1549,15 @@ let incomeCats = JSON.parse(localStorage.getItem('gg_income_cats') || 'null') ||
 incomeCats.forEach(c => { if (!c.icon) c.icon = '💰'; }); // 历史数据图标兜底，避免显示 undefined
 let incomeAmounts = JSON.parse(localStorage.getItem('gg_income_amounts') || '{}');
 let repayItems = JSON.parse(localStorage.getItem('gg_repay_items') || 'null') || JSON.parse(JSON.stringify(REPAY_PRESET));
+// 历史数据兼容：旧 dueDay（每月几号）→ 当前月对应日期
+repayItems.forEach(it => {
+  if (!it.dueDate && it.dueDay) {
+    const n = new Date();
+    it.dueDate = n.getFullYear() + '-' + String(n.getMonth() + 1).padStart(2, '0') + '-' + String(it.dueDay).padStart(2, '0');
+    delete it.dueDay;
+  }
+  it.dueDate = it.dueDate || null;
+});
 let modalType = 'expense', editingId = null;
 let modalCat = '美食';
 let modalAccount = ''; // 记收入时选择存入的账户（余额钱包账户名）
@@ -1713,7 +1611,6 @@ function openModal(type, record) {
 }
 function closeModal() {
   editingId = null;
-  pendingReceipt = null;
   document.getElementById('modal-overlay').classList.remove('show');
 }
 
@@ -1825,8 +1722,7 @@ function submitRecord() {
       amount: amount,
       date: new Date().toISOString().split('T')[0],
       time: Date.now(),
-      account: modalAccount || null,
-      receipt: pendingReceipt || null
+      account: modalAccount || null
     });
     // 新增：自动增减钱包余额
     if (modalAccount) {
@@ -1834,7 +1730,6 @@ function submitRecord() {
       if (w) w.amount = (w.amount || 0) + (modalType==='expense' ? -amount : amount);
     }
   }
-  pendingReceipt = null;
   save();
   closeModal();
   showToast(isEdit ? '已更新 ✓' : (modalType==='expense' ? '支出已记录 ✓' : '收入已记录 ✓'));
@@ -1990,18 +1885,16 @@ function renderBalanceOverview() {
 function renderBills(filter) {
   const list = document.getElementById('bill-list');
   const filters = document.getElementById('bill-filters');
-  const allCats = ['全部', '小票', ...new Set(records.map(r=>r.category))];
+  const allCats = ['全部', ...new Set(records.map(r=>r.category))];
 
   renderBalanceOverview();
 
   filters.innerHTML = allCats.map(c =>
-    `<button class="filter-chip${(filter||'全部')===c?' active':''}" onclick="renderBills('${c}')">${c==='全部'?'全部':c==='小票'?'🧾 小票':(CAT_ICONS[c]||'💰')+' '+c}</button>`
+    `<button class="filter-chip${(filter||'全部')===c?' active':''}" onclick="renderBills('${c}')">${c==='全部'?'全部':(CAT_ICONS[c]||'💰')+' '+c}</button>`
   ).join('');
 
   let filtered;
-  if (filter === '小票') {
-    filtered = records.filter(r=>r.receipt);
-  } else if (filter && filter !== '全部') {
+  if (filter && filter !== '全部') {
     filtered = records.filter(r=>r.category===filter);
   } else {
     filtered = [...records];
@@ -2031,7 +1924,7 @@ function renderBills(filter) {
         <div class="bill-left">
           <div class="bill-icon" style="background:${CAT_COLORS[r.category] || '#ECEFF1'}">${CAT_ICONS[r.category] || '📌'}</div>
           <div class="bill-info">
-            <span class="bill-name">${r.name}${r.receipt?'<span class="receipt-badge" onclick="event.stopPropagation();viewReceipt('+r.id+')">🧾</span>':''}</span>
+            <span class="bill-name">${r.name}</span>
             <span class="bill-date">${r.date} · ${r.category}${r.type==='income'?' · 收入':''}${r.account?' · '+(r.type==='income'?'存入':'支付')+r.account:''}</span>
             ${bal!==undefined?`<span class="bill-balance"><span class="bbl">余额</span><span class="bval">¥${bal.toFixed(2)}</span></span>`:''}
           </div>
@@ -2304,362 +2197,9 @@ function editBudget() {
   showToast('每月可支配金额固定为 ¥800，无需修改');
 }
 
-/* ==================== 拍小票 · OCR 自动记账 ==================== */
-let receiptImageData = null;   // 压缩后的小票 base64
-let pendingReceipt = null;     // 待写入记录的小票图
-let receiptCat = '美食';
-let tesseractLoading = null;
-
 /* 本地日期格式化（避免 UTC 时区偏移一天） */
 function localDate(d) {
   return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
-}
-
-function openReceiptModal() {
-  receiptImageData = null;
-  document.getElementById('receipt-preview').style.display = 'none';
-  document.getElementById('receipt-summary').style.display = 'none';
-  document.getElementById('receipt-progress').style.display = 'none';
-  document.getElementById('receipt-confirm').style.display = 'none';
-  // 本月小票汇总
-  const ym = localDate(new Date()).slice(0, 7);
-  const rs = records.filter(r => r.receipt && r.date.startsWith(ym) && r.type === 'expense');
-  const sum = rs.reduce((s, r) => s + r.amount, 0);
-  document.getElementById('receipt-total').textContent = rs.length
-    ? `本月已录入 ${rs.length} 张小票 · 合计 ¥${sum.toFixed(2)}`
-    : '支持拍照或相册上传小票，自动识别金额记账';
-  document.getElementById('receipt-modal').classList.add('show');
-}
-function closeReceiptModal() {
-  receiptImageData = null;
-  document.getElementById('receipt-modal').classList.remove('show');
-}
-
-function pickReceiptImage(useCamera) {
-  const f = document.getElementById('receipt-file');
-  if (useCamera) f.setAttribute('capture', 'environment');
-  else f.removeAttribute('capture');
-  f.click();
-}
-
-function handleReceiptFile(input) {
-  const f = input.files[0];
-  input.value = '';
-  if (!f) return;
-  compressReceiptImage(f, dataUrl => {
-    receiptImageData = dataUrl;
-    document.getElementById('receipt-img').src = dataUrl;
-    document.getElementById('receipt-preview').style.display = 'flex';
-    document.getElementById('receipt-summary').style.display = 'none';
-    document.getElementById('receipt-confirm').style.display = 'none';
-    document.getElementById('receipt-progress').style.display = 'none';
-    startReceiptOCR();
-  });
-}
-
-/* 压缩图片：最长边≤1000px，JPEG 0.72，控制 localStorage 体积 */
-function compressReceiptImage(file, cb) {
-  const reader = new FileReader();
-  reader.onload = e => {
-    const img = new Image();
-    img.onload = () => {
-      let w = img.width, h = img.height;
-      const maxW = 1000, maxH = 1400;
-      if (w > maxW) { h = h * maxW / w; w = maxW; }
-      if (h > maxH) { w = w * maxH / h; h = maxH; }
-      const c = document.createElement('canvas');
-      c.width = w; c.height = h;
-      c.getContext('2d').drawImage(img, 0, 0, w, h);
-      cb(c.toDataURL('image/jpeg', 0.72));
-    };
-    img.onerror = () => showToast('图片读取失败，请换一张');
-    img.src = e.target.result;
-  };
-  reader.readAsDataURL(file);
-}
-
-/* 懒加载 Tesseract.js（首次识别时下载，不阻塞页面） */
-function loadTesseract() {
-  if (window.Tesseract) return Promise.resolve();
-  if (tesseractLoading) return tesseractLoading;
-  tesseractLoading = new Promise((resolve, reject) => {
-    const s = document.createElement('script');
-    s.src = 'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';
-    s.onload = resolve;
-    s.onerror = () => { tesseractLoading = null; reject(new Error('识别引擎下载失败，请检查网络')); };
-    document.head.appendChild(s);
-  });
-  return tesseractLoading;
-}
-
-async function startReceiptOCR() {
-  if (!receiptImageData) return;
-  const box = document.getElementById('receipt-progress');
-  const txt = document.getElementById('receipt-progress-text');
-  const fill = document.getElementById('receipt-progress-fill');
-  box.style.display = 'block';
-  fill.style.width = '8%';
-  try {
-    txt.textContent = '正在下载识别引擎…';
-    await loadTesseract();
-    const worker = await Tesseract.createWorker('chi_sim+eng', 1, {
-      logger: m => {
-        if (m.status === 'loading tesseract core') { txt.textContent = '加载识别核心…'; }
-        else if (m.status === 'initializing tesseract') { txt.textContent = '初始化引擎…'; fill.style.width = '30%'; }
-        else if (m.status === 'loading language traineddata') { txt.textContent = '下载中文语言包(约20MB)，首次较慢…'; fill.style.width = '45%'; }
-        else if (m.status === 'recognizing text') {
-          txt.textContent = '正在识别小票 ' + Math.round((m.progress || 0) * 100) + '%';
-          fill.style.width = Math.min(100, 45 + (m.progress || 0) * 55) + '%';
-        }
-      }
-    });
-    const { data } = await worker.recognize(document.getElementById('receipt-img'));
-    await worker.terminate();
-    fill.style.width = '100%';
-    applyReceiptResult(data.text);
-  } catch (e) {
-    box.style.display = 'none';
-    showToast('识别失败：' + (e.message || '引擎错误') + '，可手动记账');
-  }
-}
-
-/* ==================== 结构化 JSON 解析（严格字段约束） ==================== */
-/* 输出单条付款记录的 JSON：{"收支","金额","类别","账户","日期","备注","货币"} */
-const ACCOUNT_ENUM = ['微信余额','支付宝余额','支付宝小荷包','中国建设银行','中国银行','浦发银行'];
-const CURRENCY_ENUM = ['CNY','USD','EUR','GBP','JPY','KRW','CAD','AUD','SGD','HKD'];
-const DEFAULT_DATE_STR = '2026.4.8 09:10'; // 无明确时间时的占位
-
-/* 取第一个付款记录：优先合计/实付，其次第一个金额行 */
-function firstAmount(text) {
-  const sumRe = /(实付|优惠后|折后|合计|总计|实收|应收|总额|应付|小计|消费金额|本次消费|结账|支付金额|扣款)[^\d]*?([\d,]+(?:\.\d{1,2})?)/;
-  const m1 = text.match(sumRe);
-  if (m1) return parseFloat(m1[2].replace(/,/g, ''));
-  const m2 = text.match(/[¥￥]\s*[\d,]+(?:\.\d{1,2})?/);
-  if (m2) return parseFloat(m2[0].replace(/[¥￥,]/g, ''));
-  const m3 = text.match(/(?:^|\n)\s*[-+]?\s*[\d,]+\.\d{2}/);
-  if (m3) return parseFloat(m3[0].replace(/[^\d.]/g, ''));
-  const nums = (text.match(/[\d,]+\.\d{2}/g) || []).map(s => parseFloat(s.replace(/,/g, ''))).filter(n => n > 0 && n < 100000);
-  return nums.length ? nums[0] : null;
-}
-
-function detectShouzhi(text, amount) {
-  const t = text.toLowerCase();
-  if (/提现/.test(t)) return '支出'; // 提现：记录提现金额，勿分析为手续费支出
-  const inc = /(收入|入账|收款|存入|收到|红包|工资到账|转入|退款|退票)/.test(t);
-  const out = /(支出|付款|消费|支付|扣款|转出|购物|购买|扫码|转账|缴纳|充值|缴费|消费)/.test(t);
-  if (inc && !out) return '收入';
-  if (out && !inc) return '支出';
-  if (/\+\s*[¥￥]/.test(text)) return '收入';
-  if (/-\s*[¥￥]/.test(text)) return '支出';
-  return '支出';
-}
-
-function detectCategory(text, shouzhi) {
-  if (shouzhi === '收入') {
-    const incKw = [
-      ['月工资', ['工资', '薪资', '薪金', '代发', '薪酬', 'salary']],
-      ['月公积金', ['公积金', '公积金提取']],
-      ['月兼职收入', ['兼职', '外快', '劳务', '稿费', '打赏']],
-      ['其他收入', ['红包', '退款', '转账', '收款', '利息', '理财', '分红']]
-    ];
-    for (const [c, keys] of incKw) {
-      if (keys.some(k => text.toLowerCase().includes(k))) return c;
-    }
-    return '月工资'; // 收入第一个分类
-  }
-  const expKw = [
-    ['美食', ['餐厅', '饭店', '面馆', '小吃', '外卖', '火锅', '烧烤', '早餐', '午餐', '晚餐', '面包', '蛋糕', '汉堡', '麦当劳', '肯德基', '餐饮', '饭']],
-    ['奶茶', ['奶茶', '咖啡', '瑞幸', '星巴克', '喜茶', '奈雪', '蜜雪', '茶百道', '一点点', '柠檬茶', 'coco', '益禾堂']],
-    ['电影', ['电影', '影院', '淘票票', '猫眼', 'imax']],
-    ['演出', ['演出', '演唱', '音乐节', '剧场', '话剧', '展览', '门票', 'livehouse', 'live house']],
-    ['服装', ['服装', '衣服', '服饰', '优衣库', 'zara', '鞋', '袜子', '内衣', '外套', '裙']],
-    ['医疗', ['药', '医院', '诊所', '挂号', '体检', '药店', '医药']],
-    ['话费', ['话费', '移动', '联通', '电信', '充值', '流量', '宽带', 'sim']],
-    ['房租', ['房租', '租金', '物业', '水费', '电费', '燃气', '水电', '公寓']],
-    ['生活用品', ['超市', '便利店', '百货', '永辉', '沃尔玛', '生活', '纸巾', '洗护', '日用品', '杂货']],
-  ];
-  for (const [c, keys] of expKw) {
-    if (keys.some(k => text.toLowerCase().includes(k))) return c;
-  }
-  return '美食'; // 支出第一个分类
-}
-
-function detectAccount(text) {
-  const t = text;
-  if (/小荷包/.test(t)) return '支付宝小荷包';
-  if (/微信/.test(t)) return '微信余额';
-  if (/支付宝|花呗|借呗|余额宝|蚂蚁/.test(t)) return '支付宝余额';
-  if (/建设银行|建行/.test(t)) return '中国建设银行';
-  if (/中国银行|中行/.test(t)) return '中国银行';
-  if (/浦发/.test(t)) return '浦发银行';
-  return '支付宝余额'; // 默认
-}
-
-function detectCurrency(text) {
-  const t = text.toLowerCase();
-  if (/usd|\$/.test(t)) return 'USD';
-  if (/eur|€/.test(t)) return 'EUR';
-  if (/gbp|£/.test(t)) return 'GBP';
-  if (/jpy|日元/.test(t)) return 'JPY';
-  if (/krw|韩元/.test(t)) return 'KRW';
-  if (/cad|加元/.test(t)) return 'CAD';
-  if (/aud|澳元/.test(t)) return 'AUD';
-  if (/sgd|新加坡/.test(t)) return 'SGD';
-  if (/hkd|港币/.test(t)) return 'HKD';
-  return 'CNY';
-}
-
-function detectDate(text) {
-  const dm = text.match(/(20\d{2})[-/.年](\d{1,2})[-/.月](\d{1,2})/);
-  if (!dm) return DEFAULT_DATE_STR;
-  const y = +dm[1], mo = +dm[2], d = +dm[3];
-  let hm = '09:10';
-  const tm = text.slice(text.indexOf(dm[0])).match(/(\d{1,2})[:：](\d{2})/);
-  if (tm) {
-    let hh = +tm[1];
-    if (hh > 23) hh = hh % 24;
-    hm = (hh < 10 ? '0' : '') + hh + ':' + tm[2];
-  }
-  return y + '.' + mo + '.' + d + ' ' + hm;
-}
-
-/* 备注：12 字以内，描述消费内容，不含优惠信息 */
-function detectNote(text, shouzhi, amount, account) {
-  if (/提现/.test(text)) {
-    const m = text.match(/提现到\s*([\u4e00-\u9fa5]{2,8})/);
-    return (m ? '提现到' + m[1] : '提现').slice(0, 12);
-  }
-  if (shouzhi === '收入') {
-    const m = text.match(/(工资|红包|退款|转账|兼职|收款)/);
-    if (m) return m[1].slice(0, 12);
-  }
-  const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
-  for (const l of lines) {
-    const clean = l.replace(/^[-+¥￥]\s*/, '');
-    if (clean.length >= 2 && clean.length <= 12 && !/[\d￥¥]/.test(clean) && !/^(合计|总计|实收|应收|小计|金额|数量|优惠|折扣|商家|交易|订单|支付|收款|账单|账户|余额|支出|收入|微信|支付宝|零钱|支付成功|交易成功|账单详情)/.test(clean)) {
-      return clean;
-    }
-  }
-  return '小票消费';
-}
-
-/* 严格输出单条 JSON（多付款记录仅取第一个） */
-function parsePaymentJSON(text) {
-  const amount = firstAmount(text);
-  const shouzhi = detectShouzhi(text, amount);
-  const category = detectCategory(text, shouzhi);
-  const account = detectAccount(text);
-  const date = detectDate(text);
-  const note = detectNote(text, shouzhi, amount, account);
-  const currency = detectCurrency(text);
-  const amt = amount != null ? (Math.round(amount * 100) / 100).toFixed(2) : '0.00';
-  return {
-    '收支': shouzhi,
-    '金额': amt,
-    '类别': category,
-    '账户': account,
-    '日期': date,
-    '备注': note,
-    '货币': currency
-  };
-}
-
-/* 俏皮幽默评论：根据收支类型 / 金额 / 类别 / 时间生成 */
-function funnyComment(p) {
-  const amt = parseFloat(p['金额']) || 0;
-  const hm = (p['日期'].split(' ')[1] || '12:00');
-  const h = parseInt(hm.split(':')[0], 10);
-  if (p['收支'] === '收入') {
-    if (p['类别'].includes('工资')) return '工资到账，钱包原地复活 💪 这个月请对自己好一点——但别好太多';
-    if (p['类别'].includes('兼职')) return '副业进账 ¥' + p['金额'] + '！搞钱人搞钱魂，建议立刻截图收藏 💰';
-    if (amt >= 500) return '一笔大额进账 ¥' + p['金额'] + '！建议先冷静 5 分钟再决定怎么花 😌';
-    return '进账 ¥' + p['金额'] + '！数额虽小，快乐不少，攒多了也是钱 💰';
-  }
-  if (p['备注'].includes('提现')) return '钱从手机搬到银行卡，完成了一次说走就走的「旅行」🧳 手续费？不存在的';
-  if (h >= 0 && h < 6) return '凌晨还在花钱？你是夜猫子，还是夜「财」子 🦉';
-  if (amt >= 1000) return '¥' + p['金额'] + ' 就这么水灵灵地没了……今晚睡前建议再看看余额 🌙';
-  if (amt >= 200) return '¥' + p['金额'] + ' 花出去了，快乐值 +1，余额 -¥' + p['金额'] + '，一进一出，全看心态 😌';
-  if (/(地铁|滴滴|出行|打车|公交|加油|高铁|机票|停车|通勤)/.test(p['备注'])) return '通勤费是打工人的宿命 🚇 记账本都替你心疼';
-  if (p['类别'] === '奶茶') return '又是奶茶续命的一天 🧋 变胖的是钱包，但快乐是灵魂的维生素';
-  if (p['类别'] === '美食') return '吃进肚子里的都不叫浪费，这叫「能量储备」🍜 记账不记胃，胃记得';
-  if (p['类别'] === '电影' || p['类别'] === '演出') return '精神食粮已到位 🎬 快乐两小时，账单会记住一切';
-  if (p['类别'] === '服装') return '新衣服已就位，衣橱在鼓掌 👗 衣柜：又添一员大将';
-  if (p['类别'] === '医疗') return '身体是本钱，这笔钱花得值 💊 记得多喝热水（真心的）';
-  if (amt < 20) return '小额支出是「大钱消失术」的原材料，记下来你就赢了 90% 的人 😎';
-  return '一笔记录，一个故事 📖 会记账的人，运气不会太差';
-}
-
-let lastReceiptJSON = null;
-
-function applyReceiptResult(text) {
-  const p = parsePaymentJSON(text);
-  lastReceiptJSON = p;
-  const today = localDate(new Date());
-  document.getElementById('receipt-progress').style.display = 'none';
-  document.getElementById('receipt-summary').style.display = 'block';
-  document.getElementById('receipt-confirm').style.display = 'inline-block';
-  // 展示结构化 JSON + 俏皮评论
-  document.getElementById('receipt-json-block').style.display = 'block';
-  document.getElementById('receipt-json').value = JSON.stringify(p, null, 2);
-  document.getElementById('receipt-comment').textContent = '💬 ' + funnyComment(p);
-  // 预填确认表单
-  const amountInput = document.getElementById('receipt-amount');
-  const amt = parseFloat(p['金额']);
-  if (amt > 0) { amountInput.value = amt.toFixed(2); amountInput.placeholder = '金额 ¥'; }
-  else { amountInput.value = ''; amountInput.placeholder = '未识别到金额，请手动输入'; }
-  const isDefaultDate = p['日期'].startsWith(DEFAULT_DATE_STR);
-  let name = p['备注'];
-  if (!isDefaultDate && p['日期'].slice(0, 10) !== today) name += ' · ' + p['日期'].slice(0, 10).replace(/\./g, '-');
-  document.getElementById('receipt-name').value = name;
-  receiptCat = DEFAULT_CATS.includes(p['类别']) ? p['类别'] : '美食';
-  renderReceiptCats();
-  showToast(amt > 0 ? '识别成功，JSON 已生成 ✓' : '未识别到金额，请手动填写');
-}
-
-function copyReceiptJSON() {
-  const ta = document.getElementById('receipt-json');
-  if (!ta.value) return;
-  ta.select();
-  ta.setSelectionRange(0, 99999);
-  try {
-    document.execCommand('copy');
-    showToast('JSON 已复制 ✓');
-  } catch (e) {
-    showToast('复制失败，请长按文本框手动复制');
-  }
-}
-
-function renderReceiptCats() {
-  document.getElementById('receipt-cats').innerHTML = DEFAULT_CATS.map(c =>
-    `<button class="modal-cat${receiptCat===c?' active':''}" onclick="receiptCat='${c}';renderReceiptCats()">${CAT_ICONS[c]||'💰'} ${c}</button>`
-  ).join('');
-}
-
-function confirmReceiptRecord() {
-  const amount = parseFloat(document.getElementById('receipt-amount').value);
-  if (!amount || amount <= 0) { showToast('请先确认金额'); return; }
-  pendingReceipt = receiptImageData;
-  const name = document.getElementById('receipt-name').value.trim() || '小票消费';
-  closeReceiptModal();
-  openModal('expense');
-  modalCat = receiptCat;
-  document.getElementById('modal-amount').value = amount.toFixed(2);
-  document.getElementById('modal-name').value = name;
-  renderModalCats();
-  document.getElementById('modal-amount').focus();
-  showToast('金额已识别，确认分类后保存 ✓');
-}
-
-function viewReceipt(id) {
-  const r = records.find(x => x.id === id);
-  if (!r || !r.receipt) return;
-  document.getElementById('receipt-view-img').src = r.receipt;
-  document.getElementById('receipt-view-info').textContent =
-    `${r.name} · ${r.date} · ${r.category} · ${r.type==='expense'?'-':'+'}¥${r.amount.toFixed(2)}`;
-  document.getElementById('receipt-view-modal').classList.add('show');
-}
-function closeReceiptView() {
-  document.getElementById('receipt-view-modal').classList.remove('show');
 }
 
 /* ==================== 数据备份与恢复 ==================== */
@@ -2901,16 +2441,19 @@ function resetRepayMonth() {
 
 function repayDueBadge(item, isDone) {
   if (isDone) return '<span class="repay-due-badge none">✅ 已还清</span>';
-  if (!item.dueDay) return '<span class="repay-due-badge none">📅 未设还款日</span>';
-  const [y, m] = getRepayYM().split('-').map(Number);
+  if (!item.dueDate) return '<span class="repay-due-badge none">📅 未设还款日</span>';
+  const [curY, curM] = getRepayYM().split('-').map(Number);
+  const [dy, dm, dd] = item.dueDate.split('-').map(Number);
   const now = new Date();
-  const isThisMonth = y === now.getFullYear() && m === now.getMonth() + 1;
-  if (isThisMonth) {
-    if (now.getDate() > item.dueDay) return `<span class="repay-due-badge overdue">⚠️ ${item.dueDay} 日已过</span>`;
-    if (now.getDate() === item.dueDay) return `<span class="repay-due-badge today">🔔 今天到期</span>`;
-    return `<span class="repay-due-badge">⏰ 每月 ${item.dueDay} 日前</span>`;
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const due = new Date(dy, dm - 1, dd);
+  const isSelectedMonth = curY === dy && curM === dm;
+  if (isSelectedMonth) {
+    if (due.getTime() < today.getTime()) return `<span class="repay-due-badge overdue">⚠️ ${dm}月${dd}日已过</span>`;
+    if (due.getTime() === today.getTime()) return `<span class="repay-due-badge today">🔔 今天到期</span>`;
+    return `<span class="repay-due-badge">⏰ ${dm}月${dd}日到期</span>`;
   }
-  return `<span class="repay-due-badge">📅 每月 ${item.dueDay} 日</span>`;
+  return `<span class="repay-due-badge">📅 ${dm}月${dd}日</span>`;
 }
 
 function renderRepayPage() {
@@ -2918,13 +2461,14 @@ function renderRepayPage() {
   const now = new Date();
   const isThisMonth = curY === now.getFullYear() && curM === now.getMonth() + 1;
 
-  // 本月到期统计（随所选月份）：未还清且有最迟还款日的项
+  // 本月到期统计（随所选月份）：未还清且到期日在所选月份的项
   let dueCount = 0, dueAmt = 0, totalDebt = 0, totalPaid = 0;
+  const curYM = getRepayYM();
   repayItems.forEach(item => {
     totalDebt += item.total || 0;
     totalPaid += item.paid || 0;
     const remain = (item.total || 0) - (item.paid || 0);
-    if (remain > 0 && item.dueDay) { dueCount++; dueAmt += remain; }
+    if (remain > 0 && item.dueDate && item.dueDate.startsWith(curYM)) { dueCount++; dueAmt += remain; }
   });
   const totalRemain = totalDebt - totalPaid;
   const pct = totalDebt > 0 ? Math.round(totalPaid / totalDebt * 100) : 0;
@@ -2946,25 +2490,29 @@ function renderRepayPage() {
     return;
   }
 
-  // 排序：未还清在前（按最迟还款日升序），已还清排最后
+  // 排序：未还清在前（按到期日升序），已还清排最后
   const sorted = [...repayItems].sort((a, b) => {
     const aDone = (a.total || 0) - (a.paid || 0) <= 0 && a.total > 0;
     const bDone = (b.total || 0) - (b.paid || 0) <= 0 && b.total > 0;
     if (aDone !== bDone) return aDone ? 1 : -1;
-    return (a.dueDay || 99) - (b.dueDay || 99);
+    return (a.dueDate || '9999-99-99').localeCompare(b.dueDate || '9999-99-99');
   });
+  // 已还清的归档，主列表只展示未还清项
+  const activeItems = sorted.filter(i => (i.total || 0) - (i.paid || 0) > 0 || !i.total);
+  const archivedItems = sorted.filter(i => (i.total || 0) - (i.paid || 0) <= 0 && i.total > 0);
 
-  // 按债权方同名分组（≥2项时汇总显示）
+  // 按债权方同名分组（仅未还清项）
   const groups = {};
-  sorted.forEach(item => {
+  activeItems.forEach(item => {
     const key = (item.creditor || '未指定').trim();
     (groups[key] = groups[key] || []).push(item);
   });
   const groupKeys = Object.keys(groups);
   const hasDupe = groupKeys.some(k => groups[k].length > 1);
 
+  let mainHTML;
   if (hasDupe) {
-    list.innerHTML = groupKeys.map(creditor => {
+    mainHTML = groupKeys.map(creditor => {
       const items = groups[creditor];
       if (items.length === 1) return repayItemCard(items[0]);
       const total = items.reduce((s, i) => s + (i.total || 0), 0);
@@ -2982,7 +2530,7 @@ function renderRepayPage() {
           </div>
           <div class="repay-group-summary">
             <span>总额 ¥${total.toFixed(0)}</span>
-            <span class="remain">${remain <= 0 ? '✅ 已还清' : '剩余 ¥' + remain.toFixed(0)}</span>
+            <span class="remain">剩余 ¥${remain.toFixed(0)}</span>
           </div>
           <div class="repay-progress-bg">
             <div class="repay-progress-bar-fill" style="width:${pct}%"></div>
@@ -2992,8 +2540,23 @@ function renderRepayPage() {
       </div>`;
     }).join('');
   } else {
-    list.innerHTML = sorted.map(repayItemCard).join('');
+    mainHTML = activeItems.map(repayItemCard).join('');
   }
+
+  // 已还清归档块（默认折叠，可展开查看）
+  let archiveHTML = '';
+  if (archivedItems.length > 0) {
+    archiveHTML = `<div class="repay-archive">
+      <div class="repay-archive-header" onclick="this.parentElement.classList.toggle('open')">
+        <span>🗂 已还清归档</span>
+        <span class="repay-archive-count">${archivedItems.length} 笔</span>
+        <span class="repay-archive-arrow">▾</span>
+      </div>
+      <div class="repay-archive-body">${archivedItems.map(repayItemCard).join('')}</div>
+    </div>`;
+  }
+
+  list.innerHTML = mainHTML + archiveHTML;
 }
 
 function repayItemCard(item) {
@@ -3055,14 +2618,14 @@ function openRepayItemModal(itemId) {
       document.getElementById('repay-name').value = item.name;
       document.getElementById('repay-creditor').value = item.creditor;
       document.getElementById('repay-total-amount').value = item.total || '';
-      document.getElementById('repay-due-day').value = item.dueDay || '';
+      document.getElementById('repay-due-date').value = item.dueDate || '';
       repayEmoji = item.icon;
     }
   } else {
     document.getElementById('repay-name').value = '';
     document.getElementById('repay-creditor').value = '';
     document.getElementById('repay-total-amount').value = '';
-    document.getElementById('repay-due-day').value = '';
+    document.getElementById('repay-due-date').value = '';
     repayEmoji = '💳';
   }
   
@@ -3082,10 +2645,8 @@ function saveRepayItem() {
   const name = document.getElementById('repay-name').value.trim();
   const creditor = document.getElementById('repay-creditor').value.trim() || '未指定';
   const total = parseFloat(document.getElementById('repay-total-amount').value) || 0;
-  const dueVal = document.getElementById('repay-due-day').value.trim();
-  const dueDay = dueVal ? parseInt(dueVal, 10) : null;
+  const dueDate = document.getElementById('repay-due-date').value || null;
   if (!name) { showToast('请输入还款名称'); return; }
-  if (dueDay !== null && (isNaN(dueDay) || dueDay < 1 || dueDay > 31)) { showToast('最迟还款日需在 1-31 之间'); return; }
 
   if (repayEditingId) {
     const item = repayItems.find(i => i.id === repayEditingId);
@@ -3094,13 +2655,13 @@ function saveRepayItem() {
       item.creditor = creditor;
       item.icon = repayEmoji;
       item.total = total;
-      item.dueDay = dueDay;
+      item.dueDate = dueDate;
     }
   } else {
     repayItems.push({
       id: 'repay_custom_' + Date.now(),
       name, creditor, icon: repayEmoji,
-      total, paid: 0, preset: false, logs: [], dueDay
+      total, paid: 0, preset: false, logs: [], dueDate
     });
   }
   
@@ -3990,8 +3551,6 @@ document.addEventListener('keydown', e => {
     closeRepayModal();
     closeRepayLogModal();
     closeWalletModal();
-    closeReceiptModal();
-    closeReceiptView();
     closeFinanceModal();
     closeCalDetail();
   }
